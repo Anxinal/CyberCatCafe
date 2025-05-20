@@ -7,7 +7,7 @@ import {
   TextInput
 } from 'react-native';
 import { Link } from 'expo-router'; // or from 'expo-router' if you’re using Expo Router
-import PropTypes from 'prop-types';
+
 
 const Login = () => {
   const [userName, setUsername] = useState('');
@@ -126,3 +126,5 @@ const styles = StyleSheet.create({
     marginRight: 20,
   }
 });
+
+
