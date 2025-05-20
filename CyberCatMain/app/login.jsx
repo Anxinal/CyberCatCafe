@@ -28,32 +28,32 @@ const Login = () => {
       </View>
 
       <View style={styles.loginInputContainer}>
-          <View style={styles.inputContainer}>
-      <Text style={styles.infoText}> Username:</Text>
-      <TextInput
-        style = {styles.inputStyle}
-        onChangeText={setUsername}
-        placeholder="enter Username"
-        placeholderTextColor="grey"
-        value = {userName}
-      />
-    </View>
-          <View style={styles.inputContainer}>
-      <Text style={styles.infoText}>password:</Text>
-      <TextInput
-        style = {styles.inputStyle}
-        onChangeText={setPassword}
-        placeholder= "enter password"
-        placeholderTextColor="grey"
-        value = {password}
-      />
-    </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.infoText}> Username:</Text>
+          <TextInput
+            style={styles.inputStyle}
+            onChangeText={setUsername}
+            placeholder="enter Username"
+            placeholderTextColor="grey"
+            value={userName}
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.infoText}>password:</Text>
+          <TextInput
+            style={styles.inputStyle}
+            onChangeText={setPassword}
+            placeholder="enter password"
+            placeholderTextColor="grey"
+            value={password}
+          />
+        </View>
       </View>
 
       <View style={styles.buttonsContainer}>
 
-          <Button style ={[styles.button, styles.buttonText]} title ='login' onPress = {loginPress}/>
-          <Button style ={[styles.button, styles.buttonText]} title='Register' onPress = {registerPress}/>
+        <Button style={[styles.button, styles.buttonText]} title='login' onPress={loginPress} />
+        <Button style={[styles.button, styles.buttonText]} title='Register' onPress={registerPress} />
       </View>
     </View>
   );
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginTop: 50,
-    marginBottom:10,
+    marginBottom: 10,
     marginHorizontal: 'auto',
     justifyConten: 'center'
   },
