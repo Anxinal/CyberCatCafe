@@ -54,7 +54,6 @@ const Login = () => {
 
           <Button style ={[styles.button, styles.buttonText]} title ='login' onPress = {loginPress}/>
           <Button style ={[styles.button, styles.buttonText]} title='Register' onPress = {registerPress}/>
->>>>>>>>> Temporary merge branch 2
       </View>
     </View>
   );
