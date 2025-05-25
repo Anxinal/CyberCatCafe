@@ -5,6 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { HeaderTitle } from '@react-navigation/elements';
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -19,12 +20,10 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="mainPages" options={{ headerShown: false }} />
-
-        <Stack.Screen name="+not-found" />
-        <Stack.Screen name ="login" options={{headerShown: false}}/>
-      </Stack>
+         <Stack>
+           <Stack.Screen name= "login" options={{headerShown: false}}/>
+           <Stack.Screen name="+not-found" options = {{title:'404'}}/> 
+         </Stack>
       <StatusBar style="auto" />
     </ThemeProvider>
   );
