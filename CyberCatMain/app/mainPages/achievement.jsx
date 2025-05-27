@@ -4,19 +4,26 @@ const screenWidth = Dimensions.get('window').width
 
 export default function Achievement() {
     const completed = useRef(false);
+
+    const completedAch = achievementList.filter(item => item.completed);
+    const incompleteAch = achievementList.filter(item => !item.completed);
+    const orderedAch = [...completedAch, ...incompleteAch];
+
     return (
         <View style={styles.container}>
             <Text style={styles.text}>Achievements</Text>
             <FlatList
-                data={achievementList}
+                data={orderedAch}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
                     <View style={[styles.card, item.completed ? styles.cardCompleted : styles.cardIncomplete]}>
                         {item.completed ?
                             (<Text>icon</Text>) : (<Text>question</Text>)
                         }
-                        <Text style={styles.title}>{item.title}</Text>
-                        <Text style={styles.description}>{item.description}</Text>
+                        <View style={styles.box}>
+                            <Text style={styles.title}>{item.title}</Text>
+                            <Text style={styles.description}>{item.description}</Text>
+                        </View>
                     </View>
                 )}
             />
@@ -30,11 +37,18 @@ const achievementList = [
         id: '1',
         title: 'one cat a day',
         description: 'one cat a day, keeps the doctor away!',
+        completed: false,
+    },
+    {
+        id: '2',
+        title: 'kitty patty',
+        description: 'pat the kitty and feel better',
         completed: true,
     },
     {
-        id: '2', title: 'kitty patty',
-        description: 'pat the kitty and ',
+        id: '3',
+        title: 'paw-sitive progress',
+        description: 'completed at least one focus session for 3 consecutive days',
         completed: false,
     },
 ]
@@ -63,10 +77,14 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     cardCompleted: {
-        backgroundColor: 'grey',
+        backgroundColor: 'pink',
     },
     cardIncomplete: {
-        backgroundColor: 'pink',
+        backgroundColor: 'grey',
+    },
+    box: {
+        flex: 1,
+        flexDirection: 'column',
     },
     title: {
         color: 'white',
