@@ -10,15 +10,28 @@ import { Link } from 'expo-router'; // or from 'expo-router' if you’re using E
 import PropTypes from 'prop-types';
 
 const Login = () => {
+
   const [userName, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
+  const router = useRouter();
 
   const loginPress = () => {
-    console.log(`Username: ${userName}\nPassword: ${password}`);
+
+    signInWithEmailAndPassword(auth, userName, password)
+      .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+        console.log("login success" + user.email);
+        // ...
+      })
+      .catch((error) => {
+        console.log("Login failed \n" + error.message);
+      });
+
   };
+
   const registerPress = () => {
-    console.log('Register query accepted.');
+    router.push('account/register');
   };
 
   return (
