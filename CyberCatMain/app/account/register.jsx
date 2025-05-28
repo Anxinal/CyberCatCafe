@@ -6,17 +6,32 @@ import {
   Button,
   TextInput
 } from 'react-native';
-import { registerNewUser } from './userInfo'; 
+
+import { getFirestore, collection, getDocs, Firestore } from 'firebase/firestore/lite';
+import { app } from '../../firebasecConfig.js'
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 
 const register = () => {
   const [userName, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const db = getFirestore(app);
 
 
   const handleRegister = () => {
-       registerNewUser(email, password, userName).then(console.log);
+    console.log('Register query accepted.');
+    const auth = getAuth();
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed up 
+        console.log(userCredential.user.email);
+        // ...
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+
   };
 
   return (
@@ -27,43 +42,42 @@ const register = () => {
 
       <View style={styles.loginInputContainer}>
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.infoText}> Username: </Text>
-        <TextInput
-          style = {styles.inputStyle}
-          onChangeText={setUsername}
-          placeholder="enter Username"
-          placeholderTextColor="grey"
-          value = {userName}
-        />
-     </View>
-      
-      <View style={styles.inputContainer}>
-        <Text style={styles.infoText}> Email: </Text>
-        <TextInput
-          style = {styles.inputStyle}
-          onChangeText={setEmail}
-          placeholder="enter email"
-          placeholderTextColor="grey"
-          value = {email}
-        />
-      </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.infoText}> Username: </Text>
+          <TextInput
+            style={styles.inputStyle}
+            onChangeText={setUsername}
+            placeholder="enter Username/email"
+            placeholderTextColor="grey"
+            value={userName}
+          />
+        </View>
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.infoText}>password:</Text>
-        <TextInput
-        style = {styles.inputStyle}
-        onChangeText={setPassword}
-        placeholder= "enter password"
-        secureTextEntry
-        placeholderTextColor="grey"
-        value = {password}
-      />
-      </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.infoText}> Email: </Text>
+          <TextInput
+            style={styles.inputStyle}
+            onChangeText={setEmail}
+            placeholder="enter Username/email"
+            placeholderTextColor="grey"
+            value={email}
+          />
+        </View>
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.infoText}>password:</Text>
+          <TextInput
+            style={styles.inputStyle}
+            onChangeText={setPassword}
+            placeholder="enter password"
+            placeholderTextColor="grey"
+            value={password}
+          />
+        </View>
       </View>
 
       <View style={styles.buttonsContainer}>
-          <Button style ={[styles.button, styles.buttonText]} title='Register new user' onPress = {handleRegister}/>
+        <Button style={[styles.button, styles.buttonText]} title='Register new user' onPress={handleRegister} />
       </View>
     </View>
   );
@@ -113,7 +127,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginTop: 50,
-    marginBottom:10,
+    marginBottom: 10,
     marginHorizontal: 'auto',
     justifyConten: 'center'
   },

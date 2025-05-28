@@ -40,10 +40,17 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
       />
+<<<<<<< HEAD
       <Tabs.Screen
         name="timer"
         options={{
           title: 'timer',
+=======
+        <Tabs.Screen
+        name="other"
+        options={{
+          title: 'Explore',
+>>>>>>> f07e9b0 (Incorperate the basic backend email authentical from firebase(Without navi yet))
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
       />

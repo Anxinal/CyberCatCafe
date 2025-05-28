@@ -6,12 +6,15 @@ import {
   Button,
   TextInput
 } from 'react-native';
-import { Link } from 'expo-router'; // or from 'expo-router' if you’re using Expo Router
-import PropTypes from 'prop-types';
+
+import { useRouter } from 'expo-router'; // or from 'expo-router' if you’re using Expo Router
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+
+const auth = getAuth();
 
 const Login = () => {
 
-  const [username, setUsername] = useState('');
+  const [userName, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
 
@@ -42,11 +45,11 @@ const Login = () => {
 
       <View style={styles.loginInputContainer}>
         <View style={styles.inputContainer}>
-          <Text style={styles.infoText}> Username:</Text>
+          <Text style={styles.infoText}> Email:</Text>
           <TextInput
             style={styles.inputStyle}
             onChangeText={setUsername}
-            placeholder="enter Username"
+            placeholder="enter Username/email"
             placeholderTextColor="grey"
             value={userName}
           />
@@ -64,9 +67,8 @@ const Login = () => {
       </View>
 
       <View style={styles.buttonsContainer}>
-
         <Button style={[styles.button, styles.buttonText]} title='login' onPress={loginPress} />
-        <Button style={[styles.button, styles.buttonText]} title='Register' onPress={registerPress} />
+        <Button style={[styles.button, styles.buttonText]} title='Create a new account' onPress={registerPress} />
       </View>
     </View>
   );
