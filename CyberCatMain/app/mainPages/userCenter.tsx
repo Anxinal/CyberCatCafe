@@ -21,7 +21,7 @@ export default function userCenter({userId} : {userId: string}) {
 });
 
   return  (
-  <Text> This is to test the user Id function  </Text>
+  <Text> This is to test the user Id function: {userData}</Text>
 );
 }
 
