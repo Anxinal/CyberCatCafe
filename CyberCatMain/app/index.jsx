@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 
 const Login = () => {
 
-  const [userName, setUsername] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
 
