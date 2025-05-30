@@ -32,7 +32,7 @@ const register = () => {
         <TextInput
           style = {styles.inputStyle}
           onChangeText={setUsername}
-          placeholder="enter Username/email"
+          placeholder="enter Username"
           placeholderTextColor="grey"
           value = {userName}
         />
@@ -43,7 +43,7 @@ const register = () => {
         <TextInput
           style = {styles.inputStyle}
           onChangeText={setEmail}
-          placeholder="enter Username/email"
+          placeholder="enter email"
           placeholderTextColor="grey"
           value = {email}
         />
@@ -55,6 +55,7 @@ const register = () => {
         style = {styles.inputStyle}
         onChangeText={setPassword}
         placeholder= "enter password"
+        secureTextEntry
         placeholderTextColor="grey"
         value = {password}
       />

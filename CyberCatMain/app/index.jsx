@@ -49,6 +49,7 @@ const Login = () => {
         style = {styles.inputStyle}
         onChangeText={setPassword}
         placeholder= "enter password"
+        secureTextEntry
         placeholderTextColor="grey"
         value = {password}
       />
