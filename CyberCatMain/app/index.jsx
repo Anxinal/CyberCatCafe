@@ -8,31 +8,19 @@ import {
 } from 'react-native';
 
 import { useRouter } from 'expo-router'; // or from 'expo-router' if you’re using Expo Router
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-
+import { getAuth } from "firebase/auth";
+import { signInUser } from './account/userInfo';
 const auth = getAuth();
 
 const Login = () => {
 
-  const [userName, setUsername] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
 
   const loginPress = () => {
-
-  signInWithEmailAndPassword(auth, userName, password)
-  .then((userCredential) => {
-    // Signed in 
-    const user = userCredential.user;
-    console.log("login success" + user.email);
-    router.push('mainPages/userCenter');
-    // ...
-  })
-  .catch((error) => {
-    console.log("Login failed \n" + error.message);
-  });
-
-  };
+    signInUser(username, password, router).then(console.log);
+  }
 
   const registerPress = () => {
     router.push('account/register');
@@ -50,9 +38,9 @@ const Login = () => {
       <TextInput
         style = {styles.inputStyle}
         onChangeText={setUsername}
-        placeholder="enter Username/email"
+        placeholder="enter email"
         placeholderTextColor="grey"
-        value = {userName}
+        value = {username}
       />
     </View>
           <View style={styles.inputContainer}>
