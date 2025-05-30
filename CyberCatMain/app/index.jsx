@@ -17,6 +17,7 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
+  const router = useRouter();
 
   const loginPress = () => {
     signInUser(username, password, router).then(console.log);
@@ -58,6 +59,7 @@ const Login = () => {
 
       <View style={styles.buttonsContainer}>
           <Button style ={[styles.button, styles.buttonText]} title ='login' onPress = {loginPress}/>
+          <Button style ={[styles.button, styles.buttonText]} title='Create a new account' onPress = {registerPress} />
           <Button style ={[styles.button, styles.buttonText]} title='Create a new account' onPress = {registerPress} />
       </View>
     </View>
