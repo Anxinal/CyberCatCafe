@@ -25,6 +25,7 @@ const Login = () => {
     // Signed in 
     const user = userCredential.user;
     console.log("login success" + user.email);
+    router.push('mainPages/userCenter');
     // ...
   })
   .catch((error) => {
