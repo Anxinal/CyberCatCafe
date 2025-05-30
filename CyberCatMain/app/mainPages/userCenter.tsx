@@ -1,28 +1,42 @@
-import React from "react";
-import {Text, View} from "react-native"
+import React, { useState } from "react";
+import {Text, View } from "react-native"
 import { app } from "../../firebasecConfig.js"
 import { getFirestore, doc, getDoc, collection } from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { Maybe } from "@/data/Maybe.js"; 
-export default function userCenter({userId} : {userId: string}) {
+export default function userCenter() {
   const db = getFirestore(app);
   const collectionRef = collection(db, "users");
-  const docRef = doc(collectionRef, userId);
-  let userData = null;
-  const docSnap =  getDoc(docRef).then( (doc) => {
+  const [userId, setuserId] = useState("nothing");
+
+const auth = getAuth();
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // User is signed in, see docs for a list of available properties
+    // https://firebase.google.com/docs/reference/js/auth.user
+    setuserId(user.uid);
+    console.log(user.uid);
+    getDoc(doc(collectionRef, userId)).then( (doc) => {
       if (doc.exists()) {
-        console.log("Document data:", doc.data()?.username);
-        userData = doc.data();
-    } else {
+        console.log("OK");
+      }else {
         // doc.data() will be undefined in this case
         console.log("No such document!");
-    }
-  }
-  ).catch((error) => {
+      }
+    }).catch((error) => {
     console.log("Error getting document:", error);
+  });
+    // ...
+  } else {
+    // User is signed out
+    // ...
+  }
 });
+  
+  
 
   return  (
-  <Text> This is to test the user Id function: {userData}</Text>
+  <Text style = {{color: 'white', fontSize: 20}}> This is to test the user Id function: {userId}</Text>
 );
 }
 
