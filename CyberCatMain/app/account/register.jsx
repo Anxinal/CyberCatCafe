@@ -7,7 +7,7 @@ import {
   TextInput
 } from 'react-native';
 
-import { getFirestore, collection, getDocs, Firestore } from 'firebase/firestore/lite';
+import { getFirestore, collection, doc, setDoc } from 'firebase/firestore/lite';
 import { app } from '../../firebasecConfig.js'
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
@@ -17,21 +17,25 @@ const register = () => {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const db = getFirestore(app);
+  const collectionRef = collection(db, "users");
 
 
   const handleRegister = () => {
     console.log('Register query accepted.');
     const auth = getAuth();
     createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
+    .then(async (userCredential) => {
       // Signed up 
       console.log(userCredential.user.email);
-      // ...
-    })
-    .catch((error) => {
+      // add some initial information to the user account
+      await setDoc(doc(db, "users", userCredential.user.uid),
+        {
+          totalFocus: 0,
+          username: userName
+        });
+      }).catch((error) => {
       console.log(error.message);
-  });
-    
+  });   
   };
 
   return (
