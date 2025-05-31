@@ -8,6 +8,12 @@ const collectionRef = collection(db, "users");
 const auth = getAuth();
 
 
+const navigateToMain = (router) => {router.push('mainPages/userCenter');};
+
+/* This function takes in an attribute of the user(such as username) and retrieve the data from the database
+ It returns nothing and since the process is async, another set function is required for a temporary variable in the 
+ app page(with useState) so that the page can be re-rendered after the information is retrieved 
+ */
 export function getUserInfo(attribute, setFunction){
  
  onAuthStateChanged(auth, (user) => {
@@ -36,29 +42,40 @@ export function getUserInfo(attribute, setFunction){
   
 }
 
+/* This function takes in the user informations in the log in page and update the 
+login status asynchronously.
+It returns the promise chain to update login status itself which returns a string that represents the login status
+use then() if the error message needs to be used.
+ */
 export function signInUser(email, password, router){
-  console.log("login information");
-  console.log(email);
-  console.log(password);
+
   return signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Signed in 
-      console.log("login success" + userCredential.user.email);
-      router.push('mainPages/userCenter');
-      return "";
-    })
-    .catch((error) => {
-      return error.message;
-    });
+         .then((userCredential) => {
+            // Signed in 
+            console.log("login success" + userCredential.user.email);
+            navigateToMain(router);
+            return "";
+         })
+         .catch((error) => {
+            return error.message;
+         });
     
 }
-
+/* This function signs out the current user in the device and returns nothing
+ */
 export function signOutUser(){
   signOut(auth).then(() => {console.log("signed out successfully")})
-               .catch((err)=>{throw err;});
+               .catch(console.log);
 }
 
+/* This function takes in the user information in the register page and update the 
+does not update the login status 
 
+(TODO: Update the login page after registration)
+
+It returns the promise chain to update login status itself which returns a string that represents the login status
+use then() if the error message needs to be used.
+ */
 export function registerNewUser(email, password, username){  
       console.log('Register query accepted.');
       return createUserWithEmailAndPassword(auth, email, password)
