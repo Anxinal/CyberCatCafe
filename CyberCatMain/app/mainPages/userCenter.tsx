@@ -10,27 +10,7 @@ export default function userCenter() {
   const [userInfo, setuserInfo] = useState("nothing");
 
 const auth = getAuth();
-// onAuthStateChanged(auth, (user) => {
-//   if (user) {
-//     // User is signed in, see docs for a list of available properties
-//     // https://firebase.google.com/docs/reference/js/auth.user
-//     setuserInfo(user.uid);
-//     getDoc(doc(collectionRef, user.uid)).then( (doc) => {
-//       if (doc.exists()) {
-//         console.log("OK");
-//       }else {
-//         // doc.data() will be undefined in this case
-//         console.log("No such document!");
-//       }
-//     }).catch((error) => {
-//     console.log("Error getting document:", error);
-//   });
-//     // ...
-//   } else {
-//     // User is signed out
-//     // ...
-//   }
-// }); 
+
   getUserInfo("username", setuserInfo);
   return  (
   <View>
