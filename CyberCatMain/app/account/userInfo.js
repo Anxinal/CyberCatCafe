@@ -107,6 +107,7 @@ This function is used to update the user information in the back end
 Attribute: name of the attribute that changes (such as "username")
 Value: The new value of the attribute 
 If you want to reload the page remember that you should do it manually in your app page
+For example use .then(setFunction) to trigger re-render
 */
 export function updateUserInfo(attribute, value){
 
