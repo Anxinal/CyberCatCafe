@@ -1,5 +1,5 @@
 import { app } from "../../firebasecConfig.js"
-import { getFirestore, doc, getDoc, collection,setDoc, onSnapshot, updateDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, collection,setDoc, updateDoc } from "firebase/firestore";
 import { getAuth, onAuthStateChanged, 
          signInWithEmailAndPassword, signOut,
          createUserWithEmailAndPassword } from "firebase/auth";
@@ -26,7 +26,6 @@ export function getUserInfo(attribute, setFunction){
     
     getDoc(doc(collectionRef, user.uid)).then( (doc) => {
       if (doc.exists()) {
-        console.log("OK");
         currentUser = user.uid;
         setFunction(doc.data()[attribute]);
       }else {
@@ -87,8 +86,6 @@ export function registerNewUser(email, password, username){
       console.log('Register query accepted.');
       return createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
-        // Signed up 
-        console.log(userCredential.user.email);
         // add some initial information to the user account
         await setDoc(doc(db, "users", userCredential.user.uid),
           {
