@@ -6,24 +6,17 @@ import {
   Button,
   TextInput
 } from 'react-native';
+import { registerNewUser } from './userInfo'; 
+import { useRouter } from 'expo-router'; 
 
-import { useRouter } from 'expo-router'; // or from 'expo-router' if you’re using Expo Router
-import { getAuth } from "firebase/auth";
-import { signInUser } from './account/userInfo';
-const auth = getAuth();
-
-const Login = () => {
-
-  const [username, setUsername] = useState('');
+const register = () => {
+  const [userName, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const router = useRouter();
- 
-  const loginPress = () => {
-    signInUser(username, password, router).then(console.log);
-  }
+  const [email, setEmail] = useState('');
 
-  const registerPress = () => {
-    router.push('account/register');
+
+  const handleRegister = () => {
+       registerNewUser(email, password, userName).then(console.log).then(() => useRouter().push("/index"));
   };
 
   return (
@@ -33,19 +26,32 @@ const Login = () => {
       </View>
 
       <View style={styles.loginInputContainer}>
-          <View style={styles.inputContainer}>
-      <Text style={styles.infoText}> Email:</Text>
-      <TextInput
-        style = {styles.inputStyle}
-        onChangeText={setUsername}
-        placeholder="enter email"
-        placeholderTextColor="grey"
-        value = {username}
-      />
-    </View>
-          <View style={styles.inputContainer}>
-      <Text style={styles.infoText}>password:</Text>
-      <TextInput
+
+      <View style={styles.inputContainer}>
+        <Text style={styles.infoText}> Username: </Text>
+        <TextInput
+          style = {styles.inputStyle}
+          onChangeText={setUsername}
+          placeholder="enter Username"
+          placeholderTextColor="grey"
+          value = {userName}
+        />
+     </View>
+      
+      <View style={styles.inputContainer}>
+        <Text style={styles.infoText}> Email: </Text>
+        <TextInput
+          style = {styles.inputStyle}
+          onChangeText={setEmail}
+          placeholder="enter email"
+          placeholderTextColor="grey"
+          value = {email}
+        />
+      </View>
+
+      <View style={styles.inputContainer}>
+        <Text style={styles.infoText}>password:</Text>
+        <TextInput
         style = {styles.inputStyle}
         onChangeText={setPassword}
         placeholder= "enter password"
@@ -53,18 +59,17 @@ const Login = () => {
         placeholderTextColor="grey"
         value = {password}
       />
-    </View>
+      </View>
       </View>
 
       <View style={styles.buttonsContainer}>
-          <Button style ={[styles.button, styles.buttonText]} title ='login' onPress = {loginPress}/>
-          <Button style ={[styles.button, styles.buttonText]} title='Create a new account' onPress = {registerPress} />
+          <Button style ={[styles.button, styles.buttonText]} title='Register new user' onPress = {handleRegister}/>
       </View>
     </View>
   );
 };
 
-export default Login;
+export default register;
 
 const styles = StyleSheet.create({
 
