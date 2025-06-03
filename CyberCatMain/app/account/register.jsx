@@ -7,7 +7,7 @@ import {
   TextInput
 } from 'react-native';
 import { registerNewUser } from './userInfo'; 
-
+import { useRouter } from 'expo-router'; 
 
 const register = () => {
   const [userName, setUsername] = useState('');
@@ -16,7 +16,7 @@ const register = () => {
 
 
   const handleRegister = () => {
-       registerNewUser(email, password, userName).then(console.log);
+       registerNewUser(email, password, userName).then(console.log).then(() => useRouter().push("/index"));
   };
 
   return (
