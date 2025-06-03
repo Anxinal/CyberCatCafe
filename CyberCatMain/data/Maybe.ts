@@ -16,7 +16,6 @@ export function isNothing<T>(m: Maybe<T>): m is { kind: 'nothing' } {
   return m.kind === 'nothing';
 }
 
-// 4) Functor / Monad operations
 export function mapMaybe<A, B>(m: Maybe<A>, fn: (a: A) => B): Maybe<B> {
   return isJust(m) ? just(fn(m.value)) : nothing();
 }

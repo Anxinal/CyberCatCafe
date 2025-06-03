@@ -6,11 +6,8 @@ import {
   Button,
   TextInput
 } from 'react-native';
-
-import { getFirestore, collection, getDocs, Firestore } from 'firebase/firestore/lite';
-import { app } from '../../firebasecConfig.js'
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-
+import { registerNewUser } from './userInfo';
+import { useRouter } from 'expo-router';
 
 const register = () => {
   const [userName, setUsername] = useState('');
@@ -20,18 +17,7 @@ const register = () => {
 
 
   const handleRegister = () => {
-    console.log('Register query accepted.');
-    const auth = getAuth();
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed up 
-        console.log(userCredential.user.email);
-        // ...
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
-
+    registerNewUser(email, password, userName).then(console.log).then(() => useRouter().push("/index"));
   };
 
   return (

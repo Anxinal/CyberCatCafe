@@ -16,46 +16,33 @@ const navigateToMain = (router) => {router.push('mainPages/userCenter');};
 /* This function takes in an attribute of the user(such as username) and retrieve the data from the database
  It returns nothing and since the process is async, another set function is required for a temporary variable in the 
  app page(with useState) so that the page can be re-rendered after the information is retrieved 
- */
+*/
 export function getUserInfo(attribute, setFunction){
-
-  //Apply memoisation to the userdata obtained from firebase
-  let cachedUserData = null;
-
-  function requireUserdataFromFirebase(attribute, setFunction){
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-     // User is signed in, see docs for a list of available properties
-     // https://firebase.google.com/docs/reference/js/auth.user
-      currentUser = user;
-
-      getDoc(doc(collectionRef, user.uid)).then( (doc) => {
-        if (doc.exists()) {
-          console.log("OK");
-          cachedUserData = doc.data();
-          setFunction(cachedUserData[attribute]);   
-        }else {
-          // doc.data() will be undefined in this case
-          console.log("No such document!");
-        }
-      }).catch((error) => {
+ 
+ onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // User is signed in, see docs for a list of available properties
+    // https://firebase.google.com/docs/reference/js/auth.user
+    
+    getDoc(doc(collectionRef, user.uid)).then( (doc) => {
+      if (doc.exists()) {
+        console.log("OK");
+        currentUser = user.uid;
+        setFunction(doc.data()[attribute]);
+      }else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+      }
+    }).catch((error) => {
         console.log("Error getting document:", error);
         return error;
-    });
+  });
+  
   } else {
     // User is signed out
-    currentUser = null;
-    
+    unsubscribe();
   }
-  });
-  }
-
-  onSnapshot(doc(collectionRef, currentUser.uid), (doc) => {
-    cachedUserData = doc.data();
-  });
-
-  if(allUserdata == null) requireUserdataFromFirebase(attribute, setFunction);
-  setFunction(cachedUserData[attribute]);
+});
   
 }
 
@@ -80,6 +67,7 @@ export function signInUser(email, password, router){
          });
     
 }
+
 /* This function signs out the current user in the device and returns nothing
  */
 export function signOutUser(){
@@ -114,9 +102,16 @@ export function registerNewUser(email, password, username){
 
 }
 
+/*
+This function is used to update the user information in the back end 
+Attribute: name of the attribute that changes (such as "username")
+Value: The new value of the attribute 
+If you want to reload the page remember that you should do it manually in your app page
+*/
 export function updateUserInfo(attribute, value){
-  updateDoc(doc(collectionRef, currentUser.uid), {
+
+  return updateDoc(doc(collectionRef, currentUser), {
     [attribute] : value
-  });
+  }).then(() => attribute).catch(console.log);
 
 }

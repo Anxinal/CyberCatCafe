@@ -1,12 +1,9 @@
 import React, { useState } from "react";
-import {Text, View, Button } from "react-native"
-import { app } from "../../firebasecConfig.js"
-import { getFirestore, doc, getDoc, collection } from "firebase/firestore";
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import { getUserInfo } from "../account/userInfo.js"
+import {Text, View, Button, TouchableOpacity } from "react-native"
+import { getAuth } from "firebase/auth";
+import { getUserInfo, updateUserInfo } from "../account/userInfo.js"
+import { useRouter } from "expo-router";
 export default function userCenter() {
-  const db = getFirestore(app);
-  const collectionRef = collection(db, "users");
   const [userInfo, setuserInfo] = useState("nothing");
 
 const auth = getAuth();
@@ -16,7 +13,9 @@ const auth = getAuth();
   <View>
      <Text style = {{color: 'white', fontSize: 20}}> This is to test the user Id function: {userInfo}</Text>
       
-  <button title = "signout" onClick = {() => {signOut(auth).then(() => {console.log("signed out successfully")})}} />
+  <TouchableOpacity  onPress = {() => {updateUserInfo("username","fnxinal").then(setuserInfo)}}  style = {{height: 50, maxWidth: 200, flex: 1, marginTop: 10, backgroundColor: 'white'}}> 
+    <Text>Update user information</Text>
+  </TouchableOpacity>
   </View>
 
 );
