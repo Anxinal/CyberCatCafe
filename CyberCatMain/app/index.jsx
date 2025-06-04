@@ -4,12 +4,16 @@ import {
   View,
   Text,
   Button,
-  TextInput
+  TextInput,
+  TouchableOpacity
 } from 'react-native';
-
+import { Colors } from '../constants/Colors.ts';
 import { useRouter } from 'expo-router'; // or from 'expo-router' if you’re using Expo Router
 import { getAuth } from "firebase/auth";
 import { signInUser } from './account/userInfo';
+import Toast from 'react-native-toast-message';
+import { LoginButton } from './account/AccountReusableComponents.tsx'
+
 const auth = getAuth();
 
 const Login = () => {
@@ -19,9 +23,8 @@ const Login = () => {
   const router = useRouter();
  
   const loginPress = () => {
-    signInUser(username, password, router).then(console.log);
+    signInUser(username, password, router)
   }
-
   const registerPress = () => {
     router.push('account/register');
   };
@@ -29,7 +32,7 @@ const Login = () => {
   return (
     <View>
       <View style={styles.logoContainer}>
-        <Text style={styles.logoText}>Logo goes here</Text>
+        <Text style={styles.logoText}>Welcome !</Text>
       </View>
 
       <View style={styles.loginInputContainer}>
@@ -57,9 +60,13 @@ const Login = () => {
       </View>
 
       <View style={styles.buttonsContainer}>
-          <Button style ={[styles.button, styles.buttonText]} title ='login' onPress = {loginPress}/>
-          <Button style ={[styles.button, styles.buttonText]} title='Create a new account' onPress = {registerPress} />
+         { /* <TouchableOpacity style ={styles.button}  onPress = {loginPress}>
+            <Text style = {styles.buttonText}> Login </Text>
+          </TouchableOpacity> */}
+          <LoginButton action={loginPress} buttonText='Login'/>
+          <LoginButton action={registerPress} buttonText='Register a new account'/>
       </View>
+      <Toast/>
     </View>
   );
 };
@@ -76,7 +83,7 @@ const styles = StyleSheet.create({
   logoText: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: 'white',
+    color: Colors.light.text,
   },
   loginInputContainer: {
     flex: 3,
@@ -91,7 +98,8 @@ const styles = StyleSheet.create({
     flex: 3,
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333'
+    color: Colors.light.text,
+    marginHorizontal: 'auto'
   },
   inputStyle: {
     flex: 7,
@@ -99,37 +107,18 @@ const styles = StyleSheet.create({
     borderColor: 'grey',
     borderRadius: 4,
     height: 40,
-    color: 'white',
+    color: Colors.light.text,
     fontSize: 20,
     marginBottom: 10,
   },
   buttonsContainer: {
     flex: 2,
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'space-around',
     marginTop: 50,
     marginBottom:10,
     marginHorizontal: 'auto',
-    justifyConten: 'center'
   },
-  buttonText: {
-    color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 4
-  },
-  button: {
-    width: '100%',
-    height: 60,
-    marginHorizontal: 'auto',
-    backgroundColor: 'blue',
-    marginTop: 20,
-    marginBottom: 10,
-    marginleft: 10,
-    marginRight: 20,
-  }
 });
 
 

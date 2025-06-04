@@ -3,12 +3,13 @@ import {
   StyleSheet,
   View,
   Text,
-  Button,
   TextInput
 } from 'react-native';
 import { registerNewUser } from './userInfo'; 
 import { useRouter } from 'expo-router'; 
-
+import Toast from 'react-native-toast-message';
+import { LoginButton } from './AccountReusableComponents';
+import {Colors} from '../../constants/Colors.ts'
 const register = () => {
   const [userName, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -16,13 +17,13 @@ const register = () => {
 
 
   const handleRegister = () => {
-       registerNewUser(email, password, userName).then(console.log).then(() => useRouter().push("/index"));
+       registerNewUser(email, password, userName).then(console.log).then(() => useRouter().push(""));
   };
 
   return (
     <View>
       <View style={styles.logoContainer}>
-        <Text style={styles.logoText}>Logo goes here</Text>
+        <Text style={styles.logoText}>Your meow journey starts soon</Text>
       </View>
 
       <View style={styles.loginInputContainer}>
@@ -63,8 +64,9 @@ const register = () => {
       </View>
 
       <View style={styles.buttonsContainer}>
-          <Button style ={[styles.button, styles.buttonText]} title='Register new user' onPress = {handleRegister}/>
+          <LoginButton action = {handleRegister} buttonText = "Register account" />
       </View>
+      <Toast/>
     </View>
   );
 };
@@ -79,9 +81,9 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   logoText: {
-    fontSize: 32,
+    fontSize: 24,
     fontWeight: 'bold',
-    color: 'white',
+    color: Colors.light.text,
   },
   loginInputContainer: {
     flex: 3,
@@ -104,7 +106,7 @@ const styles = StyleSheet.create({
     borderColor: 'grey',
     borderRadius: 4,
     height: 40,
-    color: 'white',
+    color: Colors.light.text,
     fontSize: 20,
     marginBottom: 10,
   },
@@ -117,24 +119,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 'auto',
     justifyConten: 'center'
   },
-  buttonText: {
-    color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 4
-  },
-  button: {
-    width: '100%',
-    height: 60,
-    marginHorizontal: 'auto',
-    backgroundColor: 'blue',
-    marginTop: 20,
-    marginBottom: 10,
-    marginleft: 10,
-    marginRight: 20,
-  }
+
 });
 
 
