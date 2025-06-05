@@ -2,6 +2,7 @@ import { StyleSheet } from "react-native";
 import { Colors } from "./Colors.ts";
 
 // This file is used to contain all the unified style settings in different pages.
+
 export const Accountstyles = StyleSheet.create({
 
   logoContainer: {
@@ -70,3 +71,4 @@ export const Accountstyles = StyleSheet.create({
   },
   logoImage: { height: 250, width: 250, marginTop: 20, marginBottom: 40},
 });
+

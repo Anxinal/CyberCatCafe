@@ -7,8 +7,9 @@ import {
 import { registerNewUser } from './userInfo'; 
 import { useRouter } from 'expo-router'; 
 import Toast from 'react-native-toast-message';
-import { LoginButton, CatLogoImage } from './AccountReusableComponents';
-import { AccountStyles } from '../constants/ReusableStyles.ts'
+import { LoginButton, CatLogoImage } from './AccountReusableComponents.tsx';
+import { AccountStyles } from '../../constants/ReusableStyles.ts'
+
 const register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
