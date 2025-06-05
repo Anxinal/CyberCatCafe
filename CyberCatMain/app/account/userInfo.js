@@ -4,9 +4,9 @@ import { getAuth, onAuthStateChanged,
          signInWithEmailAndPassword, signOut,
          createUserWithEmailAndPassword } from "firebase/auth";
 
-import Toast from 'react-native-toast-message';
-const db = getFirestore(app);
+import {displayError, displayNull, displayToast} from '../../components/ToastMessage.js'
 
+const db = getFirestore(app);
 const collectionRef = collection(db, "users");
 const auth = getAuth();
 
@@ -17,15 +17,6 @@ let currentUser = "0000";
 const navigateToMain = (router) => {router.push('mainPages/userCenter');};
 const navigateToLogin = () => {useRouter().push("/")};
 
-const displayToast = ( message, type = 'success', subMessage = "") => {
-  Toast.show({
-      type: type,
-      text1: message,
-      text2: subMessage
-  });
-}
-const displayError = (mainErrorMsg) => (err) => displayToast(mainErrorMsg ,"error", err.message);
-const displayNull = (msg) => displayToast("Meow?", "error", "Empty Field unfilled"); 
 
 /* This function takes in an attribute of the user(such as username) and retrieve the data from the database
  It returns nothing and since the process is async, another set function is required for a temporary variable in the 

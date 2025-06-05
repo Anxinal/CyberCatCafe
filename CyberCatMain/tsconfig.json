@@ -13,5 +13,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-, "assets/InfoInput.jsx", "app/mainPages/Timer/TimeView.tsx"  ]
+, "assets/InfoInput.jsx", "app/mainPages/Timer/TimeView.tsx", "components/ToastMessage.js"  ]
 }
