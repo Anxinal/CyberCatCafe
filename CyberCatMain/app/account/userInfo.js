@@ -3,6 +3,7 @@ import { getFirestore, doc, getDoc, collection,setDoc, updateDoc } from "firebas
 import { getAuth, onAuthStateChanged, 
          signInWithEmailAndPassword, signOut,
          createUserWithEmailAndPassword } from "firebase/auth";
+
 import Toast from 'react-native-toast-message';
 const db = getFirestore(app);
 
@@ -14,6 +15,7 @@ let currentUser = "0000";
 
 
 const navigateToMain = (router) => {router.push('mainPages/userCenter');};
+const navigateToLogin = () => {useRouter().push("/")};
 
 const displayToast = ( message, type = 'success', subMessage = "") => {
   Toast.show({
@@ -22,8 +24,8 @@ const displayToast = ( message, type = 'success', subMessage = "") => {
       text2: subMessage
   });
 }
-
 const displayError = (mainErrorMsg) => (err) => displayToast(mainErrorMsg ,"error", err.message);
+const displayNull = (msg) => displayToast("Meow?", "error", "Empty Field unfilled"); 
 
 /* This function takes in an attribute of the user(such as username) and retrieve the data from the database
  It returns nothing and since the process is async, another set function is required for a temporary variable in the 
@@ -65,13 +67,13 @@ It returns the promise chain to update login status itself which returns a strin
 use then() if the error message needs to be used.
  */
 export function signInUser(email, password, router){
-
+   if(email == "" || password == "")  return displayNull(); 
   return signInWithEmailAndPassword(auth, email, password)
          .then((userCredential) => {
             // Signed in 
             displayToast("Login Success");
             navigateToMain(router);
-         }).catch(displayError("Login Authentication failed"));
+         }).catch(displayError("Meow? Wrong password?"));
     
 }
 
@@ -85,13 +87,14 @@ export function signOutUser(){
 /* This function takes in the user information in the register page and update the 
 does not update the login status 
 
-(TODO: Update the login page after registration)
+(TODO: Update the login page after registration) Done !
 
 It returns the promise chain to update login status itself which returns a string that represents the login status
 use then() if the error message needs to be used.
  */
 export function registerNewUser(email, password, username){  
       console.log('Register query accepted.');
+      if(email == "" || password == "" || username == "")  return displayNull(); 
       return createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
         // add some initial information to the user account
@@ -100,7 +103,7 @@ export function registerNewUser(email, password, username){
             totalFocus: 0,
             username: username,
           });
-        }).catch(displayError("Register failed")); 
+        }).then(navigateToLogin).catch(displayError("Register failed")); 
 
 }
 
