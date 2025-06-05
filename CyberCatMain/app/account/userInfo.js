@@ -3,6 +3,9 @@ import { getFirestore, doc, getDoc, collection,setDoc, updateDoc } from "firebas
 import { getAuth, onAuthStateChanged, 
          signInWithEmailAndPassword, signOut,
          createUserWithEmailAndPassword } from "firebase/auth";
+
+import {displayError, displayNull, displayToast} from '../../components/ToastMessage.js'
+
 const db = getFirestore(app);
 const collectionRef = collection(db, "users");
 const auth = getAuth();
@@ -12,6 +15,8 @@ let currentUser = "0000";
 
 
 const navigateToMain = (router) => {router.push('mainPages/userCenter');};
+const navigateToLogin = () => {useRouter().push("/")};
+
 
 /* This function takes in an attribute of the user(such as username) and retrieve the data from the database
  It returns nothing and since the process is async, another set function is required for a temporary variable in the 
@@ -53,17 +58,13 @@ It returns the promise chain to update login status itself which returns a strin
 use then() if the error message needs to be used.
  */
 export function signInUser(email, password, router){
-
+   if(email == "" || password == "")  return displayNull(); 
   return signInWithEmailAndPassword(auth, email, password)
          .then((userCredential) => {
             // Signed in 
-            alert("login success" + userCredential.user.email);
+            displayToast("Login Success");
             navigateToMain(router);
-            return "";
-         })
-         .catch((error) => {
-            return error.message;
-         });
+         }).catch(displayError("Meow? Wrong password?"));
     
 }
 
@@ -77,13 +78,14 @@ export function signOutUser(){
 /* This function takes in the user information in the register page and update the 
 does not update the login status 
 
-(TODO: Update the login page after registration)
+(TODO: Update the login page after registration) Done !
 
 It returns the promise chain to update login status itself which returns a string that represents the login status
 use then() if the error message needs to be used.
  */
 export function registerNewUser(email, password, username){  
       console.log('Register query accepted.');
+      if(email == "" || password == "" || username == "")  return displayNull(); 
       return createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
         // add some initial information to the user account
@@ -92,10 +94,7 @@ export function registerNewUser(email, password, username){
             totalFocus: 0,
             username: username,
           });
-        return "register success";
-        }).catch((error) => {
-          return error.message;
-    }); 
+        }).then(navigateToLogin).catch(displayError("Register failed")); 
 
 }
 
