@@ -5,18 +5,18 @@ import achievementList from './achievementList'
 const screenWidth = Dimensions.get('window').width
 
 export function updateAchievementStatus() {
-    const updatedList = [];
-
-    achievementList.forEach(a => maybe(a.hidden)
-        .forEach(() => { if (a.completed) { updatedList.push(a); } })
-        .orElse(() => updatedList.push(a)));
-    return updatedList;
+    return achievementList.map(achievement => ({
+        ...achievement,
+        complete: achievement.criteria
+    }))
 }
 
 export default function Achievement() {
-    const completedAch = updatedList.filter(item => item.completed);
-    const incompleteAch = updatedList.filter(item => !item.completed);
-    const orderedAch = [...completedAch, ...incompleteAch];
+    const updatedList = updateAchievementStatus();
+    const visibleList = updatedList.filter(item => !(item.hidden & !item.complete))
+    const completeAch = visibleList.filter(item => item.complete);
+    const incompleteAch = visibleList.filter(item => !item.complete);
+    const orderedAch = [...completeAch, ...incompleteAch];
 
     return (
         <View style={styles.container}>
@@ -25,8 +25,8 @@ export default function Achievement() {
                 data={orderedAch}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
-                    <View style={[styles.card, item.completed ? styles.cardCompleted : styles.cardIncomplete]}>
-                        {item.completed ?
+                    <View style={[styles.card, item.complete ? styles.cardComplete : styles.cardIncomplete]}>
+                        {item.complete ?
                             (<Text>icon</Text>) : (<Text>question</Text>)
                         }
                         <View style={styles.box}>
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         borderRadius: 10,
     },
-    cardCompleted: {
+    cardComplete: {
         backgroundColor: 'pink',
     },
     cardIncomplete: {
