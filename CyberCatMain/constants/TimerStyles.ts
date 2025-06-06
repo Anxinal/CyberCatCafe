@@ -1,30 +1,29 @@
 import { StyleSheet } from "react-native";
-import { Colors } from "./Colors.ts";
-
+import { textFont, textColor, componentColor} from "./ReusableStyles.ts"
 
 export const timerStyles = StyleSheet.create({
 
    TimeSet: {
-    color: Colors.light.text,
+    color: textColor.normal,
     marginTop: 20,
     marginBottom: 20,
     marginRight: 20,
     marginHorizontal:'auto',
     width:"100%",
     height: 40,
-    borderColor: Colors.light.text,
+    borderColor: textColor.normal,
     borderWidth: 1,
-    fontSize: 20,
+    fontSize: textFont.medium,
   },
 
   Buttons: {
     width: 90,
     height: 60, 
     marginLeft: 0,
-    backgroundColor: 'brown',
+    backgroundColor: componentColor.button,
     justifyContent: 'center',
     borderRadius: 10,
-    borderColor: 'grey',
+    borderColor: componentColor.shade,
     borderWidth: 1,
     padding: 4,
 
@@ -37,7 +36,7 @@ export const timerStyles = StyleSheet.create({
     maxHeight: 500,
     flexDirection: 'row',
     justifyContent:'space-between',
-    borderColor: 'gray',
+    borderColor: componentColor.border,
     borderRadius: 10,
     borderWidth: 2,
     marginTop: 40,
@@ -45,18 +44,18 @@ export const timerStyles = StyleSheet.create({
   },
 
   TimeButtonText: {
-    fontSize: 25, 
+    fontSize: textFont.medium, 
     fontWeight: 'bold', 
-    color: 'white',
+    color: textColor.contrast,
   },
 
   TimerTitleText: {
-    fontSize: 20,
-    color: Colors.light.text,
+    fontSize: textFont.small,
+    color: textColor.normal,
   },
   TimerTitleView: {
     marginBottom: 30,
-    borderColor: 'orange',
+    borderColor: componentColor.border,
     borderWidth: 1,
     borderRadius: 5,
   },
@@ -64,6 +63,18 @@ export const timerStyles = StyleSheet.create({
     flexDirection:'column', 
     justifyContent: 'space-between',
     padding: 4,
+  },
+  countdownText: {
+    fontSize: textFont.extraLarge,
+    fontWeight: 'bold',
+    paddingLeft: '25%',
+    paddingTop: '25%',                         
+  },
+  countdownView: {
+    justifyContent: 'center', 
+    width: '100%', 
+    marginHorizontal:'auto',
+    marginBottom: 20,
   }
- 
+
 });

@@ -9,7 +9,7 @@ import { useRouter } from 'expo-router'; // or from 'expo-router' if you’re us
 import { signInUser } from './account/userInfo';
 import Toast from 'react-native-toast-message';
 import { LoginButton, CatLogoImage } from './account/AccountReusableComponents.tsx'
-import { Accountstyles } from '../constants/ReusableStyles.ts'
+import { Accountstyles } from '../constants/AccountStyles.ts'
 
 
 const Login = () => {

@@ -57,10 +57,9 @@ export default function Timer() {
 
   return (
     <View style = {timerStyles.TimerContainer}>
-       <TimerTitle paused = {paused.current}/>
-       <View><TimeView min = {currentTime > 0 ? Math.floor(currentTime / 60) : 0} 
-                       sec = {currentTime > 0 ? Math.floor(currentTime % 60) : 0} 
-                       stopped = {paused.current}/></View>
+      <TimerTitle paused = {paused.current}/>
+      <TimeView currentTime= {currentTime}
+                 stopped = {paused.current}/>
     <View style ={timerStyles.ButtonView}>    
       <TimerButton onPress={handleStart} label = "start" />
       <TimerButton onPress={handleStop} label = "stop" />
@@ -72,5 +71,6 @@ export default function Timer() {
                   />
     </View>  
 );
+
   }
 
