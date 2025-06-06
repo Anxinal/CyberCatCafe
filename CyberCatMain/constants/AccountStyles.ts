@@ -54,14 +54,14 @@ export const Accountstyles = StyleSheet.create({
 
   loginButtonText: {
     color: textColor.contrast,
-    fontSize: textFont.medium,
+    fontSize: textFont.small + 3,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 4
   },
   loginButton: {
-    width: 250,
-    height: 30,
+    width: 300,
+    height: 40,
     marginHorizontal: 'auto',
     backgroundColor: componentColor.button,
     marginTop: 10,
@@ -71,6 +71,10 @@ export const Accountstyles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
   },
-  logoImage: { height: 250, width: 250, marginTop: 20, marginBottom: 40},
+  logoImage: { 
+    height: 250, 
+    width: 250,
+    marginTop: 20, 
+    marginBottom: 40},
 });
 

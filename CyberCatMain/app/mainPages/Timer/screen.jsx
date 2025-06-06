@@ -1,12 +1,18 @@
 import { useState, useRef} from 'react';
 import { Text, View, TextInput, TouchableOpacity} from 'react-native'
 import { TimeView } from "./TimeView.tsx"
-import { timerStyles } from "../../../constants/TimerStyles.js"
+import { timerStyles } from "../../../constants/TimerStyles.ts"
 import {TimerTitle} from "./TimerTitle.jsx"
+import {useAudioPlayer} from "expo-audio"
+import Toast from 'react-native-toast-message';
+import { displayToast } from '@/components/ToastMessage.js';
+
 const TimerButton = ({label, onPress}) => ( 
       <TouchableOpacity onPress={onPress} style = {timerStyles.Buttons}>
         <Text style ={timerStyles.TimeButtonText}>{label}</Text>
       </TouchableOpacity>);
+
+const notificationSore = require('@/assets/audio/cat-ring01.mp3');
 
 export default function Timer() {
   const [startTime, setStartTime] = useState(null);
@@ -16,7 +22,7 @@ export default function Timer() {
   const intervalRef = useRef(null);
   let currentTime = remained;
   let paused = useRef(true);
-  
+  const notifier = useAudioPlayer(notificationSore);
   function handleStart() {
     // Start counting.
     paused.current = false;
@@ -44,14 +50,21 @@ export default function Timer() {
     setRemained(totalTime);
   }
 
+  function notifyUser(){
+    displayToast("Meow! Time for a break");
+    notifier.seekTo(0);
+    notifier.play();
+  }
+
   if (startTime != null && now != null) {
 
     if(remained >= 0 && !paused.current){
       currentTime = remained - ((now - startTime) / 1000);
       console.log(paused.current)
     }
-    if(!paused.current && remained < 0){
-        handleStop();
+    if(!paused.current && currentTime < 0){
+        notifyUser();
+        handleStop();   
     }
   }
 
@@ -69,6 +82,7 @@ export default function Timer() {
                  onChangeText={x => setTotalTime(parseInt(x))}
                  editable = {paused.current}
                   />
+      <Toast/>
     </View>  
 );
 

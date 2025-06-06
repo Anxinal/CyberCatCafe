@@ -65,13 +65,13 @@ export const timerStyles = StyleSheet.create({
     padding: 4,
   },
   countdownText: {
-    fontSize: textFont.extraLarge,
+    fontSize: textFont.XXL,
     fontWeight: 'bold',
-    paddingLeft: '25%',
-    paddingTop: '25%',                         
+    paddingLeft: '18%',
+    paddingTop: '35%',                         
   },
   countdownView: {
-    justifyContent: 'center', 
+    justifyContent: 'space-between', 
     width: '100%', 
     marginHorizontal:'auto',
     marginBottom: 20,

@@ -5,7 +5,8 @@ import { Colors } from "./Colors.ts";
 const currentTheme = Colors.light;
 
 export const textFont = {
-  extraLarge: 50,
+  XXL: 80,
+  extraLarge: 60,
   large : 40,
   medium: 25,
   small: 15,

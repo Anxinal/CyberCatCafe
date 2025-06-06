@@ -1,7 +1,7 @@
 import { Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import React from 'react';
 import catLogo from '../../assets/images/cat-logo.png';
-import { Accountstyles } from '@/constants/ReusableStyles.js';
+import { Accountstyles } from '@/constants/AccountStyles';
 
 export const LoginButton = ({buttonText, action}: {buttonText:string, action: () => any}) => {
   

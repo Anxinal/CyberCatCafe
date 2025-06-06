@@ -2,7 +2,7 @@ import { ImageBackground } from 'expo-image';
 import {Text, View} from 'react-native';
 import React from 'react';
 import { timerStyles } from '@/constants/TimerStyles';
-import catImage from '../../../assets/images/cat-on-circle-temp.png'
+import catImage from '../../../assets/images/timer-frame.png'
 
 
 const timeColor = ({stopped}:{stopped: boolean;}) => (stopped ? 'red' : 'green');
@@ -16,7 +16,7 @@ export const TimeView = ({currentTime, stopped}:
     currentTime: number
     stopped: boolean;}) =>
      (<View style = {timerStyles.countdownView}>
-        <ImageBackground source={catImage} contentFit = "contain" style = {{width: '120%', height:'120%'}}>
+        <ImageBackground source={catImage} contentFit = "contain" style = {{width: 400, height: 350}}>
             <Text style = {[timerStyles.countdownText, {color: timeColor({stopped})}]}>
                 {adjustTimeView({n :getmin(currentTime)})} : {adjustTimeView({n: getsec(currentTime)})}
             </Text> 
