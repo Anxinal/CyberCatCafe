@@ -6,7 +6,7 @@ import {TimerTitle} from "./TimerTitle.jsx"
 import {useAudioPlayer} from "expo-audio"
 import Toast from 'react-native-toast-message';
 import { displayToast } from '@/components/ToastMessage.js';
-
+import { scheduleTimerNotification, cancelTimerNotification } from './TimerNotification.js';
 const TimerButton = ({label, onPress}) => ( 
       <TouchableOpacity onPress={onPress} style = {timerStyles.Buttons}>
         <Text style ={timerStyles.TimeButtonText}>{label}</Text>
@@ -20,16 +20,19 @@ export default function Timer() {
   const [totalTime, setTotalTime] = useState(100);
   const [remained, setRemained] = useState(totalTime);
   const intervalRef = useRef(null);
+  const NOTIFID = 110014;
+
   let currentTime = remained;
   let paused = useRef(true);
   const notifier = useAudioPlayer(notificationSore);
   function handleStart() {
     // Start counting.
     paused.current = false;
-    console.log(totalTime)
+    console.log(totalTime);
     if(remained <= 0){
       setRemained(totalTime);
     }
+    scheduleTimerNotification(NOTIFID, "Times Up!", remained);
     setStartTime(Date.now());
     setNow(Date.now());
     clearInterval(intervalRef.current);
@@ -41,6 +44,7 @@ export default function Timer() {
   
   function handleStop(){
     paused.current = true;
+    cancelTimerNotification(NOTIFID);
     clearInterval(intervalRef.current);
     setRemained(currentTime);
   }

@@ -59,6 +59,7 @@ const Login = () => {
       <View style={Accountstyles.buttonsContainer}>
           <LoginButton action={loginPress} buttonText='Login'/>
           <LoginButton action={registerPress} buttonText='Register a new account'/>
+          <LoginButton action={() => useRouter().push("/mainPages/Timer/screen")} buttonText = 'GT timer'/>
       </View>
       <Toast/>
     </View>
