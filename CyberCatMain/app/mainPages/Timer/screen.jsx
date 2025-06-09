@@ -6,7 +6,7 @@ import {TimerTitle} from "./TimerTitle.jsx"
 import {useAudioPlayer} from "expo-audio"
 import Toast from 'react-native-toast-message';
 import { displayToast } from '@/components/ToastMessage.js';
-import { scheduleTimerNotification, cancelTimerNotification } from './TimerNotification.js';
+import BackgroundTimer from 'react-native-background-timer';
 import { RestTotalTimeComp } from './ResetTotalTimeComp.tsx';
 
 const TimerButton = ({label, onPress}) => ( 
@@ -37,8 +37,8 @@ export default function Timer() {
     //scheduleTimerNotification(NOTIFID, "Times Up!", remained);
     setStartTime(Date.now());
     setNow(Date.now());
-    clearInterval(intervalRef.current);
-    intervalRef.current = setInterval(() => {
+    BackgroundTimer.stopBackgroundTimer();
+    BackgroundTimer.runBackgroundTimer(() => {
       // Update the current time every 500ms.
       setNow(Date.now());
     }, 500);
@@ -47,7 +47,7 @@ export default function Timer() {
   function handleStop(){
     paused.current = true;
    // cancelTimerNotification(NOTIFID);
-    clearInterval(intervalRef.current);
+    BackgroundTimer.stopBackgroundTimer();
     setRemained(currentTime);
   }
 
