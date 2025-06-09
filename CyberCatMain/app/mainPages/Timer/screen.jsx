@@ -1,4 +1,4 @@
-import { useState, useRef} from 'react';
+import { useState, useRef, useEffect} from 'react';
 import { Text, View, TextInput, TouchableOpacity} from 'react-native'
 import { TimeView } from "./TimeView.tsx"
 import { timerStyles } from "../../../constants/TimerStyles.ts"
@@ -7,6 +7,8 @@ import {useAudioPlayer} from "expo-audio"
 import Toast from 'react-native-toast-message';
 import { displayToast } from '@/components/ToastMessage.js';
 import { scheduleTimerNotification, cancelTimerNotification } from './TimerNotification.js';
+import { RestTotalTimeComp } from './ResetTotalTimeComp.tsx';
+
 const TimerButton = ({label, onPress}) => ( 
       <TouchableOpacity onPress={onPress} style = {timerStyles.Buttons}>
         <Text style ={timerStyles.TimeButtonText}>{label}</Text>
@@ -17,7 +19,7 @@ const notificationSore = require('@/assets/audio/cat-ring01.mp3');
 export default function Timer() {
   const [startTime, setStartTime] = useState(null);
   const [now, setNow] = useState(null);
-  const [totalTime, setTotalTime] = useState(100);
+  const [totalTime, setTotalTime] = useState(45*60);
   const [remained, setRemained] = useState(totalTime);
   const intervalRef = useRef(null);
   const NOTIFID = 110014;
@@ -32,7 +34,7 @@ export default function Timer() {
     if(remained <= 0){
       setRemained(totalTime);
     }
-    scheduleTimerNotification(NOTIFID, "Times Up!", remained);
+    //scheduleTimerNotification(NOTIFID, "Times Up!", remained);
     setStartTime(Date.now());
     setNow(Date.now());
     clearInterval(intervalRef.current);
@@ -44,7 +46,7 @@ export default function Timer() {
   
   function handleStop(){
     paused.current = true;
-    cancelTimerNotification(NOTIFID);
+   // cancelTimerNotification(NOTIFID);
     clearInterval(intervalRef.current);
     setRemained(currentTime);
   }
@@ -71,6 +73,7 @@ export default function Timer() {
         handleStop();   
     }
   }
+  useEffect(() => {setRemained(totalTime)} ,[totalTime]);
 
   return (
     <View style = {timerStyles.TimerContainer}>
@@ -86,6 +89,7 @@ export default function Timer() {
                  onChangeText={x => setTotalTime(parseInt(x))}
                  editable = {paused.current}
                   />
+      <RestTotalTimeComp setTotalTime={setTotalTime}  currentTotal={totalTime}/>
       <Toast/>
     </View>  
 );
