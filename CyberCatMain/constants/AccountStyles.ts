@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 import { textFont, textColor, componentColor } from "./ReusableStyles.ts"
 // This file is used to contain all the unified style settings in different pages.
 
-export const Accountstyles = StyleSheet.create({
+export const accountStyles = StyleSheet.create({
 
   logoContainer: {
     flex: 8,

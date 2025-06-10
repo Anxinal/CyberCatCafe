@@ -8,6 +8,7 @@ import Toast from 'react-native-toast-message';
 import { displayToast } from '@/components/ToastMessage.js';
 import BackgroundTimer from 'react-native-background-timer';
 import { RestTotalTimeComp } from './ResetTotalTimeComp.tsx';
+import { mapUserInfo } from '@/app/account/userInfo.js';
 
 const TimerButton = ({label, onPress}) => ( 
       <TouchableOpacity onPress={onPress} style = {timerStyles.Buttons}>
@@ -22,23 +23,34 @@ export default function Timer() {
   const [totalTime, setTotalTime] = useState(45*60);
   const [remained, setRemained] = useState(totalTime);
   const intervalRef = useRef(null);
-  const NOTIFID = 110014;
+
+  const countSession = () => {
+      mapUserInfo("totalFocus", x => x + totalTime);
+      mapUserInfo("focusSessionCount", x => x + 1);
+  }
 
   let currentTime = remained;
   let paused = useRef(true);
   const notifier = useAudioPlayer(notificationSore);
+
   function handleStart() {
-    // Start counting.
+    // Start counting. The commented part is native code that only works after prebuild
     paused.current = false;
     console.log(totalTime);
     if(remained <= 0){
       setRemained(totalTime);
+      countSession();
     }
+
     //scheduleTimerNotification(NOTIFID, "Times Up!", remained);
+
     setStartTime(Date.now());
     setNow(Date.now());
-    BackgroundTimer.stopBackgroundTimer();
-    BackgroundTimer.runBackgroundTimer(() => {
+
+    //if(BackgroundTimer) BackgroundTimer.stopBackgroundTimer();
+
+    if(intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(() => {
       // Update the current time every 500ms.
       setNow(Date.now());
     }, 500);
@@ -46,8 +58,10 @@ export default function Timer() {
   
   function handleStop(){
     paused.current = true;
+
    // cancelTimerNotification(NOTIFID);
-    BackgroundTimer.stopBackgroundTimer();
+
+    clearInterval(intervalRef.current);
     setRemained(currentTime);
   }
 
@@ -70,6 +84,7 @@ export default function Timer() {
     }
     if(!paused.current && currentTime < 0){
         notifyUser();
+        countSession();
         handleStop();   
     }
   }

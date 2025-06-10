@@ -11,6 +11,7 @@ const adjustTimeView = ({n}:{n: number;}) : string => (n < 10 ? "0" + n : n + ""
 const getmin = (currentTime: number) => (currentTime > 0 ? Math.floor(currentTime / 60) : 0);
 const getsec = (currentTime: number) => (currentTime > 0 ? Math.floor(currentTime % 60) : 0);
 
+//TODO: Update the timer cat animation later
 export const TimeView = ({currentTime, stopped}: 
     {
     currentTime: number

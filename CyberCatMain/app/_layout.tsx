@@ -3,7 +3,7 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
-
+import {app} from '../firebaseConfig'
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { HeaderTitle } from '@react-navigation/elements';
 

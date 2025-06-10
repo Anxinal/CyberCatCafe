@@ -1,9 +1,10 @@
-import { app } from "../../firebasecConfig.js"
+import { app } from "../../firebaseConfig.js"
 import { getFirestore, doc, getDoc, collection,setDoc, updateDoc } from "firebase/firestore";
 import { getAuth, onAuthStateChanged, 
          signInWithEmailAndPassword, signOut,
          createUserWithEmailAndPassword } from "firebase/auth";
-
+import { UserInitInfo } from '../../constants/UserInitialInfo.js'
+import { useRouter } from "expo-router";
 import {displayError, displayNull, displayToast} from '../../components/ToastMessage.js'
 
 const db = getFirestore(app);
@@ -90,12 +91,8 @@ export function registerNewUser(email, password, username){
       .then(async (userCredential) => {
         // add some initial information to the user account
         await setDoc(doc(db, "users", userCredential.user.uid),
-          {
-            totalFocus: 0,
-            username: username,
-          });
+        UserInitInfo(username));
         }).then(navigateToLogin).catch(displayError("Register failed")); 
-
 }
 
 /*
@@ -110,5 +107,20 @@ export function updateUserInfo(attribute, value){
   return updateDoc(doc(collectionRef, currentUser), {
     [attribute] : value
   }).then(() => attribute).catch(console.log);
+
+}
+
+export function mapUserInfo(attribute, mapFunction){
+  
+  return getDoc(doc(collectionRef, currentUser))
+    .then(
+    (doc) => doc.data()[attribute]).then((original) => 
+      {
+        updateDoc(doc(collectionRef, currentUser),
+        {
+           [attribute] : mapFunction(original)
+        })
+        .then(() => "Information Update Successful").catch(err => "Updated Failed because (of)" + err.message);
+      });
 
 }
