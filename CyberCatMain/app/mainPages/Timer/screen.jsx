@@ -97,14 +97,14 @@ export default function Timer() {
                  stopped = {paused.current}/>
     <View style ={timerStyles.ButtonView}>    
       <TimerButton onPress={handleStart} label = "start" />
+      {paused.current && <RestTotalTimeComp setTotalTime={setTotalTime}  currentTotal={totalTime}/>}
       <TimerButton onPress={handleStop} label = "stop" />
-      <TimerButton onPress={handleReset} label = "reset" />
       </View> 
       <TextInput style = {timerStyles.TimeSet}
                  onChangeText={x => setTotalTime(parseInt(x))}
                  editable = {paused.current}
                   />
-      <RestTotalTimeComp setTotalTime={setTotalTime}  currentTotal={totalTime}/>
+     
       <Toast/>
     </View>  
 );
