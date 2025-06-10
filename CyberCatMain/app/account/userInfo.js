@@ -15,7 +15,7 @@ const auth = getAuth();
 let currentUser = "0000";
 
 
-const navigateToMain = (router) => {router.push('mainPages/userCenter');};
+const navigateToMain = (router) => {router.push('mainPages/UserCenter/screen');};
 const navigateToLogin = () => {useRouter().push("/")};
 
 

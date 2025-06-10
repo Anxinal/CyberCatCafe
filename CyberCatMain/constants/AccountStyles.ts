@@ -76,5 +76,18 @@ export const accountStyles = StyleSheet.create({
     width: 250,
     marginTop: 20, 
     marginBottom: 40},
+  listSeperator: {
+    marginTop: 10,
+    backgroundColor: 'grey', 
+    height: 1, 
+    width: '70%', 
+    justifyContent: 'center', 
+    marginHorizontal:'auto'},
+  optionText: {
+    flex: 3,
+    fontSize: textFont.medium,
+    color: textColor.normal,
+    marginHorizontal: 'auto'
+  }
 });
 
