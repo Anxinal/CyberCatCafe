@@ -16,6 +16,7 @@ export const textFont = {
 export const textColor = {
   normal: currentTheme.text,
   contrast: currentTheme.background,
+  link: 'blue',
 }
 
 export const componentColor = {
