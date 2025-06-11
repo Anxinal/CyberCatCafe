@@ -24,9 +24,9 @@ export const UserPanel = () =>{
                     marginTop: 10, marginBottom: 10, marginLeft: 20, marginRight: 20, marginHorizontal: 'auto',
                     flexDirection:"column"
     }}> 
-        <Text style = {accountStyles.infoText}> UserCenter </Text>
-        <Text style = {accountStyles.infoText}> Hi, {username}, want to start a new focus session ?</Text>
-        <Text style = {accountStyles.infoText}> You have focused for {getApporximateView(focusHour)} seconds</Text>
+        <Text style = {accountStyles.infoTitle}> UserCenter </Text>
+        <Text style = {accountStyles.infoText}> Hi, {username}</Text>
+        <Text style = {accountStyles.infoText}> You have focused for {getApporximateView(focusHour)} in total</Text>
     </View>
   );
 } 

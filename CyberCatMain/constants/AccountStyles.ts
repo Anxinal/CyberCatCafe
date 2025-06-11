@@ -26,13 +26,22 @@ export const accountStyles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 8,
   },
+
   infoText: {
     flex: 3,
     fontSize: 18,
-    fontWeight: 'bold',
+    
     color: textColor.normal,
     marginHorizontal: 'auto'
   },
+
+  infoTitle: {
+    fontWeight: 'bold',
+    fontSize: textFont.large,
+    color: textColor.normal,
+    marginHorizontal: 'auto',
+  },
+
   inputStyle: {
     flex: 7,
     borderWidth: 1,
@@ -76,6 +85,7 @@ export const accountStyles = StyleSheet.create({
     width: 250,
     marginTop: 20, 
     marginBottom: 40},
+
   listSeperator: {
     marginTop: 10,
     backgroundColor: 'grey', 
@@ -83,11 +93,17 @@ export const accountStyles = StyleSheet.create({
     width: '70%', 
     justifyContent: 'center', 
     marginHorizontal:'auto'},
+
   optionText: {
     flex: 3,
     fontSize: textFont.medium,
     color: textColor.normal,
-    marginHorizontal: 'auto'
+    marginLeft: 30,
+  },
+  optionView: {
+    marginTop: 10,
+    marginBottom: 10,
+
   }
 });
 
