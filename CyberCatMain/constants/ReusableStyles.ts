@@ -9,7 +9,7 @@ export const textFont = {
   extraLarge: 60,
   large : 40,
   medium: 25,
-  small: 15,
+  small: 20,
   extrasmall: 10,
 } 
 

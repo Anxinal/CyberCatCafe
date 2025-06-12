@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { textFont, textColor, componentColor } from "./ReusableStyles.ts"
+import { StatusBar } from "expo-status-bar";
 // This file is used to contain all the unified style settings in different pages.
 
 export const accountStyles = StyleSheet.create({
@@ -29,10 +30,10 @@ export const accountStyles = StyleSheet.create({
 
   infoText: {
     flex: 3,
-    fontSize: 18,
-    
+    fontSize: textFont.small,
     color: textColor.normal,
-    marginHorizontal: 'auto'
+    marginHorizontal: 'auto',
+
   },
 
   infoTitle: {
@@ -104,6 +105,16 @@ export const accountStyles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
 
+  },
+  StatusView: {
+    borderColor: 'grey',
+    borderWidth: 1,
+    borderRadius: 10,
+    flexDirection: 'row',
+    width: 180,
+    shadowColor: componentColor.shade,
+    shadowOffset: {height: 2, width: 2},
+    padding: 4,
   }
 });
 

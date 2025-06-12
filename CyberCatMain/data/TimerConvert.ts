@@ -14,7 +14,7 @@ export const getSecView = getTimeView(getsec);
 export const getHourView = getTimeView(gethour);
 
 export const getApporximateView = (currentTime: number) => {
-    if(currentTime > 3600) return getHourView(currentTime) + "hr " + getMinView(currentTime) + "min ";
-    if(currentTime > 60) return getMinView(currentTime) + "min " + getSecView(currentTime) + "sec" 
-    return getSecView(currentTime) + "sec" 
+    if(currentTime > 3600) return getHourView(currentTime) + "hr";
+    if(currentTime > 60) return getMinView(currentTime) + "min"; 
+    return getSecView(currentTime) + "sec";
 }
