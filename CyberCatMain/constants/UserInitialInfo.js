@@ -20,3 +20,4 @@ export const UserInitInfo = (username) => ( {
   TotalLoginDays: 0,
   
 });
+// For totalFocus, it refers to total focus time which is recorded in seconds.
