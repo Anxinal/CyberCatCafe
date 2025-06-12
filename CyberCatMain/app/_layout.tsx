@@ -18,7 +18,7 @@ export default function RootLayout() {
     return null;
   }
 
-  return (
+   return (
     // colorScheme === 'dark' ? DarkTheme : DefaultTheme
     <ThemeProvider value={DefaultTheme}>
          <Stack>

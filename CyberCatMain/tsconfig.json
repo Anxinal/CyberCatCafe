@@ -15,3 +15,4 @@
     "expo-env.d.ts"
 , "assets/InfoInput.jsx", "app/mainPages/Timer/TimeView.tsx", "components/ToastMessage.js", "app/mainPages/Timer/screen.jsx", "constants/Colors.ts", "constants/ReusableStyles.ts", "app/mainPages/Timer/TimerNotification.js"  ]
 }
+
