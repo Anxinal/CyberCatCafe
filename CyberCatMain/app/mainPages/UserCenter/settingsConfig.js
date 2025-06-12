@@ -7,14 +7,14 @@ const signOut = () => {
      useRouter().push("/");
 }
 
-const toAbout = () => {useRouter().push("/mainPages/UserCenter/Settings/About")}
+const toPage = (pageName) => () => {useRouter().push("/mainPages/UserCenter/Settings/" + pageName)}
 
 
 export const  settings = [ 
-                   ["Display settings", () => {}, "laptop"],
-                   ["Update Profiles", () => {}, "user"],
+                   ["Display settings", toPage("DisplaySettings"), "laptop"],
+                   ["Update Profiles", toPage("UpdateProfile"), "user"],
                    ["Cat Shops", () => {}, "shoppingcart"],
-                   ["About", toAbout, "hearto"], 
+                   ["About", toPage("About"), "hearto"], 
                    ["Sign out", signOut, "home"],
                    ];
 
