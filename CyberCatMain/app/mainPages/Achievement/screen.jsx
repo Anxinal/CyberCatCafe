@@ -1,6 +1,6 @@
 import { View, Text, Button, StyleSheet, FlatList, Dimensions } from 'react-native'
 import React, { useRef } from 'react'
-import achievementList from './achievementList'
+import {achievementList} from '@/constants/achievementList.js'
 
 const screenWidth = Dimensions.get('window').width
 

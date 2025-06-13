@@ -27,24 +27,42 @@ export default function TabLayout() {
         }),
       }}>
       <Tabs.Screen
-        name="userCenter/screen"
-        options={{
-          title: 'profile',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
         name="Timer/screen"
         options={{
           title: 'timer',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="Achievement/screen"
+        options={{
+          title: 'Achievement',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="UserCenter/screen"
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+        }}
+      /> 
+       <Tabs.Screen
+        name="UserCenter/Settings/About"
+        options={{
+          href: null
+        }}
+      />
+      <Tabs.Screen
+        name="UserCenter/Settings/DisplaySettings"
+        options={{
+          href: null
+        }}
+      />
+      <Tabs.Screen
+        name="UserCenter/Settings/UpdateProfile"
+        options={{
+          href: null
         }}
       />
     </Tabs>
