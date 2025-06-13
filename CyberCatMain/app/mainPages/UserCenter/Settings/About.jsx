@@ -1,33 +1,31 @@
 import React from 'react'
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
-import { useRouter } from "expo-router";
-import {textFont, textColor, componentColor} from '@/constants/ReusableStyles.ts'
+import { View, Text, StyleSheet } from 'react-native'
+import { textFont, textColor} from '@/constants/ReusableStyles.ts'
+import { TitleComp } from '../../../../components/TitleComp';
+import { HrefLink } from '@/components/TextLink.jsx'
 const About = () =>  (
     <View>
-        <View style = {styles.titleContainer}>
-            <Text style = {styles.title}>About Cyber Cat Cafe</Text>
-        </View>   
+      <TitleComp content={'About Cyber Cat Cafe'} /> 
       <Text style ={styles.content}>
-        Never expected that you have arrived here. Let me just finish my job here.
+        Never expected that you have arrived here. Let me just finish my job first.
       </Text>
        <Text style ={styles.content}>The Cyber Cat Cafe application is developed by AnXiousgrassHoppeR
         With special thanks to XXX who has showcased his/her artistic talent in the design of the cats.
-        Oh That's all, have a nice day.
         </Text> 
-      <TouchableOpacity onPress = {() => {useRouter().push("/mainPages/UserCenter/screen")}}> 
-        <Text style ={styles.link}>Back to User Center</Text>
-      </TouchableOpacity>
+         <Text style ={styles.content}>Additionally, Mr. Anonymous, who does not want to disclose his true identity,
+           is keen to showcase his muscial virtuosity as a member of the team. His passion in the feline sound has 
+           transmorgrified the simple combination of string instruments into a perfect composition for our CyberCatCafe.
+        </Text> 
+        <Text style ={styles.content}> That's all so far, have a nice day! XD
+        </Text> 
+      <HrefLink href = {"/mainPages/UserCenter/screen"} text= {"Back to User Center"}/>
     </View>
+
   );
 
 
 export default About;
+
 const styles = StyleSheet.create({
-    title: {fontSize: textFont.medium, color: textColor.normal, marginLeft: 10, marginRight: 10,},
-    content: {fontSize: textFont.small + 2, color: textColor.normal},
-    link: {fontSize: textFont.small, color: textColor.link, marginTop: 20},
-    titleContainer: {marginTop: 10, borderWidth: 1, 
-                     borderColor: componentColor.border, 
-                     borderRadius: 15, marginHorizontal:'auto',
-                     marginBottom: 25,},
+    content: {fontSize: textFont.small + 2, color: textColor.normal, marginBottom: 20,},
 });

@@ -106,7 +106,7 @@ export function updateUserInfo(attribute, value){
 
   return updateDoc(doc(collectionRef, currentUser), {
     [attribute] : value
-  }).then(() => attribute).catch(console.log);
+  }).then(() => console.log("Update attribute success")).catch(console.log);
 
 }
 
