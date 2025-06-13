@@ -11,7 +11,7 @@ export function updateAchievementStatus() {
     }))
 }
 
-export default function Achievement() {
+export default function screen() {
     const updatedList = updateAchievementStatus();
     const visibleList = updatedList.filter(item => !(item.hidden & !item.complete))
     const completeAch = visibleList.filter(item => item.complete);
