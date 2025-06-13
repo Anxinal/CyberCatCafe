@@ -1,6 +1,6 @@
 import { View, Text, Button, StyleSheet, FlatList, Dimensions } from 'react-native'
 import React, { useRef } from 'react'
-import achievementList from './achievementList'
+import {achievementList} from '@/constants/achievementList.js'
 
 const screenWidth = Dimensions.get('window').width
 
@@ -11,7 +11,7 @@ export function updateAchievementStatus() {
     }))
 }
 
-export default function Achievement() {
+export default function screen() {
     const updatedList = updateAchievementStatus();
     const visibleList = updatedList.filter(item => !(item.hidden & !item.complete))
     const completeAch = visibleList.filter(item => item.complete);
