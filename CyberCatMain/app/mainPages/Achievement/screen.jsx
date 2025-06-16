@@ -1,32 +1,36 @@
 import { View, Text, Button, StyleSheet, FlatList, Dimensions } from 'react-native'
-import React, { useRef } from 'react'
-import {achievementList} from '@/constants/achievementList.js'
+import React, { useEffect, useRef, useState } from 'react'
+import { achievementList } from '../../../constants/achievementList'
+import { updateAchievementStatus, processList } from './achievement'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const screenWidth = Dimensions.get('window').width
 
-export function updateAchievementStatus() {
-    return achievementList.map(achievement => ({
-        ...achievement,
-        complete: achievement.criteria
-    }))
-}
-
 export default function screen() {
-    const updatedList = updateAchievementStatus();
-    const visibleList = updatedList.filter(item => !(item.hidden & !item.complete))
-    const completeAch = visibleList.filter(item => item.complete);
-    const incompleteAch = visibleList.filter(item => !item.complete);
-    const orderedAch = [...completeAch, ...incompleteAch];
+
+    
+    let [orderedAch, setOrderedAch] = useState([]);
+    console.log("rendered");
+    useEffect( () => {
+        console.log("called");
+        updateAchievementStatus()
+       .then((newList) => { 
+        const processed = processList(newList, (item) => true, (a,b) => (b.completed - a.completed));
+        setOrderedAch(processed);
+        console.log(processed);
+         });
+         },[]);
+  
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <Text style={styles.text}>Achievements</Text>
             <FlatList
                 data={orderedAch}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
-                    <View style={[styles.card, item.complete ? styles.cardComplete : styles.cardIncomplete]}>
-                        {item.complete ?
+                    <View style={[styles.card, item.completed ? styles.cardComplete : styles.cardIncomplete]}>
+                        {item.completed ?
                             (<Text>icon</Text>) : (<Text>question</Text>)
                         }
                         <View style={styles.box}>
@@ -37,7 +41,7 @@ export default function screen() {
                 )}
             />
             <Text>navigationBar</Text>
-        </View>
+        </SafeAreaView>
     );
 }
 

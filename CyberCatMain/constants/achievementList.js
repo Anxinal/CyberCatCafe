@@ -1,20 +1,33 @@
+
+import {getUserInfo} from '../app/account/userInfo.js'
+// This function returns a promise
+const StatusCheck = (attribute) => (predicate) => async () => {
+   return getUserInfo(attribute).then((info) => predicate(info));
+} 
+
 export const achievementList = [
     {
-        id: '0',
+        id: 0,
         title: 'one cat a day',
         description: 'one cat a day, keeps the doctor away!',
-        criteria: (userStats) => userStats.focusSessions >= 1,
+        hidden: false,
+        criteria: StatusCheck("focusSessionCount")(x => x >= 1),
+      
     },
     {
-        id: '1',
+        id: 1,
         title: 'kitty patty',
         description: 'pat the kitty and feel better',
-        criteria: (userStats) => userStats.focusSessions >= 5,
+        hidden: false,
+        criteria: StatusCheck("focusSessionCount")(x => x >= 5),
+     
     },
     {
-        id: '2',
+        id: 2,
         title: 'paw-sitive progress',
+        hidden: false,
         description: 'completed at least one focus session for 3 consecutive days',
-        criteria: (userStats) => userStats.focusSessions >= 10,
+        criteria:  StatusCheck("focusSessionCount")(x => x >= 10),
+     
     },
 ]
