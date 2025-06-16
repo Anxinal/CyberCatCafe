@@ -8,26 +8,114 @@ const StatusCheck = (attribute) => (predicate) => async () => {
 export const achievementList = [
     {
         id: 0,
-        title: 'one cat a day',
-        description: 'one cat a day, keeps the doctor away!',
+        title: 'A small step',
+        description: 'Complete a total of 1 focus session',
         hidden: false,
         criteria: StatusCheck("focusSessionCount")(x => x >= 1),
       
     },
     {
         id: 1,
-        title: 'kitty patty',
-        description: 'pat the kitty and feel better',
+        title: 'High Five',
+        description: 'Complete a total of 5 focus session',
         hidden: false,
         criteria: StatusCheck("focusSessionCount")(x => x >= 5),
      
     },
     {
         id: 2,
-        title: 'paw-sitive progress',
+        title: 'Paw-sitive progress',
         hidden: false,
-        description: 'completed at least one focus session for 3 consecutive days',
+        description: 'Complete a total of 10 focus sessions',
         criteria:  StatusCheck("focusSessionCount")(x => x >= 10),
      
     },
+    {
+        id: 3,
+        title: 'Focus-lust',
+        hidden: false,
+        description: 'complete a total of 50 focus sessions',
+        criteria:  StatusCheck("focusSessionCount")(x => x >= 50),
+     
+    },
+    {
+        id: 4,
+        title: 'Joyeux de vie',
+        hidden: false,
+        description: 'complete a total of 100 focus sessions',
+        criteria:  StatusCheck("focusSessionCount")(x => x >= 100),
+     
+    },
+      {
+        id: 5,
+        title: 'Nihilism',
+        hidden: true,
+        description: 'complete a total of 250 focus sessions',
+        criteria:  StatusCheck("focusSessionCount")(x => x >= 200),
+     
+    },
+      {
+        id: 6,
+        title: 'Hour ONE',
+        hidden: false,
+        description: 'The first hour you have spent on focus sessions',
+        criteria:  StatusCheck("totalFocus")(x => x >= 3600),
+    },
+    {
+        id: 7,
+        title: 'It takes 3',
+        hidden: false,
+        description: 'You have spent 3 hours in total on focus',
+        criteria:  StatusCheck("totalFocus")(x => x >= 3600 * 3),
+    },
+    {
+        id: 8,
+        title: 'It takes 3',
+        hidden: false,
+        description: 'You have spent 5 hours in total on focus',
+        criteria:  StatusCheck("totalFocus")(x => x >= 3600 * 5),
+    },
+    {
+        id: 9,
+        title: 'It takes 3',
+        hidden: false,
+        description: 'You have spent 10 hours in total on focus',
+        criteria:  StatusCheck("totalFocus")(x => x >= 3600 * 10),
+    },
+    {
+        id: 10,
+        title: 'It takes 3',
+        hidden: false,
+        description: 'You have spent 20 hours in total on focus',
+        criteria:  StatusCheck("totalFocus")(x => x >= 3600 * 20),
+    },
+    {
+        id: 10,
+        title: '42',
+        hidden: false,
+        description: 'The ultimate anwser to the universe',
+        criteria:  StatusCheck("totalFocus")(x => x >= 3600 * 42),
+    },
+     {
+        id: 11,
+        title: 'Decillion encounters',
+        hidden: true,
+        description: 'Not exponential in hour but exponential in effort. Thank you for all the time',
+        criteria:  StatusCheck("totalFocus")(x => x >= 3600 * 330),
+    },
+     {
+        id: 12,
+        title: 'Outperformer',
+        hidden: false,
+        description: 'We should not be satisfied with 100 but always strive for 101. (Spent 101 hours in total)',
+        criteria:  StatusCheck("totalFocus")(x => x >= 3600 * 101),
+    },
+    {
+        id: 13,
+        title: 'Patience!',
+        hidden: true,
+        description: 'Spent the maximum possible time in a single focus session',
+        criteria:  StatusCheck("totalFocus")(x => x >= 3600),
+    },
+
 ]

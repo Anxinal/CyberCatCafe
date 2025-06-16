@@ -1,15 +1,33 @@
 import { View, Text, Button, StyleSheet, FlatList, Dimensions } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { achievementList } from '../../../constants/achievementList'
+import {StatusDisplay} from '@/components/StatusDisplay';
 import { updateAchievementStatus, processList, AchievementView, countAttainedAchievements } from './achievement'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { IconList } from '../../../constants/IconList';
+const screenWidth = Dimensions.get('window').width;
 
-const screenWidth = Dimensions.get('window').width
+
+
+
 
 export default function screen() {
-
+    
     let [orderedAch, setOrderedAch] = useState([]);
-    console.log("rendered");
+
+    const AchievementCountComp = () => (
+        <View style = {{flexDirection: 'row', marginHorizontal:'auto', justifyContent: 'space-around', marginBottom: 20}}>
+            <StatusDisplay attribute = {''} 
+                           text = {'   '} 
+                           value = {countAttainedAchievements(orderedAch)} 
+                           Child = {IconList.unlocked} />
+            <StatusDisplay attribute = {''} 
+                           text = {'   '} 
+                           value = {orderedAch.length - countAttainedAchievements(orderedAch)} 
+                           Child = {IconList.locked} />
+        </View>);
+
+  
     useEffect( () => {
         console.log("called");
         updateAchievementStatus()
@@ -20,11 +38,10 @@ export default function screen() {
          });
          },[]);
   
-    
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.text}>Achievements</Text>
-            <Text> Total attained achievements: {countAttainedAchievements(orderedAch)}</Text>
+            <AchievementCountComp />
             <FlatList
                 data={orderedAch}
                 keyExtractor={(item) => item.id}
@@ -32,7 +49,6 @@ export default function screen() {
                     <AchievementView item={item} />
                 )}
             />
-            <Text>End of Achievement List</Text>
         </SafeAreaView>
     );
 }

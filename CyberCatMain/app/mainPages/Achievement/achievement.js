@@ -1,10 +1,19 @@
 
 import { achievementList } from '../../../constants/achievementList.js';
-import { StyleSheet, Dimensions ,View ,Text} from 'react-native';
+import { StyleSheet, Dimensions ,View ,Text, TouchableOpacity} from 'react-native';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import { useState } from 'react';
+import { IconList } from '../../../constants/IconList.js';
 
-const LockedIcon = () => <FontAwesome5 name="question" size={30} color="black" />;
-const UnlockedIcon = () => <FontAwesome5 name="star" size={30} color="rgb(245, 237, 14)" />;
+
+const LockedIcon = IconList.locked; 
+const UnlockedIcon =  IconList.unlocked;
+const CollapseIcon = IconList.collapse;
+
+
+
 const screenWidth = Dimensions.get('window').width;
 
 export async function updateAchievementStatus() {
@@ -32,14 +41,18 @@ export const processList = (newlist, filterFunc, sortFunc) => {
  export const countAttainedAchievements = (achList) => achList.filter(item => item.completed).length;
 
  export const AchievementView = ({item}) => {
+    let [collasped, setCollapsed] = useState(true);
     return  (<View style={[styles.card, item.completed ? styles.cardComplete : styles.cardIncomplete]}>
                             {item.completed ?
                                 (<UnlockedIcon/>) : (<LockedIcon/>)
                             }
                             <View style={styles.box}>
                                 <Text style={styles.title}>{item.title}</Text>
-                                <Text style={styles.description}>{item.description}</Text>
+                               {collasped && <Text style={styles.description}>{item.description}</Text> } 
                             </View>
+                            <TouchableOpacity onPress={() => setCollapsed(!collasped)}>
+                                <CollapseIcon />
+                            </TouchableOpacity>
                         </View>);
  }
 
