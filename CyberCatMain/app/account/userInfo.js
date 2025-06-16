@@ -23,12 +23,14 @@ const navigateToLogin = () => {useRouter().push("/")};
  It returns nothing and since the process is async, another set function is required for a temporary variable in the 
  app page(with useState) so that the page can be re-rendered after the information is retrieved 
 */
-export function getUserInfo(attribute, setFunction){
- 
- onAuthStateChanged(auth, (user) => {
+export function getUserInfo(attribute, setFunction = () => {}){
+
+/* Legacy implementation. Left for reference
+
+   onAuthStateChanged(auth, (user) => {
   if (user) {
-    // User is signed in, see docs for a list of available properties
-    // https://firebase.google.com/docs/reference/js/auth.user
+    User is signed in, see docs for a list of available properties
+    https://firebase.google.com/docs/reference/js/auth.user
     
     getDoc(doc(collectionRef, user.uid)).then( (doc) => {
       if (doc.exists()) {
@@ -42,12 +44,25 @@ export function getUserInfo(attribute, setFunction){
         console.log("Error getting document:", error);
         return error;
   });
-  
   } else {
     // User is signed out
     unsubscribe();
   }
 });
+*/
+    return getDoc(doc(collectionRef, currentUser)).then( (doc) => {
+      if (doc.exists()) {
+        const targetData = doc.data()[attribute];
+        setFunction(targetData);
+        return targetData;
+      }else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+      }
+    }).catch((error) => {
+        console.log("Error getting document:", error);
+        return error;
+  });
   
 }
 
@@ -64,6 +79,7 @@ export function signInUser(email, password, router){
          .then((userCredential) => {
             // Signed in 
             displayToast("Login Success");
+            currentUser = userCredential.user.uid;
             navigateToMain(router);
          }).catch(displayError("Meow? Wrong password?"));
     
@@ -72,8 +88,8 @@ export function signInUser(email, password, router){
 /* This function signs out the current user in the device and returns nothing
  */
 export function signOutUser(){
-  signOut(auth).then(() => {console.log("signed out successfully")})
-               .catch(console.log);
+  signOut(auth).then(() => {console.log("signed out successfully"); 
+                            currentUser = "0000";}).catch(console.log);
 }
 
 /* This function takes in the user information in the register page and update the 

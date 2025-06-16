@@ -1,43 +1,55 @@
 import { View, Text, Button, StyleSheet, FlatList, Dimensions } from 'react-native'
-import React, { useRef } from 'react'
-import {achievementList} from '@/constants/achievementList.js'
+import React, { useEffect, useRef, useState } from 'react'
+import { achievementList } from '../../../constants/achievementList'
+import {StatusDisplay} from '@/components/StatusDisplay';
+import { updateAchievementStatus, processList, AchievementView, countAttainedAchievements } from './achievement'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { IconList } from '../../../constants/IconList';
+const screenWidth = Dimensions.get('window').width;
 
-const screenWidth = Dimensions.get('window').width
 
-export function updateAchievementStatus() {
-    return achievementList.map(achievement => ({
-        ...achievement,
-        complete: achievement.criteria
-    }))
-}
+
+
 
 export default function screen() {
-    const updatedList = updateAchievementStatus();
-    const visibleList = updatedList.filter(item => !(item.hidden & !item.complete))
-    const completeAch = visibleList.filter(item => item.complete);
-    const incompleteAch = visibleList.filter(item => !item.complete);
-    const orderedAch = [...completeAch, ...incompleteAch];
+    
+    let [orderedAch, setOrderedAch] = useState([]);
 
+    const AchievementCountComp = () => (
+        <View style = {{flexDirection: 'row', marginHorizontal:'auto', justifyContent: 'space-around', marginBottom: 20}}>
+            <StatusDisplay attribute = {''} 
+                           text = {'   '} 
+                           value = {countAttainedAchievements(orderedAch)} 
+                           Child = {IconList.unlocked} />
+            <StatusDisplay attribute = {''} 
+                           text = {'   '} 
+                           value = {orderedAch.length - countAttainedAchievements(orderedAch)} 
+                           Child = {IconList.locked} />
+        </View>);
+
+  
+    useEffect( () => {
+        console.log("called");
+        updateAchievementStatus()
+       .then((newList) => { 
+        const processed = processList(newList, (item) => true, (a,b) => (b.completed - a.completed));
+        setOrderedAch(processed);
+        console.log(processed);
+         });
+         },[]);
+  
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <Text style={styles.text}>Achievements</Text>
+            <AchievementCountComp />
             <FlatList
                 data={orderedAch}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
-                    <View style={[styles.card, item.complete ? styles.cardComplete : styles.cardIncomplete]}>
-                        {item.complete ?
-                            (<Text>icon</Text>) : (<Text>question</Text>)
-                        }
-                        <View style={styles.box}>
-                            <Text style={styles.title}>{item.title}</Text>
-                            <Text style={styles.description}>{item.description}</Text>
-                        </View>
-                    </View>
+                    <AchievementView item={item} />
                 )}
             />
-            <Text>navigationBar</Text>
-        </View>
+        </SafeAreaView>
     );
 }
 
@@ -84,6 +96,6 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
 }
-)
+);
 
 
