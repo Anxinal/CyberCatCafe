@@ -47,8 +47,8 @@ export const processList = (newlist, filterFunc, sortFunc) => {
                                 (<UnlockedIcon/>) : (<LockedIcon/>)
                             }
                             <View style={styles.box}>
-                                <Text style={styles.title}>{item.title}</Text>
-                               {collasped && <Text style={styles.description}>{item.description}</Text> } 
+                                <Text style={[styles.title, item.completed && styles.titleComplete]}>{item.title}</Text>
+                               {!collasped && <Text style={styles.description}>{item.description}</Text> } 
                             </View>
                             <TouchableOpacity onPress={() => setCollapsed(!collasped)}>
                                 <CollapseIcon />
@@ -61,19 +61,23 @@ export const processList = (newlist, filterFunc, sortFunc) => {
      card: {
          flexDirection: 'row',
          padding: 30,
-         width: screenWidth,
-         marginBottom: 10,
-         marginTop: 10,
-         borderRadius: 10,
+         width: screenWidth - 15,
+         margin: 10,
+         marginLeft: 10,
+         marginRight: 10,
+         borderRadius: 5,
          marginHorizontal: 'auto',
      },
      cardComplete: {
-         backgroundColor: 'pink',
+         backgroundColor: 'rgb(196, 137, 19)',
          borderWidth: 3,
-         borderColor: 'rgb(245, 237, 14)'
+         borderColor: 'rgb(245, 237, 14)',
+         shadowColor: 'orange',
+         shadowOffset: {height: 3, width: 3,},
+         shadowOpacity: 10
      },
      cardIncomplete: {
-         backgroundColor: 'grey',
+         backgroundColor: 'rgb(60, 55, 55)',
      },
      box: {
          flex: 1,
@@ -83,11 +87,19 @@ export const processList = (newlist, filterFunc, sortFunc) => {
      title: {
          color: 'white',
          fontSize: 20,
-         fontWeight: 'bold'
+         fontWeight: 'bold',
+         
+     },
+     titleComplete: {
+        color: 'rgb(255, 255, 0)',
+        textShadowColor: 'orange',
+        textShadowOffset: {height: 2, width: 2,},
+        textShadowRadius: 2,
      },
      description: {
-         color: 'black',
+         color: 'orange',
          fontSize: 15,
+
      },
  }
  );

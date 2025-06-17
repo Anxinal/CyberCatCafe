@@ -1,6 +1,5 @@
-import { View, Text, Button, StyleSheet, FlatList, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, FlatList, Dimensions, TextInput, TouchableOpacity } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
-import { achievementList } from '../../../constants/achievementList'
 import {StatusDisplay} from '@/components/StatusDisplay';
 import { updateAchievementStatus, processList, AchievementView, countAttainedAchievements } from './achievement'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -8,13 +7,10 @@ import { IconList } from '../../../constants/IconList';
 const screenWidth = Dimensions.get('window').width;
 
 
-
-
-
 export default function screen() {
     
     let [orderedAch, setOrderedAch] = useState([]);
-
+    let [search, setSearch] = useState("");
     const AchievementCountComp = () => (
         <View style = {{flexDirection: 'row', marginHorizontal:'auto', justifyContent: 'space-around', marginBottom: 20}}>
             <StatusDisplay attribute = {''} 
@@ -26,6 +22,11 @@ export default function screen() {
                            value = {orderedAch.length - countAttainedAchievements(orderedAch)} 
                            Child = {IconList.locked} />
         </View>);
+    
+    const searchItem = (content) => {
+        console.log(content);
+    };
+
 
   
     useEffect( () => {
@@ -41,6 +42,18 @@ export default function screen() {
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.text}>Achievements</Text>
+                <View style = {styles.search}>
+                <TextInput
+                    style = {styles.searchText}
+                    onChangeText={setSearch}
+                    placeholder="Search Achievements..."
+                    placeholderTextColor="grey"
+                    value = {search}
+                  />
+                <TouchableOpacity onPress={() => searchItem(search)} style={{width: 50}}>
+                    <IconList.Search/>
+                </TouchableOpacity>
+              </View>
             <AchievementCountComp />
             <FlatList
                 data={orderedAch}
@@ -65,17 +78,17 @@ const styles = StyleSheet.create({
         width: screenWidth,
         height: 100,
         fontSize: 20,
-        marginBottom: 10,
+        marginBottom: 20,
         alignContent: 'center',
         fontWeight: 'bold',
-        backgroundColor: 'pink',
+        backgroundColor: 'rgb(179, 179, 16)',
     },
     card: {
         flexDirection: 'row',
         padding: 30,
-        width: screenWidth,
-        marginBottom: 10,
-        borderRadius: 10,
+        width: '100%',
+        margin: 20,
+        
     },
     cardComplete: {
         backgroundColor: 'pink',
@@ -95,6 +108,11 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: 15,
     },
+    search: {flexDirection:'row', width: '100%', maxWidth: 500, marginHorizontal: 'auto', 
+                                justifyContent:'center',
+                                marginLeft: 20, marginRight: 10, marginBottom: 10
+        },
+    searchText: {width: 300, height: 40, fontSize: 20}
 }
 );
 
