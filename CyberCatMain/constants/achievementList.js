@@ -90,32 +90,32 @@ export const achievementList = [
         criteria:  StatusCheck("totalFocus")(x => x >= 3600 * 20),
     },
     {
-        id: 10,
+        id: 11,
         title: '42',
         hidden: false,
         description: 'The ultimate anwser to the universe',
         criteria:  StatusCheck("totalFocus")(x => x >= 3600 * 42),
     },
      {
-        id: 11,
+        id: 12,
         title: 'Decillion encounters',
         hidden: true,
         description: 'Not exponential in hour but exponential in effort. Deepest gratitude from the dev.',
         criteria:  StatusCheck("totalFocus")(x => x >= 3600 * 330),
     },
      {
-        id: 12,
+        id: 13,
         title: 'All perfect +',
         hidden: false,
         description: 'We should not be satisfied with 100 but always strive for more.',
         criteria:  StatusCheck("totalFocus")(x => x >= 3600 * 101),
     },
     {
-        id: 13,
+        id: 14,
         title: 'Patience!',
         hidden: true,
         description: 'Spent the maximum possible time in a single focus session',
-        criteria:  StatusCheck("totalFocus")(x => x >= 3600),
+        criteria:  StatusCheck("totalFocus")(x => x >= 36000),
     },
 
 ]

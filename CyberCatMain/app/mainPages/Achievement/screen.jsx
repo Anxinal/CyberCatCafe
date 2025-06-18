@@ -13,6 +13,7 @@ export default function screen() {
     let totalcount = totalAchievementCount();
     let achievedcount = useRef(0);
     let searched = useRef(false);
+    let loaded = useRef(false);
 
     if(achievedcount.current == 0) achievedcount.current = countAttainedAchievements(orderedAch);
     const AchievementCountComp = () => (
@@ -38,6 +39,8 @@ export default function screen() {
           updateAchievementStatus()
          .then((newList) => { 
           const processed = processList(newList, (item) => true, (a,b) => (b.completed - a.completed));
+          loaded.current = true;
+          console.log("Ready");
           setOrderedAch(processed);       
           setSearch("");
   
@@ -58,7 +61,7 @@ export default function screen() {
                     editable = {!searched.current}
                     value = {search}
                   />
-                
+               
                  <TouchableOpacity onPress={() => searchItem(search)} style={{width: 50}}>
                     <IconList.Search/>
                 </TouchableOpacity>
@@ -67,13 +70,13 @@ export default function screen() {
                 </TouchableOpacity>}
               </View>
             <AchievementCountComp />
-            <FlatList
+            {loaded.current && <FlatList
                 data={orderedAch}
-                keyExtractor={(item) => item.id}
+                keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) => (
                     <AchievementView item={item} />
                 )}
-            />
+            />}
         </SafeAreaView>
     );
 }
