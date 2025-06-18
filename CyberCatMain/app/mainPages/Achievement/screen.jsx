@@ -1,43 +1,50 @@
 import { View, Text, StyleSheet, FlatList, Dimensions, TextInput, TouchableOpacity } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import {StatusDisplay} from '@/components/StatusDisplay';
-import { updateAchievementStatus, processList, AchievementView, countAttainedAchievements } from './achievement'
+import { updateAchievementStatus, processList, AchievementView, countAttainedAchievements, searchName, totalAchievementCount } from './achievement'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { IconList } from '../../../constants/IconList';
 const screenWidth = Dimensions.get('window').width;
-
 
 export default function screen() {
     
     let [orderedAch, setOrderedAch] = useState([]);
     let [search, setSearch] = useState("");
+    let totalcount = totalAchievementCount();
+    let achievedcount = useRef(0);
+    let searched = useRef(false);
+
+    if(achievedcount.current == 0) achievedcount.current = countAttainedAchievements(orderedAch);
     const AchievementCountComp = () => (
         <View style = {{flexDirection: 'row', marginHorizontal:'auto', justifyContent: 'space-around', marginBottom: 20}}>
             <StatusDisplay attribute = {''} 
                            text = {'   '} 
-                           value = {countAttainedAchievements(orderedAch)} 
+                           value = {achievedcount.current} 
                            Child = {IconList.unlocked} />
             <StatusDisplay attribute = {''} 
                            text = {'   '} 
-                           value = {orderedAch.length - countAttainedAchievements(orderedAch)} 
+                           value = {totalcount - achievedcount.current} 
                            Child = {IconList.locked} />
         </View>);
     
     const searchItem = (content) => {
-        console.log(content);
+        if(content.trim() == "") return;
+        searched.current = true;
+        setOrderedAch(processList(orderedAch, searchName(content), (a,b) => (b.completed - a.completed)));
     };
 
-
+    const initialiseList = () => {
+        searched.current = false;
+          updateAchievementStatus()
+         .then((newList) => { 
+          const processed = processList(newList, (item) => true, (a,b) => (b.completed - a.completed));
+          setOrderedAch(processed);       
+          setSearch("");
   
-    useEffect( () => {
-        console.log("called");
-        updateAchievementStatus()
-       .then((newList) => { 
-        const processed = processList(newList, (item) => true, (a,b) => (b.completed - a.completed));
-        setOrderedAch(processed);
-        console.log(processed);
-         });
-         },[]);
+    });     
+    };
+
+    useEffect(initialiseList,[]);
   
     return (
         <SafeAreaView style={styles.container}>
@@ -48,11 +55,16 @@ export default function screen() {
                     onChangeText={setSearch}
                     placeholder="Search Achievements..."
                     placeholderTextColor="grey"
+                    editable = {!searched.current}
                     value = {search}
                   />
-                <TouchableOpacity onPress={() => searchItem(search)} style={{width: 50}}>
+                
+                 <TouchableOpacity onPress={() => searchItem(search)} style={{width: 50}}>
                     <IconList.Search/>
                 </TouchableOpacity>
+                {searched.current && <TouchableOpacity onPress={initialiseList} style={{width: 50}}>
+                    <IconList.QuitSearch/>
+                </TouchableOpacity>}
               </View>
             <AchievementCountComp />
             <FlatList

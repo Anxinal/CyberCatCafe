@@ -10,5 +10,6 @@ export const IconList = {
    locked : () => (<FontAwesome5 name="question" size={30} color="rgb(109, 109, 109)" />),
    unlocked : () => (<AntDesign name="star" size={30} color="rgb(232, 244, 11)" />),
    collapse : () => (<Ionicons name="chevron-expand" size={24} color="rgb(255, 255, 255)" />),
-   Search : () => (<FontAwesome5 name="search" size={28} color="black" />)
+   Search : () => (<FontAwesome5 name="search" size={28} color="black" />),
+   QuitSearch: () => (<AntDesign name="back" size={28} color="black" />)
 }

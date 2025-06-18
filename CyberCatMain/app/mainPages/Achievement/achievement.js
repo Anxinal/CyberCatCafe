@@ -35,7 +35,7 @@ export const processList = (newlist, filterFunc, sortFunc) => {
     console.log(newlist);
  
     // need further debugging for the filter function
-    return newlist.filter(item => !(item.hidden && !item.completed) && filterFunc).sort(sortFunc);
+    return newlist.filter(item => !(item.hidden && !item.completed) && filterFunc(item)).sort(sortFunc);
     
  }
  export const countAttainedAchievements = (achList) => achList.filter(item => item.completed).length;
@@ -55,7 +55,14 @@ export const processList = (newlist, filterFunc, sortFunc) => {
                             </TouchableOpacity>
                         </View>);
  }
-
+ 
+ export const searchName = (searchWord) => (item) => {
+    const searchTarget = [item.title, item.description];
+    console.log(item.title);
+    return searchTarget.map((k) => k.toLowerCase().includes(searchWord.toLowerCase()))
+                       .reduce( ((x,y) => x || y), false);
+ };
+export const totalAchievementCount = () => achievementList.length;
  const styles = StyleSheet.create({
 
      card: {
