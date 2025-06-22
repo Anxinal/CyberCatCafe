@@ -4,7 +4,14 @@ export const UserInitInfo = (username) => ( {
 
   username: username,
   listOfAchievements: [1],
-  InventoryList: [],
+
+  inventoryList: [
+    {
+    id:0, 
+    count: 100
+    }
+  ],
+
   listOfCats: [
     {
         id: 0,

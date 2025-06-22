@@ -6,7 +6,7 @@ import { getAuth, onAuthStateChanged,
 import { UserInitInfo } from '../../constants/UserInitialInfo.js'
 import { useRouter } from "expo-router";
 import {displayError, displayNull, displayToast} from '../../components/ToastMessage.js'
-
+import {initialiseInventory} from '@/data/Inventory.js'
 const db = getFirestore(app);
 const collectionRef = collection(db, "users");
 const auth = getAuth();
@@ -23,7 +23,7 @@ const navigateToLogin = () => {useRouter().push("/")};
  It returns nothing and since the process is async, another set function is required for a temporary variable in the 
  app page(with useState) so that the page can be re-rendered after the information is retrieved 
 */
-export function getUserInfo(attribute, setFunction = () => {}){
+export async function getUserInfo(attribute, setFunction = (targetData) => {}){
 
 /* Legacy implementation. Left for reference
 
@@ -60,8 +60,7 @@ export function getUserInfo(attribute, setFunction = () => {}){
         console.log("No such document!");
       }
     }).catch((error) => {
-        console.log("Error getting document:", error);
-        return error;
+        console.log(error.message);
   });
   
 }
@@ -76,13 +75,14 @@ use then() if the error message needs to be used.
 export function signInUser(email, password, router){
    if(email == "" || password == "")  return displayNull(); 
   return signInWithEmailAndPassword(auth, email, password)
-         .then((userCredential) => {
+         .then((userCredential) =>  {
             // Signed in 
             displayToast("Login Success");
-            currentUser = userCredential.user.uid;
-            navigateToMain(router);
-         }).catch(displayError("Meow? Wrong password?"));
-    
+            currentUser = userCredential.user.uid; 
+         }).then(initialiseInventory)
+           .then(() => {navigateToMain(router)})
+           .catch(console.log);
+           //displayError("Meow? Wrong password?")
 }
 
 /* This function signs out the current user in the device and returns nothing
@@ -109,6 +109,7 @@ export function registerNewUser(email, password, username){
         await setDoc(doc(db, "users", userCredential.user.uid),
         UserInitInfo(username));
         }).then(navigateToLogin).catch(displayError("Register failed")); 
+        
 }
 
 /*
@@ -118,7 +119,7 @@ Value: The new value of the attribute
 If you want to reload the page remember that you should do it manually in your app page
 For example use .then(setFunction) to trigger re-render
 */
-export function updateUserInfo(attribute, value){
+export async function updateUserInfo(attribute, value){
 
   return updateDoc(doc(collectionRef, currentUser), {
     [attribute] : value
@@ -126,7 +127,7 @@ export function updateUserInfo(attribute, value){
 
 }
 
-export function mapUserInfo(attribute, mapFunction){
+export async function mapUserInfo(attribute, mapFunction){
   
   return getDoc(doc(collectionRef, currentUser))
     .then(

@@ -1,7 +1,7 @@
 
 import { View, Text, StyleSheet, Touchable, TouchableOpacity } from 'react-native'
 import React, { useState, useRef } from 'react'
-
+import {searchItemCount, deleteInventoryItem} from '@/data/Inventory.js'
 // These parameters represent the position of the cat food can
 const FOOD_TOP = 420;
 const FOOD_LEFT = 130;
@@ -22,15 +22,22 @@ export const CatFoodCan = () =>  {
  const FillCan = () => {
     isFull.current = true;
     setAddFoodVisible(false);
+    try{
+      //deleteInventoryItem(0,1);
+    }catch(error){
+      console.log(error.message);
+    } 
  }
+
  const AddFoodComp = () => {
+    const temp = searchItemCount(0);
     return (
         <View style = {[styles.emptyOptionBoard, 
                         styles.VisibleOptionBoard]}>
             <Text> Add more cat Food?</Text>
-            <Text> Current cat food in possession: 10</Text>
+            <Text> Current cat food in possession: {temp}</Text>
             <View style = {{flexDirection: 'row'}}>
-                  <TouchableOpacity onPress={FillCan} 
+                  <TouchableOpacity onPress={FillCan}  
                               style = {styles.buttonStyle}>
                     <Text>YES</Text>
                 </TouchableOpacity>
