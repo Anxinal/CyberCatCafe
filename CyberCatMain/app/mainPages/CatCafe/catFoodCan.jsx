@@ -5,13 +5,20 @@ import React, { useState, useRef } from 'react'
 // These parameters represent the position of the cat food can
 const FOOD_TOP = 420;
 const FOOD_LEFT = 130;
+let isFull = useRef(false);
+
+export const UnfillCan = () => {
+    isFull.current = false;
+}
 
 export const CatFoodCan = () =>  {
- let isFull = useRef(false);
+ 
 
  let [addFoodvisible, setAddFoodVisible] = useState(false);
+ 
  const FilledCan = () => (<Text>Filled</Text>);
  const UnfilledCan = () => (<Text>Unfilled</Text>);
+
  const FillCan = () => {
     isFull.current = true;
     setAddFoodVisible(false);
