@@ -24,9 +24,12 @@ export default function Timer() {
   const [remained, setRemained] = useState(totalTime);
   const intervalRef = useRef(null);
 
+  const convertSessionToCoin = (t) => (50 + Math.floor(totalTime / 60) * 2);
+  
   const countSession = () => {
       mapUserInfo("totalFocus", x => x + totalTime);
       mapUserInfo("focusSessionCount", x => x + 1);
+      mapUserInfo("coins", x => x + convertSessionToCoin(totalTime));
   }
 
   let currentTime = remained;
