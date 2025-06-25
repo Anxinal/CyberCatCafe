@@ -8,21 +8,28 @@ import { useState } from 'react';
                                   Child, 
                                   mapFunction = (x) => (x), 
                                   viewStyle = {},
-                                  fontSize = 0}: 
+                                  fontSize = 0,
+                                  value = -1}: 
                                  {attribute: string, 
                                   Child: any
                                   viewStyle: any
                                   text: string
                                   fontSize: number
                                   mapFunction: (arg0: any) => string
+                                  value: number
                                 }) => {
-    const [userVar, setUserVar] = useState("");
-    getUserInfo(attribute, setUserVar);
+    const [userVar, setUserVar] = useState(value + "");
+    // value is only positive number
+    if(value == -1) getUserInfo(attribute, setUserVar);
     return  (
       <View style = {[accountStyles.StatusView, viewStyle]}>
         {Child && <Child/>}
-        {text != "NONE" && <Text style = {[accountStyles.infoText, {paddingTop: 4}, fontSize ? {fontSize: fontSize} : {}]}> {text} </Text>}
-        <Text style = {[accountStyles.infoText, {paddingTop: 3}, fontSize ? {fontSize: fontSize} : {}]}>{mapFunction(userVar)}</Text>
+        {text != "NONE" && <Text style = {[accountStyles.infoText, 
+                                          {paddingTop: 4},  
+                                           fontSize ? {fontSize: fontSize} : {}]}> {text} </Text>}
+        <Text style = {[accountStyles.infoText, 
+                       {paddingTop: 3},   
+                        fontSize ? {fontSize: fontSize} : {}]}>{mapFunction(userVar)}</Text>
       </View>
     );
 
