@@ -8,7 +8,7 @@ import Toast from 'react-native-toast-message';
 import { displayToast } from '@/components/ToastMessage.js';
 import BackgroundTimer from 'react-native-background-timer';
 import { RestTotalTimeComp } from './ResetTotalTimeComp.tsx';
-import { mapUserInfo } from '@/app/account/userInfo.js';
+import { getUserInfo, mapUserInfo } from '@/app/account/userInfo.js';
 
 const TimerButton = ({label, onPress}) => ( 
       <TouchableOpacity onPress={onPress} style = {timerStyles.Buttons}>
@@ -23,13 +23,24 @@ export default function Timer() {
   const [totalTime, setTotalTime] = useState(45*60);
   const [remained, setRemained] = useState(totalTime);
   const intervalRef = useRef(null);
-
+  let distraction = useRef(0);
   const convertSessionToCoin = (t) => (50 + Math.floor(totalTime / 60) * 2);
   
   const countSession = () => {
-      mapUserInfo("totalFocus", x => x + totalTime);
-      mapUserInfo("focusSessionCount", x => x + 1);
-      mapUserInfo("coins", x => x + convertSessionToCoin(totalTime));
+    let today = new Date();
+    const newSession = {
+        time: totalTime,
+        distraction: distraction.current,
+        date: today.toString(),
+      };
+    getUserInfo("focusSession").then((session) => {
+      session.push(newSession);
+      mapUserInfo("focusSession", (original) => session);
+     });
+    mapUserInfo("totalFocus", x => x + totalTime);
+    mapUserInfo("focusSessionCount", x => x + 1);
+    mapUserInfo("coins", x => x + convertSessionToCoin(totalTime));
+    
   }
 
   let currentTime = remained;
@@ -63,7 +74,7 @@ export default function Timer() {
     paused.current = true;
 
    // cancelTimerNotification(NOTIFID);
-
+    distraction.current += 1;
     clearInterval(intervalRef.current);
     setRemained(currentTime);
   }
@@ -88,6 +99,7 @@ export default function Timer() {
     if(!paused.current && currentTime < 0){
         notifyUser();
         countSession();
+        distraction.current = 0;
         handleStop();   
     }
   }
