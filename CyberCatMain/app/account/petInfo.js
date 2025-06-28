@@ -23,3 +23,23 @@ export function getPetInfo(setFunction) {
         }
     });
 }
+
+export function updatePetInfo(attribute, value) {
+    return updateDoc(doc(collectionRef, currentUser), {
+        [`pet.${attribute}`]: value
+    }).then(() => console.log("Update attribute success")).catch(console.log);
+}
+
+export function mapPetInfo(attribute, mapFunction) {
+
+    return getDoc(doc(collectionRef, currentUser))
+        .then(
+            (doc) => doc.data()[`pet.${attribute}`]).then((original) => {
+                updateDoc(doc(collectionRef, currentUser),
+                    {
+                        [`pet.${attribute}`]: mapFunction(original)
+                    })
+                    .then(() => "Information Update Successful").catch(err => "Updated Failed because (of)" + err.message);
+            });
+}
+
