@@ -6,8 +6,8 @@ import { Image } from 'react-native';
 const WALL_BOTTOM = 600;
 const WALL_TOP = 320;
 
-export const Cat = forwardRef<{ walkToCan: () => void }, { x: number; y: number }>(
-  ({ x, y }, ref) => {
+export const Cat = forwardRef<{ walkToCan: () => void }, { x: number; y: number; eatState: boolean }>(
+  ({ x, y, eatState }, ref) => {
     const catRef = useRef(null);
     const canRef = useRef(null);
 
@@ -39,6 +39,10 @@ export const Cat = forwardRef<{ walkToCan: () => void }, { x: number; y: number 
 
     useImperativeHandle(ref, () => ({ walkToCan }));
 
+    const imageSource = eatState
+      ? require('@/assets/images/CatGif.gif') :
+      require('@/assets/images/CatGif.gif');
+
     return (
       <Animated.View
         {...panResponder.panHandlers}
@@ -50,7 +54,7 @@ export const Cat = forwardRef<{ walkToCan: () => void }, { x: number; y: number 
         ]}
       >
         <Image
-          source={require('@/assets/images/CatGif.gif')}
+          source={imageSource}
           style={{ width: 100, height: 100 }}
         />
       </Animated.View>
