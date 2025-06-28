@@ -10,12 +10,12 @@ export function Cafe() {
   const catRef = useRef(null);
   const canRef = useRef(null);
   const feedCat = () => {
-    // if (CatFoodCan.current?.isFull()) {
-    catRef.current?.walkToCan();
-    // canRef.current?.UnfillCan();
-    // } else {
-    //   console.log("Can is empty!")
-    // }
+    if (CatFoodCan.current?.isFull()) {
+      catRef.current?.walkToCan();
+      canRef.current?.UnfillCan();
+    } else {
+      console.log("Can is empty!")
+    }
   }
   return (
     <SafeAreaView>
