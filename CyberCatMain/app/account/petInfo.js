@@ -43,3 +43,49 @@ export function mapPetInfo(attribute, mapFunction) {
             });
 }
 
+export function levelToExp(level) {
+    return 5 + level * 10;
+}
+
+export async function updateLevel(exp) {
+    const docRef = doc(collectionRef, currentUser);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+        const cat = docSnap.data().pet;
+
+        let { level, EXP } = cat;
+        let totalExp = EXP + exp;
+
+        while (totalExp >= levelToExp(level)) {
+            totalExp -= levelToExp(level);
+            level += 1;
+        }
+
+        try {
+            await Promise.all([updatePetInfo("level", level),
+            updatePetInfo("EXP", totalExp)
+            ]);
+            console.log("level updated");
+        } catch (err) {
+            console.log("update failed", err.message);
+        }
+    } else {
+        console.log("User doc not found");
+    }
+}
+
+export async function getPetStats() {
+    const docRef = doc(collectionRef, currentUser);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+        const cat = docSnap.data().pet || {};
+        return {
+            level: cat.level ?? 1,
+            EXP: cat.EXP ?? 0
+        };
+    } else {
+        return { level: 1, EXP: 0 };
+    }
+}

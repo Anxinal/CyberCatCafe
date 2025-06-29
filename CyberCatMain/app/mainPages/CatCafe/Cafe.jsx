@@ -1,15 +1,19 @@
 import { View, Text, SafeAreaView, ImageBackground, Button, TouchableOpacity, StyleSheet } from 'react-native'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import catBackground from '@/assets/images/cafe-background.jpg'
 import { Cat } from './Cat.tsx'
 import { CatFoodCan } from './catFoodCan.jsx'
-// Some position information for future pinning
+import { levelToExp, updateLevel, getPetStats } from '../../account/petInfo.js'
+import * as Progress from 'react-native-progress'
+
 const WALL_BOTTOM = 320;
 
 export function Cafe() {
   const catRef = useRef(null);
   const canRef = useRef(null);
   const [eatState, setEatState] = useState(false);
+  const [catLevel, setCatLevel] = useState(1);
+  const [catEXP, setCatEXP] = useState(0);
 
   const feedCat = () => {
     if (CatFoodCan.current?.isFull()) {
@@ -17,12 +21,25 @@ export function Cafe() {
       catRef.current?.walkToCan();
       canRef.current?.UnfillCan();
 
+      updateLevel(5);
+
       setTimeout(() => setEatState(false), 1200);
     } else {
       setEatState(false);
       console.log("Can is empty!")
     }
   }
+
+  useEffect(() => {
+    async function fetchStats() {
+      const { level, exp } = getPetStats();
+      setCatLevel(level);
+      setCatEXP(exp);
+    }
+
+    fetchStats();
+  }, []);
+
   return (
     <SafeAreaView>
       <ImageBackground source={catBackground} contentFit="contain" style={{ width: '100%', height: 600 }}>
@@ -32,6 +49,7 @@ export function Cafe() {
         <TouchableOpacity style={styles.feedCatButton} onPress={feedCat}>
           <Text>Feed Cat!</Text>
         </TouchableOpacity>
+        <Progress.Bar progress={catEXP / levelToExp(catLevel)} width={200}></Progress.Bar>
       </ImageBackground>
     </SafeAreaView>
   )

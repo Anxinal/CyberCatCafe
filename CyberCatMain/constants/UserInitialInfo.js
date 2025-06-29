@@ -9,6 +9,7 @@ export const UserInitInfo = (username) => ({
     {
       id: 0,
       level: 0,
+      EXP: 0,
       current_skin: "default skin",
       unlocked_skins: ["default skin"],
     }

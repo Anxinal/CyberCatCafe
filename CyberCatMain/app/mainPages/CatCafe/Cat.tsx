@@ -17,7 +17,8 @@ export const Cat = forwardRef<{ walkToCan: () => void }, { x: number; y: number;
       onStartShouldSetPanResponder: () => true,
       onPanResponderGrant: () => {
         // push current value into offset and reset value to 0
-        pan.extractOffset();
+        pan.extractOffset(
+        );
       },
       onPanResponderMove: Animated.event(
         [null, { dx: pan.x, dy: pan.y }],
