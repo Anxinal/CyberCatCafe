@@ -4,6 +4,7 @@ import catBackground from '@/assets/images/cafe-background.jpg'
 import { Cat } from './Cat.tsx'
 import { CatFoodCan } from './catFoodCan.jsx'
 import { levelToExp, updateLevel, getPetStats } from '../../account/petInfo.js'
+import heartIcon from '@/assets/images/heartIcon.png'
 import * as Progress from 'react-native-progress'
 
 const WALL_BOTTOM = 320;
@@ -49,13 +50,54 @@ export function Cafe() {
         <TouchableOpacity style={styles.feedCatButton} onPress={feedCat}>
           <Text>Feed Cat!</Text>
         </TouchableOpacity>
-        <Progress.Bar progress={catEXP / levelToExp(catLevel)} width={200}></Progress.Bar>
+        <View style={styles.container}>
+          <View style={styles.icon}>
+            <ImageBackground source={heartIcon} style={styles.heart}></ImageBackground>
+            <Text style={styles.text}>Level {String(catLevel)}</Text>
+          </View>
+
+          <Progress.Bar progress={catEXP / levelToExp(catLevel)}
+            style={styles.EXPbar}
+            animated={true}
+            unfilledColor={'rgba(255, 255, 255, 0.5)'}
+            color={'rgb(255, 143, 177)'}
+          ></Progress.Bar>
+        </View>
       </ImageBackground>
     </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  icon: {
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    top: -25,
+    zIndex: 2,
+    top: 190,
+    left: 240,
+  },
+  heart: {
+    width: 70,
+    height: 70,
+    position: 'absolute',
+    zIndex: 0,
+  },
+  text: {
+    fontSize: 10,
+    fontweight: 'bold',
+    color: 'white',
+    textAlign: 'center',
+    position: 'absolute',
+    zIndex: 1,
+  },
   feedCatButton: {
     height: 30,
     width: 80,
@@ -68,5 +110,16 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     backgroundColor: 'rgb(228, 156, 3)',
+  },
+  EXPbar: {
+    height: 30,
+    width: 150,
+    backgrounColor: 'rgb(255, 143, 177)',
+    position: 'absolute',
+    top: 200,
+    left: 250,
+    borderRadius: 20,
+    borderColor: 'rgb(212, 83, 128)',
+    borderWidth: 2,
   }
 });
