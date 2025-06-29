@@ -41,7 +41,7 @@ export const Cat = forwardRef<{ walkToCan: () => void }, { x: number; y: number;
     useImperativeHandle(ref, () => ({ walkToCan }));
 
     const imageSource = eatState
-      ? require('@/assets/images/CatGif.gif') :
+      ? require('@/assets/images/CatWalking.gif') :
       require('@/assets/images/CatGif.gif');
 
     return (
