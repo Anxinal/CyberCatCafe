@@ -23,7 +23,7 @@ const navigateToLogin = () => {useRouter().push("/")};
  It returns nothing and since the process is async, another set function is required for a temporary variable in the 
  app page(with useState) so that the page can be re-rendered after the information is retrieved 
 */
-export function getUserInfo(attribute, setFunction = () => {}){
+export function getUserInfo(attribute, setFunction = () => {}, user = currentUser){
 
 /* Legacy implementation. Left for reference
 
@@ -50,7 +50,7 @@ export function getUserInfo(attribute, setFunction = () => {}){
   }
 });
 */
-    return getDoc(doc(collectionRef, currentUser)).then( (doc) => {
+    return getDoc(doc(collectionRef, user)).then( (doc) => {
       if (doc.exists()) {
         const targetData = doc.data()[attribute];
         setFunction(targetData);

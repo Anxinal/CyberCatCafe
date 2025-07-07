@@ -10,9 +10,10 @@ const signOut = () => {
 const toPage = (pageName) => () => {useRouter().push("/mainPages/UserCenter/Settings/" + pageName)}
 
 
-export const  settings = [ 
+export const settings = [ 
                    ["Display settings", toPage("DisplaySettings"), "laptop"],
                    ["Update Profiles", toPage("UpdateProfile"), "user"],
+                   ["Friend", toPage("Friend/Screen"), "team" ],
                    ["Cat Shops", () => {}, "shoppingcart"],
                    ["About", toPage("About"), "hearto"], 
                    ["Sign out", signOut, "home"],
