@@ -12,7 +12,11 @@ export const IconList = {
    collapse : () => (<Ionicons name="chevron-expand" size={24} color="rgb(255, 255, 255)" />),
    Search : () => (<FontAwesome5 name="search" size={28} color="black" />),
    QuitSearch: () => (<AntDesign name="back" size={28} color="black" />),
-   Delete : () => (<MaterialCommunityIcons name="delete" size={24} color="black" />),
-   Gift: () => (<FontAwesome5 name="gifts" size={28} color="black" />),
+   Delete : () => (<MaterialCommunityIcons name="delete" size={28} color="red" />),
+   Gift: () => (<FontAwesome5 name="gifts" size={28} color="green" />),
    AddFriend : () => (<AntDesign name="adduser" size={28} color="black" />),
+   RejectFriend : () => (<AntDesign name="close" size={28} color="black" />),
+   Nudge : () => (<AntDesign name="notification" size={29} color="green" />),
+   MailAllRead: () => (<Ionicons name="mail-sharp" size={28} color="black" />),
+   MailUnread: () => (<Ionicons name="mail-unread-sharp" size={28} color="black" />)
 }

@@ -1,7 +1,6 @@
-import { TouchableOpacity } from "react-native";
-import { IconList } from "../../constants/IconList";
+import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
+import { IconList } from "../constants/IconList.js";
 import React from "react";
-import { View, Text } from 'react-native'
 
 export const IconButton = ({iconName, action, style = {}}) => {
   const IconComponent = iconName in IconList ? IconList[iconName] : <Text>NOT FOUND</Text>;
@@ -15,6 +14,7 @@ export const IconButton = ({iconName, action, style = {}}) => {
     </View>
   )
 }
+
 const defaultStyle = StyleSheet.create({
   button: { 
     width: 30,
@@ -28,4 +28,3 @@ const defaultStyle = StyleSheet.create({
     color: "rgb(0, 0, 0)",
   },
 })
-export default IconButton

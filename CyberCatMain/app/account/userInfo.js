@@ -1,5 +1,6 @@
 import { app } from "../../firebaseConfig.js"
-import { getFirestore, doc, getDoc, collection,setDoc, updateDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, collection,setDoc, updateDoc, 
+         query, where, or, limit, getDocs } from "firebase/firestore";
 import { getAuth, onAuthStateChanged, 
          signInWithEmailAndPassword, signOut,
          createUserWithEmailAndPassword } from "firebase/auth";
@@ -8,12 +9,11 @@ import { useRouter } from "expo-router";
 import {displayError, displayNull, displayToast} from '../../components/ToastMessage.js'
 
 const db = getFirestore(app);
-const collectionRef = collection(db, "users");
+export const collectionRef = collection(db, "users");
 const auth = getAuth();
 
 // 0000 is the default user id that stores all default user information in the database
 let currentUser = "0000";
-
 
 const navigateToMain = (router) => {router.push('mainPages/UserCenter/screen');};
 const navigateToLogin = () => {useRouter().push("/")};
@@ -23,7 +23,7 @@ const navigateToLogin = () => {useRouter().push("/")};
  It returns nothing and since the process is async, another set function is required for a temporary variable in the 
  app page(with useState) so that the page can be re-rendered after the information is retrieved 
 */
-export function getUserInfo(attribute, setFunction = () => {}, user = currentUser){
+export async function getUserInfo(attribute, setFunction = () => {}, user = currentUser){
 
 /* Legacy implementation. Left for reference
 
@@ -66,6 +66,7 @@ export function getUserInfo(attribute, setFunction = () => {}, user = currentUse
   
 }
 
+export const getCurrentUserID = () => currentUser;
 
 
 /* This function takes in the user informations in the log in page and update the 
@@ -79,7 +80,7 @@ export function signInUser(email, password, router){
          .then((userCredential) => {
             // Signed in 
             displayToast("Login Success");
-            currentUser = userCredential.user.uid;
+            currentUser = userCredential.user.uid;;
             navigateToMain(router);
          }).catch(displayError("Meow? Wrong password?"));
     
@@ -126,13 +127,13 @@ export function updateUserInfo(attribute, value){
 
 }
 
-export function mapUserInfo(attribute, mapFunction){
+export async function mapUserInfo(attribute, mapFunction, user = currentUser) {
   
-  return getDoc(doc(collectionRef, currentUser))
-    .then(
-    (doc) => doc.data()[attribute]).then((original) => 
+  return getDoc(doc(collectionRef, user))
+    .then((doc) => doc.data()[attribute]).then((original) => 
       {
-        updateDoc(doc(collectionRef, currentUser),
+        console.log("original:")
+        updateDoc(doc(collectionRef, user),
         {
            [attribute] : mapFunction(original)
         })
@@ -140,3 +141,24 @@ export function mapUserInfo(attribute, mapFunction){
       });
 
 }
+
+const FilterRange = 200; // The range of the search query, can be adjusted
+
+export const getSearchFriendResults = async (search, setSearchResults) => {
+    // This function should implement the logic to search for users by username
+    // and update the searchResults state with the found user IDs.
+    console.log("Search query accepted: ", search);
+    ;
+    const q =  query(collectionRef, where("username", ">=", search),limit(20));
+ 
+    let results = [];
+    await getDocs(q).then((querySnapshot) => {  
+        querySnapshot.forEach((doc) => {
+                if(doc.id === currentUser) return; 
+                results.push(doc.id); // Collect user IDs
+                console.log(doc.id, " => ", doc.data().username); //For testing purposes
+        });
+        console.log("Search results: ", results);
+        setSearchResults(results);
+   })
+  }
