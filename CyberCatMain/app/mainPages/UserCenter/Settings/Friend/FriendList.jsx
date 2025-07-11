@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import React, {useEffect, useState} from 'react'
 import { getUserInfo, mapUserInfo } from '../../../../account/userInfo.js';
 import { IconButton } from '@/components/IconButton.jsx';
-import { Request, FriendRequestType } from '../../../../../data/SendFriendRequest.ts';
+import { Request, FriendRequestType, RequestwithAlert } from '../../../../../data/SendFriendRequest.ts';
 import { useIsFocused } from '@react-navigation/native';
 
 
@@ -26,20 +26,22 @@ const ButtonPanels = ({userID}) => {
     return (
         <View style={styles.buttonRow}>
                 <IconButton iconName="Delete" action={() => {
+                  sendAlertRequest(userID, FriendRequestType.FRIEND_DELETE);
                     }}/>
                 <IconButton iconName="Nudge" action={() => {
-                  sendRequest(userID, FriendRequestType.FRIEND_NUDGE);
+                  sendAlertRequest(userID, FriendRequestType.FRIEND_NUDGE);
                 }}/>
                 <IconButton iconName="Gift" action={() => {
-                  sendRequest(userID, FriendRequestType.FRIEND_GIFT);
+                  sendAlertRequest(userID, FriendRequestType.FRIEND_GIFT);
                 }}/>  
         </View>
     );
 };
 
-const sendRequest = (userID, Type) => {
-      const rq = Request.create(Type, userID);
-      rq.issueRequest();
+const sendAlertRequest = (userID, Type) => {
+      const rq = RequestwithAlert.create(Type, userID);
+      // rq.showAlert(); used in android
+      rq.issueRequest(); // used for testing
 }
 export function FriendList() {
 

@@ -1,3 +1,4 @@
+import { Alert } from 'react-native';
 import { getUserInfo, mapUserInfo,getCurrentUserID } from '../app/account/userInfo';
 import { displayToast,displayError } from '@/components/ToastMessage'; 
 // The following represent different types of friend notifications
@@ -7,6 +8,7 @@ export enum FriendRequestType {
   FRIEND_REQUEST_REJECTED = 2,
   FRIEND_GIFT = 3,
   FRIEND_NUDGE = 4,
+  FRIEND_DELETE = 5,
 }
 
 
@@ -65,7 +67,7 @@ export class Request {
                 throw new Error("Unknown request type");
         }
     }
-
+  
   //For connection with firebase
   public static createFromJSON(json: any): Request {
     console.log(json);
@@ -130,6 +132,34 @@ export class Request {
   }
   
 
+}
+
+export class RequestwithAlert extends Request {
+
+    alertMessage:string = "";
+
+     showAlert(){
+      console.log("Alert");
+      Alert.alert("Confirmation", this.alertMessage, [{
+        text: 'Yes',
+        onPress: () => { this.issueRequest(); },
+      }],
+     {cancelable: true}
+    );
+
+    }
+    public static create(type: number, targetID: string, username: string): RequestwithAlert {
+        switch(type){
+          case FriendRequestType.FRIEND_GIFT:
+                return new GiftRequest(targetID, username);
+          case FriendRequestType.FRIEND_NUDGE:
+                return new NudgeRequest(targetID, username);
+          case FriendRequestType.FRIEND_DELETE:
+                return new DeleteRequest(targetID, username);
+          default:
+                throw new Error("Unknown type of data");
+        }       
+    }
 }
 
 class FriendRequest extends Request { 
@@ -197,10 +227,10 @@ class RejectRequest extends Request {
     message: string = "Your friend request has been rejected by ";
 }
 
-class GiftRequest extends Request { 
+class GiftRequest extends RequestwithAlert { 
     type: number = FriendRequestType.FRIEND_GIFT;
     message: string = "You have received a gift from ";
-
+    alertMessage: string = "Are you sure that you want to send 10 coins to your friend ?"
      public async issueRequest() {
         try{
           const currentCoins = await getUserInfo("coins");
@@ -218,12 +248,25 @@ class GiftRequest extends Request {
     }
 }
 
-class NudgeRequest extends Request { 
+class NudgeRequest extends RequestwithAlert { 
     type: number = FriendRequestType.FRIEND_NUDGE;
     message: string = "You have received a nudge from ";
+    alertMessage: string = "Are you sure you want to nudge your friend ?";
 }
 
-
+class DeleteRequest extends RequestwithAlert {
+  type: number = FriendRequestType.FRIEND_DELETE;
+  message: string = "";
+  alertMessage: string = "Are you sure you want to delete your friend ?";
+  public async issueRequest(): Promise<void> {
+      mapUserInfo("friendList", (friendList: any[]) => {;
+        return friendList.filter((id) => id !== this.targetID);
+      });
+      await mapUserInfo("friendList", (friendList: any[]) => {
+        return friendList.filter((id) => id !== this.fromID);
+      }, this.targetID);
+  }
+}
 
 
 

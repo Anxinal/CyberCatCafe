@@ -119,7 +119,7 @@ Value: The new value of the attribute
 If you want to reload the page remember that you should do it manually in your app page
 For example use .then(setFunction) to trigger re-render
 */
-export function updateUserInfo(attribute, value){
+export async function updateUserInfo(attribute, value){
 
   return updateDoc(doc(collectionRef, currentUser), {
     [attribute] : value
