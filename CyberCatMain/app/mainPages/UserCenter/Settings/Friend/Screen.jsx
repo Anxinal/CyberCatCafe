@@ -5,16 +5,29 @@ import React, { useEffect, useState, useRef } from 'react';
 import {IconButton} from '@/components/IconButton.jsx';
 import Toast from 'react-native-toast-message';
 import { useRouter } from 'expo-router';
+import { getUserInfo } from '../../../../account/userInfo';
+import { useIsFocused } from '@react-navigation/native';
+
 const Friend = () => {
   let [search, setSearch] = useState("");
   let searched = useRef(false);
-
+  let [allread, setAllread] = useState(true);
+  const focused = useIsFocused();
 
   const toInbox = () => {
     const router= useRouter();
     router.push("./FriendInbox");
   }
 
+  const checkIfAllRequestsRead = async () => {
+
+      const requestList = await getUserInfo("friendRequestList");
+      setAllread(requestList.filter(req => !req.read).length == 0);
+  }
+
+  useEffect(() => {
+    checkIfAllRequestsRead();
+  },[focused]);
 
   const resetSearch = () => {
     searched.current = false;
@@ -40,7 +53,7 @@ const Friend = () => {
                 />
                 {!searched.current ? <IconButton  iconName="Search" action={searchFriend} style={{width: 50}}/>      
                                   : <IconButton iconName = "QuitSearch" action ={resetSearch} style = {{width: 50}}/>}
-                <IconButton iconName = "MailAllRead" action = {toInbox} style = {{width: 50}}/>
+                <IconButton iconName = {allread ? "MailAllRead" : "MailUnread"} action = {toInbox} style = {{width: 50}}/>
             </View>
         {searched.current ? <SearchList keyword = {search}/> : <FriendList />}
         <Toast />

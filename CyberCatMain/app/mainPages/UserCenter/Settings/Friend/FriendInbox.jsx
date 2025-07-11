@@ -2,7 +2,7 @@ import { FriendNotiCard } from "../../../../../components/FriendNoti.tsx";
 import { Request } from "../../../../../data/SendFriendRequest";
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { getCurrentUserID, getUserInfo, collectionRef } from "../../../../account/userInfo";
+import { getCurrentUserID, getUserInfo, collectionRef, updateUserInfo } from "../../../../account/userInfo";
 import { HrefLink } from "@/components/TextLink.jsx"
 import { onSnapshot, doc} from "firebase/firestore";
 
@@ -18,10 +18,15 @@ const FriendNotiList = () => {
     setFriendNoti(doc.data().friendRequestList)
   });
 
+  const updateReadStatus = (rqJsonList) => {
+     return rqJsonList.map((rqJson) => ({...rqJson, read: true}));
+  }
   useEffect(
     
     async () => {
-      setFriendNoti(await getUserInfo("friendRequestList"))
+      const notiList = await getUserInfo("friendRequestList");
+      updateUserInfo("friendRequestList", updateReadStatus(notiList));
+      setFriendNoti(notiList);
     },[]);
 
   return(

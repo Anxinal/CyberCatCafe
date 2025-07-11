@@ -31,6 +31,7 @@ export class Request {
     type: number = 0; // Type of the request
     requestID: string; // Unique ID for the request, can be used to identify it in the system
     message: string = ""; // Message associated with the request, can be used for notifications
+    read: boolean = false;
 
     // Combined constructor to handle both creation and loading from data
     constructor(
@@ -38,20 +39,21 @@ export class Request {
       name: string, 
       fromID?: string, 
       timestamp?: number, 
-      requestID?: string
+      requestID?: string,
+      read?: boolean,
     ) {
         this.name = name;
         this.fromID = fromID ?? getCurrentUserID();
         this.timestamp = timestamp ?? Date.now();
         this.targetID = targetID;
         this.requestID = requestID ?? `${this.name}-${this.timestamp}`;
+        this.read = read ?? false;
         console.log(`Request created with ID: ${this.requestID} for target: ${this.targetID}`);
     }
 
     // Two separate factory methods for creating requests
     public static create(type: number,targetID: string, username: string): Request { 
-     
-      console.log("Create request of type: " + type + " for targetID: " + targetID);
+
         switch(type) {
             case FriendRequestType.NEWFRIEND_REQUEST:
                 return new FriendRequest(targetID, username);
@@ -70,18 +72,17 @@ export class Request {
   
   //For connection with firebase
   public static createFromJSON(json: any): Request {
-    console.log(json);
       switch(json.type) {
             case FriendRequestType.NEWFRIEND_REQUEST:
-                return new FriendRequest(json.targetID, json.name, json.fromID, json.timestamp, json.requestID);
+                return new FriendRequest(json.targetID, json.name, json.fromID, json.timestamp, json.requestID, json.read);
             case FriendRequestType.FRIEND_REQUEST_ACCEPTED:
-                return new AcceptRequest(json.targetID, json.name, json.fromID, json.timestamp, json.requestID);
+                return new AcceptRequest(json.targetID, json.name, json.fromID, json.timestamp, json.requestID, json.read);
             case FriendRequestType.FRIEND_REQUEST_REJECTED:
-                return new RejectRequest(json.targetID, json.name, json.fromID, json.timestamp, json.requestID);
+                return new RejectRequest(json.targetID, json.name, json.fromID, json.timestamp, json.requestID, json.read);
             case FriendRequestType.FRIEND_GIFT:
-                return new GiftRequest(json.targetID, json.name, json.fromID, json.timestamp, json.requestID);
+                return new GiftRequest(json.targetID, json.name, json.fromID, json.timestamp, json.requestID, json.read);
             case FriendRequestType.FRIEND_NUDGE:
-                return new NudgeRequest(json.targetID, json.name, json.fromID, json.timestamp, json.requestID);
+                return new NudgeRequest(json.targetID, json.name, json.fromID, json.timestamp, json.requestID. json.read);
             default:
                 throw new Error("Unknown request type");
         }
@@ -128,6 +129,7 @@ export class Request {
       fromID: getCurrentUserID(),
       timestamp: request.timestamp,
       requestID: request.requestID,
+      read: request.read,
     };
   }
   
@@ -170,7 +172,7 @@ class FriendRequest extends Request {
        onPress: async () =>{ 
         Request.create(
         FriendRequestType.FRIEND_REQUEST_ACCEPTED, 
-        this.fromID, await getUserInfo("username")).issueRequest()
+        this.fromID, await getUserInfo("username")).issueRequest();
         this.delete();
     }},
       {icon: 'RejectFriend', onPress: async () => {
