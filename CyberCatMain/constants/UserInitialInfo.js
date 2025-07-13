@@ -19,5 +19,7 @@ export const UserInitInfo = (username) => ( {
   ConsecutiveLoginDays: 0,
   TotalLoginDays: 0,
   
+  friendList: [],
+  friendRequestList: [],
 });
 // For totalFocus, it refers to total focus time which is recorded in seconds.
