@@ -1,6 +1,7 @@
 import { Alert } from 'react-native';
 import { getUserInfo, mapUserInfo,getCurrentUserID } from '../app/account/userInfo';
 import { displayToast,displayError } from '@/components/ToastMessage'; 
+import { getApproximateView } from './TimerConvert';
 // The following represent different types of friend notifications
 export enum FriendRequestType {
   NEWFRIEND_REQUEST = 0,
@@ -32,6 +33,7 @@ export class Request {
     requestID: string; // Unique ID for the request, can be used to identify it in the system
     message: string = ""; // Message associated with the request, can be used for notifications
     read: boolean = false;
+    coolDownTime: number = 0;
 
     // Combined constructor to handle both creation and loading from data
     constructor(
@@ -91,21 +93,35 @@ export class Request {
 
   //Issue request happens only when the request is sent to the target user
    public async issueRequest(){
-
-    const nameTemp = await getUserInfo("username");
-    this.name = nameTemp;
-
-    mapUserInfo("friendRequestList", (requestList: any[]) => {
-
-       requestList.push(Request.tojson(this));
-       console.log("After" + requestList);
+    try{
+      const nameTemp = await getUserInfo("username");
+      this.name = nameTemp;
+      await this.checkCoolDown();
+      mapUserInfo("friendRequestList", (requestList: any[]) => {
+        requestList.push(Request.tojson(this));
      // Limit the number of requests to MAX_REQUESTS
-    return requestList.slice(0, MAX_REQUESTS); 
-    }, this.targetID).then(() => {displayToast("Your Request is sent successfully")})
-    .catch((err) => {
+      return requestList.slice(0, MAX_REQUESTS); 
+      }, this.targetID).then(() => {displayToast("Your Request is sent successfully")})
+      .catch((err) => {
+        displayError("Request Upload Failed")(err)
+      });
+    }catch(err){
       displayError("Request Upload Failed")(err)
-      console.log(err.message)
-    });
+    }
+    
+  }
+
+  public async checkCoolDown(): Promise<void>{
+    
+    if(this.coolDownTime <= 0) return;
+    const requests: any[] = await getUserInfo("friendRequestList", ()=> {}, this.targetID);
+    const mostRecentTime = requests.map(Request.createFromJSON)
+                                   .filter((req: Request) => req.type == this.type && req.fromID == getCurrentUserID())
+                                   .map((req: Request) => req.timestamp)
+                                   .reduce((pre, cur) => Math.max(pre, cur), 0);
+    if (Date.now() - mostRecentTime  < this.coolDownTime) {
+      throw new Error("The request is in cool down. You need to wait for " + getApproximateView(mostRecentTime - Date.now()));
+    }
   }
 
 
@@ -194,6 +210,8 @@ class FriendRequest extends Request {
       }
     }
 
+
+
     public async checkIfAlreadyFriends(): Promise<void> {
        const currentFriendList = await getUserInfo("friendList");
        if(currentFriendList.includes(this.fromID)) throw new Error("You are already friends with this user!");
@@ -233,6 +251,7 @@ class GiftRequest extends RequestwithAlert {
     type: number = FriendRequestType.FRIEND_GIFT;
     message: string = "You have received a gift from ";
     alertMessage: string = "Are you sure that you want to send 10 coins to your friend ?"
+    coolDownTime: number = 1800;
      public async issueRequest() {
         try{
           const currentCoins = await getUserInfo("coins");
@@ -254,12 +273,15 @@ class NudgeRequest extends RequestwithAlert {
     type: number = FriendRequestType.FRIEND_NUDGE;
     message: string = "You have received a nudge from ";
     alertMessage: string = "Are you sure you want to nudge your friend ?";
+    needsCoolDown: boolean = true;
+    coolDownTime: number = 24 * 3600;
 }
 
 class DeleteRequest extends RequestwithAlert {
   type: number = FriendRequestType.FRIEND_DELETE;
   message: string = "";
   alertMessage: string = "Are you sure you want to delete your friend ?";
+  
   public async issueRequest(): Promise<void> {
       mapUserInfo("friendList", (friendList: any[]) => {;
         return friendList.filter((id) => id !== this.targetID);
