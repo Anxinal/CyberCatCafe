@@ -7,7 +7,7 @@ import Toast from 'react-native-toast-message';
 import { useRouter } from 'expo-router';
 import { getUserInfo } from '../../../../account/userInfo';
 import { useIsFocused } from '@react-navigation/native';
-
+import { displayToast } from '../../../../../components/ToastMessage';
 const Friend = () => {
   let [search, setSearch] = useState("");
   let searched = useRef(false);
@@ -18,15 +18,19 @@ const Friend = () => {
     const router= useRouter();
     router.push("./FriendInbox");
   }
+  const toRanking = () => {
+    const router = useRouter();
+    router.push("./FriendRanking");
+  }
 
   const checkIfAllRequestsRead = async () => {
-
       const requestList = await getUserInfo("friendRequestList");
       setAllread(requestList.filter(req => !req.read).length == 0);
   }
 
   useEffect(() => {
     checkIfAllRequestsRead();
+    if(!allread) displayToast("You have new unread notification(s)");
   },[focused]);
 
   const resetSearch = () => {
@@ -54,6 +58,7 @@ const Friend = () => {
                 {!searched.current ? <IconButton  iconName="Search" action={searchFriend} style={{width: 50}}/>      
                                   : <IconButton iconName = "QuitSearch" action ={resetSearch} style = {{width: 50}}/>}
                 <IconButton iconName = {allread ? "MailAllRead" : "MailUnread"} action = {toInbox} style = {{width: 50}}/>
+                <IconButton iconName = "Ranking" action = {toRanking} style = {{width: 50}}/>
             </View>
         {searched.current ? <SearchList keyword = {search}/> : <FriendList />}
         <Toast />

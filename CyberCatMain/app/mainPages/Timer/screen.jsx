@@ -27,11 +27,11 @@ export default function Timer() {
   const convertSessionToCoin = (t) => (50 + Math.floor(totalTime / 60) * 2);
   
   const countSession = () => {
-    let today = new Date();
+  
     const newSession = {
         time: totalTime,
         distraction: distraction.current,
-        date: today.toString(),
+        date: Date.now(),
       };
     getUserInfo("focusSession").then((session) => {
       session.push(newSession);

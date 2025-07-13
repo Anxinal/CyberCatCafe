@@ -2,6 +2,7 @@ import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AntDesign from '@expo/vector-icons/AntDesign';  
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons'; 
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
 export const IconList = {
    time : () => (<Ionicons name="timer-sharp" size={40} color="black" />),
@@ -18,5 +19,6 @@ export const IconList = {
    RejectFriend : () => (<AntDesign name="close" size={28} color="black" />),
    Nudge : () => (<AntDesign name="notification" size={29} color="green" />),
    MailAllRead: () => (<Ionicons name="mail-sharp" size={28} color="black" />),
-   MailUnread: () => (<Ionicons name="mail-unread-sharp" size={28} color="black" />)
+   MailUnread: () => (<Ionicons name="mail-unread-sharp" size={28} color="black" />),
+   Ranking: () => (<FontAwesome6 name="ranking-star" size={24} color="black" />)
 }
