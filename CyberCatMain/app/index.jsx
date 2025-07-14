@@ -1,9 +1,23 @@
-import {app} from '../firebaseConfig.js'
+import 'react-native-get-random-values';
+import 'react-native-url-polyfill/auto';        
+import { firebaseConfig } from "../firebaseConfig.js";
+import { initializeApp } from "firebase/app";
+import 'expo-router/entry';  
+const config = firebaseConfig;
+export const initapp = initializeApp(config);
+
+import { getAuth } from 'firebase/auth';
+export const auth = getAuth();
+
 import { useState } from 'react';
 import {
+  SafeAreaView,
   View,
   Text,
   TextInput,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import { useRouter } from 'expo-router'; // or from 'expo-router' if you’re using Expo Router
 import { signInUser } from './account/userInfo';
@@ -26,44 +40,59 @@ const Login = () => {
   };
 
   return (
-    <View>
-      <View style={accountStyles.logoContainer}>
-        <Text style={accountStyles.logoText}>Welcome !</Text>
-         <CatLogoImage />
-      </View>
-      
-      <View style={accountStyles.loginInputContainer}>
-          <View style={accountStyles.inputContainer}>
-      <Text style={accountStyles.infoText}> Email:</Text>
-      <TextInput
-        style = {accountStyles.inputStyle}
-        onChangeText={setUsername}
-        placeholder="enter email"
-        placeholderTextColor="grey"
-        value = {username}
-      />
-    </View>
-          <View style={accountStyles.inputContainer}>
-      <Text style={accountStyles.infoText}>password:</Text>
-      <TextInput
-        style = {accountStyles.inputStyle}
-        onChangeText={setPassword}
-        placeholder= "enter password"
-        secureTextEntry
-        placeholderTextColor="grey"
-        value = {password}
-      />
-    </View>
-      </View>
+    <SafeAreaView style={accountStyles.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={accountStyles.flexOne}
+      >
+        <ScrollView
+          contentContainerStyle={accountStyles.scrollContent}
+          keyboardShouldPersistTaps="handled"
+        >
+          <View style={accountStyles.logoContainer}>
+            <Text style={accountStyles.logoText}>Welcome!</Text>
+            <CatLogoImage />
+          </View>
 
-      <View style={accountStyles.buttonsContainer}>
-          <LoginButton action={loginPress} buttonText='Login'/>
-          <LoginButton action={registerPress} buttonText='Register a new account'/>
-          <LoginButton action={() => useRouter().push("/mainPages/Timer/screen")} buttonText = 'GT timer'/>
-      </View>
-      <Toast/>
-    </View>
+          <View style={accountStyles.loginInputContainer}>
+            <View style={accountStyles.inputContainer}>
+              <Text style={accountStyles.infoText}>Email:</Text>
+              <TextInput
+                style={accountStyles.inputStyle}
+                onChangeText={setUsername}
+                placeholder="Enter email"
+                placeholderTextColor="grey"
+                value={username}
+                keyboardType="email-address"
+                autoCapitalize="none"
+              />
+            </View>
+            <View style={accountStyles.inputContainer}>
+              <Text style={accountStyles.infoText}>Password:</Text>
+              <TextInput
+                style={accountStyles.inputStyle}
+                onChangeText={setPassword}
+                placeholder="Enter password"
+                placeholderTextColor="grey"
+                secureTextEntry
+                value={password}
+              />
+            </View>
+          </View>
+
+          <View style={accountStyles.buttonsContainer}>
+            <LoginButton action={loginPress} buttonText="Login" />
+            <LoginButton action={registerPress} buttonText="Register" />
+            <LoginButton
+              action={() => router.push('/mainPages/Timer/screen')}
+              buttonText="GT Timer"
+            />
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+      <Toast />
+    </SafeAreaView>
   );
-};
+}
 
 export default Login;
