@@ -24,7 +24,7 @@ export const UserPanel = () =>{
    }, [username, focusHour])
 
    return  (
-    <View style = {{marginBottom: 5, height: 200, backgroundColor: "#fff"}}>
+    <View style = {{marginBottom: 5, height: 200, backgroundColor: "#fff", marginTop:30}}>
       <View style = {{borderColor: 'grey', borderWidth: 2, borderRadius: 10,
                      height: 60, width: '95%',
                     flexDirection:"column", marginHorizontal: 'auto', marginVertical: 10,

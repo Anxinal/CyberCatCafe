@@ -20,7 +20,9 @@ export const accountStyles = StyleSheet.create({
 
   logoContainer: {
     alignItems: 'center',
-    marginBottom: 30,
+    marginVertical: 20,
+    marginHorizontal: 20,
+    paddingTop: 20,
   },
   logoText: {
     fontSize: textFont.large,
@@ -28,16 +30,24 @@ export const accountStyles = StyleSheet.create({
     color: textColor.normal,
     marginBottom: 10,
   },
+  RegisterLogoText: {
+     fontSize: textFont.large - 10,
+    fontWeight: 'bold',
+    color: textColor.normal,
+    marginBottom: 10,
+  },
 
   loginInputContainer: {
-    width: '100%',
+    width: '98%',
     alignSelf: 'center',
     marginBottom: 30,
+    marginHorizontal: 10,
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 8,
+    marginHorizontal: 10,
     width: '100%',
     minWidth: 300,
   },
@@ -53,10 +63,10 @@ export const accountStyles = StyleSheet.create({
     borderColor: componentColor.border,
     borderRadius: 4,
     height: 40,
-    width: 300,
+    width: 200,
     color: textColor.normal,
     fontSize: 16,
-    paddingHorizontal: 8,
+    paddingHorizontal: 10,
   },
 
   buttonsContainer: {

@@ -8,7 +8,7 @@ import { registerNewUser } from './userInfo';
 import { useRouter } from 'expo-router'; 
 import Toast from 'react-native-toast-message';
 import { LoginButton, CatLogoImage } from './AccountReusableComponents.tsx';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { accountStyles } from '../../constants/AccountStyles.ts'
 
 const register = () => {
@@ -25,9 +25,9 @@ const register = () => {
   const navigateToLogin = () => {useRouter().push("/")};
 
   return (
-    <View>
+    <SafeAreaView style = {accountStyles.container}>
       <View style={accountStyles.logoContainer}>
-        <Text style={accountStyles.logoText}>Your meow journey starts soon</Text>
+        <Text style={accountStyles.RegisterLogoText}>Your meow journey starts soon</Text>
         <CatLogoImage/>
       </View>
 
@@ -72,7 +72,7 @@ const register = () => {
           <LoginButton action = {navigateToLogin} buttonText = "Back to login page" />
       </View>
       <Toast/>
-    </View>
+    </SafeAreaView>
   );
 };
 

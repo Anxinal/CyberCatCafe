@@ -53,7 +53,8 @@ export const timerStyles = StyleSheet.create({
     color: textColor.normal,
   },
   TimerTitleView: {
-    marginBottom: 30,
+    marginBottom: 20,
+    marginTop: 45,
     borderColor: componentColor.border,
     borderWidth: 1,
     borderRadius: 5,

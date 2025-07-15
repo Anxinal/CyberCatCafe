@@ -24,7 +24,7 @@ export default function RootLayout() {
          <Stack>
            <Stack.Screen name= "index" options={{headerShown: false}}/>
            <Stack.Screen name= "account/register" options={{headerShown: false}}/>
-           <Stack.Screen name = "mainPages/UserCenter/Screen" options={{headerShown: false}}/>
+           <Stack.Screen name = "mainPages" options={{headerShown: false}}/>
            <Stack.Screen name="+not-found" options = {{title:'404'}}/> 
          </Stack>
       <StatusBar style="auto" />
