@@ -22,8 +22,9 @@ export default function RootLayout() {
     // colorScheme === 'dark' ? DarkTheme : DefaultTheme
     <ThemeProvider value={DefaultTheme}>
          <Stack>
-           <Stack.Screen name= "account/register" options={{headerShown: false}}/>
            <Stack.Screen name= "index" options={{headerShown: false}}/>
+           <Stack.Screen name= "account/register" options={{headerShown: false}}/>
+           <Stack.Screen name = "mainPages/UserCenter" options={{headerShown: false}}/>
            <Stack.Screen name="+not-found" options = {{title:'404'}}/> 
          </Stack>
       <StatusBar style="auto" />
