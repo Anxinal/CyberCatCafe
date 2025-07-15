@@ -84,34 +84,49 @@ export const accountStyles = StyleSheet.create({
     marginTop: 20, 
     marginBottom: 40},
 
-  listSeperator: {
-    marginTop: 10,
-    backgroundColor: 'grey', 
-    height: 1, 
-    width: '70%', 
-    justifyContent: 'center', 
-    marginHorizontal:'auto'},
 
   optionText: {
-    flex: 3,
-    fontSize: textFont.medium,
+    fontSize: textFont.medium - 2,
     color: textColor.normal,
     marginLeft: 30,
   },
-  optionView: {
-    marginTop: 10,
-    marginBottom: 10,
-
+  optionDescription: {
+    fontSize: textFont.extrasmall + 2,
+    color: "#aaa",
+    marginLeft: 30,
   },
+
+  optionView: {
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    padding: 1,
+    marginVertical: 8,
+    marginHorizontal: 12,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+    height: 60,
+    alignContent: "space-around",
+  },
+
   StatusView: {
     borderColor: 'grey',
     borderWidth: 1,
     borderRadius: 10,
     flexDirection: 'row',
     width: 180,
+    marginBottom: 5,
     shadowColor: componentColor.shade,
     shadowOffset: {height: 2, width: 2},
     padding: 4,
+  },
+
+  infoTitle:{
+    fontSize: textFont.large ,
+    fontWeight: 'bold',
+    flex: 1,
   }
 });
 
