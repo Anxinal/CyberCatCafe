@@ -11,9 +11,12 @@ import { RestTotalTimeComp } from './ResetTotalTimeComp.tsx';
 import { getUserInfo, mapUserInfo } from '@/app/account/userInfo.js';
 
 const TimerButton = ({label, onPress}) => ( 
-      <TouchableOpacity onPress={onPress} style = {timerStyles.Buttons}>
+      <View style = {timerStyles.Buttons}>
+        <TouchableOpacity onPress={onPress} >
         <Text style ={timerStyles.TimeButtonText}>{label}</Text>
-      </TouchableOpacity>);
+        </TouchableOpacity> 
+      </View>
+      );
 
 const notificationSore = require('@/assets/audio/cat-ring01.mp3');
 
@@ -114,11 +117,13 @@ export default function Timer() {
       <TimerButton onPress={handleStart} label = "start" />
       {paused.current && <RestTotalTimeComp setTotalTime={setTotalTime}  currentTotal={totalTime}/>}
       <TimerButton onPress={handleStop} label = "stop" />
+       
       </View> 
       <TextInput style = {timerStyles.TimeSet}
                  onChangeText={x => setTotalTime(parseInt(x))}
                  editable = {paused.current}
                   />
+     
      
       <Toast/>
     </View>  
