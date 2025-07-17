@@ -17,30 +17,29 @@ export const timerStyles = StyleSheet.create({
   },
 
   Buttons: {
-    width: 90,
-    height: 60, 
-    marginLeft: 0,
-    backgroundColor: componentColor.button,
+    width: 80,
+    height: 55, 
+    marginHorizontal: 5,
+    backgroundColor: "rgba(255, 126, 6, 0.92)",
     justifyContent: 'center',
-    borderRadius: 10,
+    borderRadius: 8,
     borderColor: componentColor.shade,
     borderWidth: 1,
     padding: 4,
-
+    elevation: 3,
   },
 
   ButtonView: {
     width: '100%',
     maxWidth: 500,
-    flex: 5,
-    maxHeight: 500,
     flexDirection: 'row',
     justifyContent:'space-between',
     borderColor: componentColor.border,
+    height: 70,
     borderRadius: 10,
     borderWidth: 2,
-    marginTop: 40,
-    padding: 4, 
+    marginTop: 20,
+    padding: 5, 
   },
 
   TimeButtonText: {
@@ -54,15 +53,20 @@ export const timerStyles = StyleSheet.create({
     color: textColor.normal,
   },
   TimerTitleView: {
-    marginBottom: 30,
+    marginBottom: 20,
+    marginTop: 45,
     borderColor: componentColor.border,
     borderWidth: 1,
     borderRadius: 5,
+    shadowColor: "#aaa",
+    shadowOffset: {height: 3, width: 3},
+    shadowRadius: 4,
   },
   TimerContainer: {
     flexDirection:'column', 
     justifyContent: 'space-between',
     padding: 4,
+    flex: 1,
   },
   countdownText: {
     fontSize: textFont.XXL,

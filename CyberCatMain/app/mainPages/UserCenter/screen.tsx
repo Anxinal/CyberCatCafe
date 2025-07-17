@@ -1,15 +1,20 @@
 import React from "react";
-import { View } from "react-native"
-import { SettingButtons } from "./SettingButtons.jsx"
+import { SettingButtonFrame } from "./SettingButtons"
 import { UserPanel } from "../../account/UserPanel.jsx"
-import { SafeAreaView } from "react-native-safe-area-context";
+import {  SafeAreaView } from "react-native-safe-area-context";
+import { View } from "react-native";
 
 export default function userCenter() {
 
   return  (
-  <SafeAreaView>
+
+    <View style = {{alignItems: 'center', 
+                          flex: 1, 
+                          flexDirection:'column', 
+                          backgroundColor:"#fff"}}>
   <UserPanel/>  
-  <SettingButtons/>
-  </SafeAreaView>
+  <SettingButtonFrame/>
+  </View>
+  
 );
 }

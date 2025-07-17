@@ -20,7 +20,9 @@ export const accountStyles = StyleSheet.create({
 
   logoContainer: {
     alignItems: 'center',
-    marginBottom: 30,
+    marginVertical: 20,
+    marginHorizontal: 20,
+    paddingTop: 20,
   },
   logoText: {
     fontSize: textFont.large,
@@ -28,16 +30,24 @@ export const accountStyles = StyleSheet.create({
     color: textColor.normal,
     marginBottom: 10,
   },
+  RegisterLogoText: {
+     fontSize: textFont.large - 10,
+    fontWeight: 'bold',
+    color: textColor.normal,
+    marginBottom: 10,
+  },
 
   loginInputContainer: {
-    width: '100%',
+    width: '98%',
     alignSelf: 'center',
     marginBottom: 30,
+    marginHorizontal: 10,
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 8,
+    marginHorizontal: 10,
     width: '100%',
     minWidth: 300,
   },
@@ -53,10 +63,10 @@ export const accountStyles = StyleSheet.create({
     borderColor: componentColor.border,
     borderRadius: 4,
     height: 40,
-    width: 300,
+    width: 200,
     color: textColor.normal,
     fontSize: 16,
-    paddingHorizontal: 8,
+    paddingHorizontal: 10,
   },
 
   buttonsContainer: {
@@ -84,34 +94,49 @@ export const accountStyles = StyleSheet.create({
     marginTop: 20, 
     marginBottom: 40},
 
-  listSeperator: {
-    marginTop: 10,
-    backgroundColor: 'grey', 
-    height: 1, 
-    width: '70%', 
-    justifyContent: 'center', 
-    marginHorizontal:'auto'},
 
   optionText: {
-    flex: 3,
-    fontSize: textFont.medium,
+    fontSize: textFont.medium - 2,
     color: textColor.normal,
     marginLeft: 30,
   },
-  optionView: {
-    marginTop: 10,
-    marginBottom: 10,
-
+  optionDescription: {
+    fontSize: textFont.extrasmall + 2,
+    color: "#aaa",
+    marginLeft: 30,
   },
+
+  optionView: {
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    padding: 1,
+    marginVertical: 8,
+    marginHorizontal: 12,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+    height: 60,
+    alignContent: "space-around",
+  },
+
   StatusView: {
     borderColor: 'grey',
     borderWidth: 1,
     borderRadius: 10,
     flexDirection: 'row',
     width: 180,
+    marginBottom: 5,
     shadowColor: componentColor.shade,
     shadowOffset: {height: 2, width: 2},
     padding: 4,
+  },
+
+  infoTitle:{
+    fontSize: textFont.large ,
+    fontWeight: 'bold',
+    flex: 1,
   }
 });
 
