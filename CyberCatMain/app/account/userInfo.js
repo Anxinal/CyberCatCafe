@@ -1,16 +1,16 @@
-import { app } from "../../firebaseConfig.js"
-import { getFirestore, doc, getDoc, collection,setDoc, updateDoc, 
-         query, where, or, limit, getDocs } from "firebase/firestore";
-import { getAuth, onAuthStateChanged, 
+import { initapp, auth } from "../index"
+import { getFirestore, doc, getDoc, collection, setDoc, updateDoc, 
+         query, where, limit, getDocs } from "firebase/firestore";
+import { 
          signInWithEmailAndPassword, signOut,
          createUserWithEmailAndPassword } from "firebase/auth";
 import { UserInitInfo } from '../../constants/UserInitialInfo.js'
 import { useRouter } from "expo-router";
 import {displayError, displayNull, displayToast} from '../../components/ToastMessage.js'
 
-const db = getFirestore(app);
+const db = getFirestore(initapp);
 export const collectionRef = collection(db, "users");
-const auth = getAuth();
+
 
 // 0000 is the default user id that stores all default user information in the database
 let currentUser = "0000";
