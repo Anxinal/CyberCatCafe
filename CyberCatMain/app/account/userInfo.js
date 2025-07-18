@@ -142,15 +142,14 @@ export async function mapUserInfo(attribute, mapFunction, user = currentUser) {
 
 }
 
-const FilterRange = 200; // The range of the search query, can be adjusted
+const FilterRange = 20; // The range of the search query, can be adjusted
 
 export const getSearchFriendResults = async (search, setSearchResults) => {
     // This function should implement the logic to search for users by username
     // and update the searchResults state with the found user IDs.
-    console.log("Search query accepted: ", search);
-    ;
-    const q =  query(collectionRef, where("username", ">=", search),limit(20));
- 
+
+    const q =  query(collectionRef, where("username", ">=", search));
+    const currentFriendList = await getUserInfo("friendList");
     let results = [];
     await getDocs(q).then((querySnapshot) => {  
         querySnapshot.forEach((doc) => {
@@ -159,6 +158,6 @@ export const getSearchFriendResults = async (search, setSearchResults) => {
                 console.log(doc.id, " => ", doc.data().username); //For testing purposes
         });
         console.log("Search results: ", results);
-        setSearchResults(results);
+        setSearchResults(results.filter((id) => !currentFriendList.includes(id)).slice(0,FilterRange));
    })
   }

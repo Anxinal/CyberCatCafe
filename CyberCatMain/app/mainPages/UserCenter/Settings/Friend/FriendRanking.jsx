@@ -6,6 +6,7 @@ import { useIsFocused } from '@react-navigation/native';
 import {RankingParticipant} from './RankingParticipant.ts';
 import { getApproximateView } from '@/data/TimerConvert.ts';
 import { HrefLink } from "@/components/TextLink.jsx";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const FriendRankingCard = ({participant, rank}) => {
   return (
@@ -28,16 +29,15 @@ const FriendRankingCard = ({participant, rank}) => {
   const initialise = async () => {
     const idList = await getUserInfo("friendList");
     const participants = await Promise.all(idList.concat([getCurrentUserID()])
-                                       .map(async (id) => await RankingParticipant.newCompetitor(id)));
+                                       .map(async (id) => await RankingParticipant.newCompetitor(id))).catch(console.error);
+ 
     setFriends(participants.sort((a,b) => b.hrInRanking - a.hrInRanking));
   }
   
   const isFocused = useIsFocused();
   useEffect(() => {
-
     if(!isFocused) return;
     initialise();
-
   },[isFocused]);
 
   if (!friends) {
@@ -50,11 +50,11 @@ const FriendRankingCard = ({participant, rank}) => {
 
 
 export default function FriendRanking() {
-  return (<View>
+  return (<SafeAreaView style = {styles.container}>
     <HrefLink  href="./Screen" text="Go back to friends page"/>
     <FriendRankingList/>
     <Text style = {styles.emptyText}> focus sessions that are within a week from now will be counted. </Text>
-  </View>);
+  </SafeAreaView>);
 }
 
 const styles = StyleSheet.create({

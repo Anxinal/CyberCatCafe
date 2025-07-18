@@ -14,19 +14,22 @@ export class RankingParticipant {
     }
 
     public static async newCompetitor(userID: string){
-        console.log(userID);
-        const today = Date.now() 
-        const converHourInRanking = (focusSessionList: any[]) =>{
-              if(focusSessionList.length == 0) {return 0;}
+        console.log("ID" + userID);
+        const today = Date.now();
 
-                    return focusSessionList.toSorted((sessionA: any, sessionB: any) => sessionB.date - sessionA.date)
+        const converHourInRanking = (focusSessionList: any[]) =>{
+              if(!focusSessionList || focusSessionList.length == 0) {return 0;}
+                    console.log(focusSessionList);
+                    // sorted is not supported here
+                    return focusSessionList.slice().sort((sessionA: any, sessionB: any) => sessionB.date - sessionA.date)
                          .filter((session: any) => (today - session.date <= RankingParticipant.countPeriod))
                          .reduce((previous:any, current:any) => previous + current.time, 0);   
-        }
+        };
+        const focusSessionList = await getUserInfo("focusSession", () => {}, userID);
 
         return new RankingParticipant(userID, 
                                       await getUserInfo("username", () => {}, userID), 
-                                      converHourInRanking(await getUserInfo("focusSession",()=>{}, userID)));
+                                      converHourInRanking(focusSessionList));
     }
 
   

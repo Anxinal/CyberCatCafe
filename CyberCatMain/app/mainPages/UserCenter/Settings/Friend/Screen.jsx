@@ -43,7 +43,7 @@ const Friend = () => {
     // Some actions to search for friends by username
     setSearch("Search User: " + search);
   }
-  console.log("Searched status: " + searched.current);
+
   return (
     <SafeAreaView style={styles.container}>
         <View style = {styles.search}>
@@ -61,7 +61,7 @@ const Friend = () => {
                 <IconButton iconName = "Ranking" action = {toRanking} style = {{width: 50}}/>
             </View>
         {searched.current ? <SearchList keyword = {search}/> : <FriendList />}
-        <Toast />
+        <Toast/>
     </SafeAreaView>
   )
 }
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
 container: {
   flex: 1,
   backgroundColor: "#f6f6f6",
-  paddingTop: 16,
+  paddingTop: 25,
 },
 search: {
   flexDirection: "row",

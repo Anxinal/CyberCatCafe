@@ -42,15 +42,15 @@ export class Request {
       fromID?: string, 
       timestamp?: number, 
       requestID?: string,
-      read?: boolean,
+      read: boolean = false,
     ) {
         this.name = name;
         this.fromID = fromID ?? getCurrentUserID();
         this.timestamp = timestamp ?? Date.now();
         this.targetID = targetID;
         this.requestID = requestID ?? `${this.name}-${this.timestamp}`;
-        this.read = read ?? false;
-        console.log(`Request created with ID: ${this.requestID} for target: ${this.targetID}`);
+        this.read = read;
+        console.log("Request created with ID:", this.requestID);
     }
 
     // Two separate factory methods for creating requests
@@ -74,6 +74,7 @@ export class Request {
   
   //For connection with firebase
   public static createFromJSON(json: any): Request {
+      console.log("Creating request from JSON:", json);
       switch(json.type) {
             case FriendRequestType.NEWFRIEND_REQUEST:
                 return new FriendRequest(json.targetID, json.name, json.fromID, json.timestamp, json.requestID, json.read);
@@ -84,7 +85,7 @@ export class Request {
             case FriendRequestType.FRIEND_GIFT:
                 return new GiftRequest(json.targetID, json.name, json.fromID, json.timestamp, json.requestID, json.read);
             case FriendRequestType.FRIEND_NUDGE:
-                return new NudgeRequest(json.targetID, json.name, json.fromID, json.timestamp, json.requestID. json.read);
+                return new NudgeRequest(json.targetID, json.name, json.fromID, json.timestamp, json.requestID, json.read);
             default:
                 throw new Error("Unknown request type");
         }
@@ -104,24 +105,35 @@ export class Request {
       }, this.targetID).then(() => {displayToast("Your Request is sent successfully")})
       .catch((err) => {
         displayError("Request Upload Failed")(err)
+        console.error("Error uploading request:", err);
       });
     }catch(err){
-      displayError("Request Upload Failed")(err)
+      displayError("Request Upload Failed")(err);
+      console.error("Error uploading request:", err);
     }
     
   }
 
   public async checkCoolDown(): Promise<void>{
-    
+    console.log("Checking cool down for the object", this);
     if(this.coolDownTime <= 0) return;
     const requests: any[] = await getUserInfo("friendRequestList", ()=> {}, this.targetID);
-    const mostRecentTime = requests.map(Request.createFromJSON)
-                                   .filter((req: Request) => req.type == this.type && req.fromID == getCurrentUserID())
-                                   .map((req: Request) => req.timestamp)
-                                   .reduce((pre, cur) => Math.max(pre, cur), 0);
-    if (Date.now() - mostRecentTime  < this.coolDownTime) {
-      throw new Error("The request is in cool down. You need to wait for " + getApproximateView(mostRecentTime - Date.now()));
+ 
+    const temp = requests.map(Request.createFromJSON)
+                         .filter((req: Request) => req.type == this.type && req.fromID == getCurrentUserID());
+    console.log("Filtered requests for the user", temp);
+
+    if(temp){
+      const mostRecentTime =temp.map((req: Request) => req.timestamp).reduce((pre, cur) => Math.max(pre, cur), 0);
+      console.log("Most recent time for the request", mostRecentTime);
+      console.log("Current time", Date.now());
+      console.log("Cool down time", this.coolDownTime);
+      if (Date.now() - mostRecentTime  < this.coolDownTime) {
+        const timeLeft = (mostRecentTime + this.coolDownTime - Date.now()) / 1000; //to seconds
+        throw new Error("The request is in cool down. You need to wait for " + getApproximateView(timeLeft));
+      }
     }
+   
   }
 
 
@@ -160,7 +172,9 @@ export class RequestwithAlert extends Request {
       console.log("Alert");
       Alert.alert("Confirmation", this.alertMessage, [{
         text: 'Yes',
-        onPress: () => { this.issueRequest(); },
+        onPress: () => { 
+          console.log(this)
+          this.issueRequest(); },
       }],
      {cancelable: true}
     );
@@ -179,7 +193,7 @@ export class RequestwithAlert extends Request {
         }       
     }
 }
-
+ 
 class FriendRequest extends Request { 
     type: number = FriendRequestType.NEWFRIEND_REQUEST;
     message: string = "You have a new friend request from ";
@@ -251,7 +265,7 @@ class GiftRequest extends RequestwithAlert {
     type: number = FriendRequestType.FRIEND_GIFT;
     message: string = "You have received a gift from ";
     alertMessage: string = "Are you sure that you want to send 10 coins to your friend ?"
-    coolDownTime: number = 1800;
+    coolDownTime: number = 1800 * 1000;
      public async issueRequest() {
         try{
           const currentCoins = await getUserInfo("coins");
@@ -274,7 +288,7 @@ class NudgeRequest extends RequestwithAlert {
     message: string = "You have received a nudge from ";
     alertMessage: string = "Are you sure you want to nudge your friend ?";
     needsCoolDown: boolean = true;
-    coolDownTime: number = 24 * 3600;
+    coolDownTime: number = 24 * 3600 * 1000;
 }
 
 class DeleteRequest extends RequestwithAlert {
