@@ -10,14 +10,15 @@ export function SearchList({keyword}) {
     console.log("SearchList component is mounted with keyword:", keyword);
     let [searchResults, setSearchResults] = useState([]);
     let currentUsername = useRef("");
-    
-    useEffect(
-       async () =>{
+    const initialise = async () =>{
            currentUsername.current = await getUserInfo("username");
            getSearchFriendResults(keyword, setSearchResults);
-        }, [keyword]
-    )
-
+    } 
+    useEffect(
+       () => {
+        initialise();
+       }, [keyword])
+   
       const SearchCard = ({userID}) => {
         
         const [username, setUsername] = useState("");

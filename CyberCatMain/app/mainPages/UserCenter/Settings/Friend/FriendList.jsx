@@ -40,8 +40,8 @@ const ButtonPanels = ({userID}) => {
 
 const sendAlertRequest = (userID, Type) => {
       const rq = RequestwithAlert.create(Type, userID);
-      // rq.showAlert(); used in android
-      rq.issueRequest(); // used for testing
+      rq.showAlert(); // used in android
+  
 }
 export function FriendList() {
 
