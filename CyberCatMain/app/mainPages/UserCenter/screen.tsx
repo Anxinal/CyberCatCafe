@@ -8,13 +8,13 @@ export default function userCenter() {
 
   return  (
 
-    <View style = {{alignItems: 'center', 
+    <SafeAreaView style = {{alignItems: 'center', 
                           flex: 1, 
                           flexDirection:'column', 
                           backgroundColor:"#fff"}}>
   <UserPanel/>  
   <SettingButtonFrame/>
-  </View>
+  </SafeAreaView>
   
 );
 }

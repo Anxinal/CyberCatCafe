@@ -48,6 +48,13 @@ export default function TabLayout() {
         }}
       /> 
        <Tabs.Screen
+        name="Stats/Screen"
+        options={{
+          title: 'Stats',
+          tabBarIcon: ({ color }) => <Ionicons name="stats-chart" size={28} color="black" />,
+        }}
+      /> 
+       <Tabs.Screen
         name="UserCenter/Settings/About"
         options={{
           href: null
