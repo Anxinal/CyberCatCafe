@@ -1,21 +1,24 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, {useState} from 'react'
 import { Calendar } from 'react-native-calendars';
+import { UserStats } from '@/data/FocusStats';
+
+// Initialise the userStats in Screen.jsx
+export default function CalendarDisplay({userStats}) {
 
 
+  useEffect(() => {
+    
+  },[]);
 
-export default function CalendarDisplay() {
-
-  const [startDate, setStartDate]= useState(Date.now());
-  const endDate = Date.now();
   return (
     <View>
       <Text>CalendarDisplay</Text>
       <Calendar
           // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
-          minDate={'2012-05-10'}
+          minDate={userStats.startDate}
           // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
-          maxDate={endDate}
+          maxDate={userStats.currentDate}
           // Handler which gets executed on day press. Default = undefined
           onDayPress={day => {
           console.log('selected day', day);
