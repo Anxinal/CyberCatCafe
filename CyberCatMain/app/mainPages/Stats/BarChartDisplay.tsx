@@ -7,8 +7,10 @@ import { UserStats } from '@/data/FocusStats'
 
 export function BarChartDisplay({userStats}: {readonly userStats: UserStats}) {
     const [data, setData] = useState([])
+
     useEffect(() => {
       setData(userStats.getFocusTimeBarChartData() as any)},[]);
+  
     return (
     <View>
       <BarChart data={data}/>

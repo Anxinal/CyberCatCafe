@@ -4,9 +4,9 @@ import { Calendar } from 'react-native-calendars';
 import { UserStats } from '@/data/FocusStats';
 
 // Initialise the userStats in Screen.jsx
-export default function CalendarDisplay({userStats}) {
+export function CalendarDisplay({userStats}) {
 
-
+ 
   useEffect(() => {
     
   },[]);
