@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { Calendar } from 'react-native-calendars';
 import { UserStats } from '@/data/FocusStats';
 
@@ -8,12 +8,12 @@ export function CalendarDisplay({userStats}) {
 
  
   useEffect(() => {
-    
+    console.log("Do something")
   },[]);
 
   return (
     <View>
-      <Text>CalendarDisplay</Text>
+      <Text>Summary </Text>
       <Calendar
           // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
           minDate={userStats.startDate}

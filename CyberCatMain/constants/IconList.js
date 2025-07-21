@@ -24,6 +24,7 @@ export const IconList = {
    Laptop: () => (<AntDesign name = "laptop" size = {28} color = "black"/>),
    Team: () => (<AntDesign name = "team" size = {28} color = "black" />),
    ShoppingCart: () => (<FontAwesome5 name="shopping-cart" size={28} color="black" />),
-   About: () => (<AntDesign name="heart" size={28} color="black" />)
-
+   About: () => (<AntDesign name="heart" size={28} color="black" />),
+   BarChart: () => (<FontAwesome5 name="chart-bar" size={28} color="black" />),
+   Calendar: () => (<FontAwesome5 name="calendar-alt" size={28} color="black" />),
 }

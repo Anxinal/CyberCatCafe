@@ -12,6 +12,7 @@ export class UserStats{
     constructor(userId: string = getCurrentUserID()){
         this.userId = userId;
     }
+
     public static readonly MAX_DAY_RANGE = 180; // Maximum number of days to display in the stats
     days: Day[] = [];
     public static async createUserStats(userId: string = getCurrentUserID()): Promise<UserStats> {
@@ -21,7 +22,10 @@ export class UserStats{
     }
 
     async loadFocusSessionData() {
-        this.focusSessionData = await getUserInfo(this.userId, () => {}, "focusSessions");
+        console.log("Loading focus session data for user:", this.userId);
+        this.focusSessionData = await getUserInfo("focusSession", () => {}, this.userId);
+        console.log("Focus session data loaded:", this.focusSessionData);
+        console.log(this.focusSessionData.map(session => new Date(session.date).getDate()));
         if (!this.focusSessionData) return;
 
         // Filter and sort focus session data to recent 180 days
@@ -30,10 +34,11 @@ export class UserStats{
 
         this.startTimestamp = Day.toStartOfDay(this.focusSessionData[0].date);
         this.startDate = UserStats.formatDate(this.startTimestamp);
-        const dayPassed = (Day.toStartOfDay(Date.now()) - this.startTimestamp) / Day.range;
+        const dayPassed = (Day.toStartOfDay(Date.now()) - this.startTimestamp) / Day.range + 1;
 
        // Create days from the start date to today, each day contains the focus session data for that day
-        this.days = Array(dayPassed).map((content, index) => index).map(dayCount => 
+   
+        this.days = Array.from({ length: dayPassed }, (_, i) => i).map(dayCount => 
             Day.createDayFromDate(Date.now() - dayCount * Day.range, this.focusSessionData));
             // Offset is adjusted in Day.createDayFromDate
 }
@@ -44,7 +49,7 @@ export class UserStats{
                 this.days.push(new Day(Date.now() - i * Day.range, 0, 0));
             }
         }
-        return this.days.slice(7).map(day => day.toBarChartTimeElement());
+        return this.days.slice(0,7).map(day => day.toBarChartTimeElement());
     }
     getDistractionBarChartData(){
         //For a week by default to be rendered in bar chart
@@ -53,13 +58,17 @@ export class UserStats{
                 this.days.push(new Day(Date.now() - i * Day.range, 0, 0));
             }
         }
-        return this.days.slice(7).map(day => day.toBarChartDistractionElement());
+        return this.days.slice(0,7).map(day => day.toBarChartDistractionElement());
     }
 
     static formatDate(time: number): string {
         const date = new Date(time);
         return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
     }
+     toString(): string {
+        return `UserStats for ${this.userId}, Start Date: ${this.startDate}, Current Date: ${this.currentDate},
+        Days: ${this.days.map(day => day.print()).join('\n')}`;
+}
 }
 
 class Day {
@@ -71,10 +80,11 @@ class Day {
         this.startTimestamp = startTimestamp;
         this.focusTime = focusTime;
         this.totalDistractionCount = totalDistractionCount;
+        console.log("Days created with start timestamp:", this.startTimestamp, "Focus Time:", this.focusTime, "Distractions:", this.totalDistractionCount);
     }
     static createDayFromDate(date: number, focusSessionData: any[]): Day {
         const start = this.toStartOfDay(date);
-        const focusList = focusSessionData.filter(session => session.date >= start && session.date < start + Day.range)
+        const focusList = focusSessionData.filter(session => session.date >= start && session.date < start + Day.range);
         const focusTime = focusList.reduce((total, session) => total + session.time, 0);   
         const totalDistractionCount = focusList.reduce((total, session) => total + session.distraction, 0);
         return new Day(start, focusTime, totalDistractionCount);                               
@@ -84,8 +94,11 @@ class Day {
         const date = new Date(this.startTimestamp);
         return `${date.getMonth() + 1}-${date.getDate()}`;
     }
-
+    print(): string {
+        return `Day: ${this.toString()}, Focus Time: ${this.focusTime}, Distractions: ${this.totalDistractionCount}`;
+    }
     toBarChartTimeElement(): { value: number, label: string } {
+        // Focus time is recorded in seconds !!!!!!! Remeber to convert it to minutes if needed
         return {
             value: this.focusTime,
             label: this.toString()

@@ -9,6 +9,7 @@ export function BarChartDisplay({userStats}: {readonly userStats: UserStats}) {
     const [data, setData] = useState([])
 
     useEffect(() => {
+      console.log("BarChartDisplay: ", userStats.getFocusTimeBarChartData());
       setData(userStats.getFocusTimeBarChartData() as any)},[]);
   
     return (
