@@ -6,9 +6,9 @@ import {TimerTitle} from "./TimerTitle.jsx"
 import {useAudioPlayer} from "expo-audio"
 import Toast from 'react-native-toast-message';
 import { displayToast } from '@/components/ToastMessage.js';
-import BackgroundTimer from 'react-native-background-timer';
 import { RestTotalTimeComp } from './ResetTotalTimeComp.tsx';
 import { getUserInfo, mapUserInfo } from '@/app/account/userInfo.js';
+import { scheduleTimerNotification, cancelTimerNotification } from './TimerNotification.js';
 
 const TimerButton = ({label, onPress}) => ( 
       <View style = {timerStyles.Buttons}>
@@ -26,6 +26,7 @@ export default function Timer() {
   const [totalTime, setTotalTime] = useState(45*60);
   const [remained, setRemained] = useState(totalTime);
   const intervalRef = useRef(null);
+  let notiSent = useRef(false);
   let distraction = useRef(0);
   const convertSessionToCoin = (t) => (50 + Math.floor(totalTime / 60) * 2);
   
@@ -59,7 +60,11 @@ export default function Timer() {
       countSession();
     }
 
-    //scheduleTimerNotification(NOTIFID, "Times Up!", remained);
+    if(!notiSent.current) {
+      scheduleTimerNotification(NOTIFID, "Times Up!", remained);
+      notiSent.current = true;
+    }
+    
 
     setStartTime(Date.now());
     setNow(Date.now());
@@ -75,8 +80,8 @@ export default function Timer() {
   
   function handleStop(){
     paused.current = true;
-
-   // cancelTimerNotification(NOTIFID);
+    notiSent.current = false;
+    cancelTimerNotification(NOTIFID);
     distraction.current += 1;
     clearInterval(intervalRef.current);
     setRemained(currentTime);
