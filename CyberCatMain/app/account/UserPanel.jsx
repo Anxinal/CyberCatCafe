@@ -3,7 +3,7 @@ import { getUserInfo } from "./userInfo";
 import { Colors } from "../../constants/Colors";
 import React, { useEffect, useState } from "react";
 import { accountStyles } from "@/constants/AccountStyles"; 
-import { getApporximateView } from "@/data/TimerConvert";
+import { getApproximateView } from "@/data/TimerConvert";
 import { StatusDisplay } from "@/components/StatusDisplay";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -24,17 +24,17 @@ export const UserPanel = () =>{
    }, [username, focusHour])
 
    return  (
-    <View style = {{marginBottom: 30}}>
-      <View style = {{borderColor: 'grey', borderWidth: 2, borderRadius: 10, maxHeight: 300, maxWidth: 1024,
-                    marginTop: 10, marginBottom: 10, marginLeft: 20, marginRight: 20, marginHorizontal: 'auto',
-                    flexDirection:"column"
+    <View style = {{marginBottom: 5, height: 200, backgroundColor: "#fff", marginTop:30}}>
+      <View style = {{borderColor: 'grey', borderWidth: 2, borderRadius: 10,
+                     height: 60, width: '95%',
+                    flexDirection:"column", marginHorizontal: 'auto', marginVertical: 10,
     }}> 
         <Text style = {accountStyles.infoTitle}> UserCenter </Text>
        </View>
-      <View style = {{flexDirection: 'row', marginLeft: 20, marginRight: 20}}>
+      <View style = {{flexDirection: 'row',  marginHorizontal: 20}}>
        <StatusDisplay attribute={"totalFocus"} 
                       text = {"  "} 
-                      mapFunction={getApporximateView}
+                      mapFunction={getApproximateView}
                       Child={TimeIcon}
                       viewStyle={{width: 150}}
                       fontSize={25}/>

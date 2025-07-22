@@ -8,12 +8,15 @@ import Toast from 'react-native-toast-message';
 import { displayToast } from '@/components/ToastMessage.js';
 import BackgroundTimer from 'react-native-background-timer';
 import { RestTotalTimeComp } from './ResetTotalTimeComp.tsx';
-import { mapUserInfo } from '@/app/account/userInfo.js';
+import { getUserInfo, mapUserInfo } from '@/app/account/userInfo.js';
 
 const TimerButton = ({label, onPress}) => ( 
-      <TouchableOpacity onPress={onPress} style = {timerStyles.Buttons}>
+      <View style = {timerStyles.Buttons}>
+        <TouchableOpacity onPress={onPress} >
         <Text style ={timerStyles.TimeButtonText}>{label}</Text>
-      </TouchableOpacity>);
+        </TouchableOpacity> 
+      </View>
+      );
 
 const notificationSore = require('@/assets/audio/cat-ring01.mp3');
 
@@ -23,10 +26,24 @@ export default function Timer() {
   const [totalTime, setTotalTime] = useState(45*60);
   const [remained, setRemained] = useState(totalTime);
   const intervalRef = useRef(null);
-
+  let distraction = useRef(0);
+  const convertSessionToCoin = (t) => (50 + Math.floor(totalTime / 60) * 2);
+  
   const countSession = () => {
-      mapUserInfo("totalFocus", x => x + totalTime);
-      mapUserInfo("focusSessionCount", x => x + 1);
+  
+    const newSession = {
+        time: totalTime,
+        distraction: distraction.current,
+        date: Date.now(),
+      };
+    getUserInfo("focusSession").then((session) => {
+      session.push(newSession);
+      mapUserInfo("focusSession", (original) => session);
+     });
+    mapUserInfo("totalFocus", x => x + totalTime);
+    mapUserInfo("focusSessionCount", x => x + 1);
+    mapUserInfo("coins", x => x + convertSessionToCoin(totalTime));
+    
   }
 
   let currentTime = remained;
@@ -60,7 +77,7 @@ export default function Timer() {
     paused.current = true;
 
    // cancelTimerNotification(NOTIFID);
-
+    distraction.current += 1;
     clearInterval(intervalRef.current);
     setRemained(currentTime);
   }
@@ -85,6 +102,7 @@ export default function Timer() {
     if(!paused.current && currentTime < 0){
         notifyUser();
         countSession();
+        distraction.current = 0;
         handleStop();   
     }
   }
@@ -99,11 +117,13 @@ export default function Timer() {
       <TimerButton onPress={handleStart} label = "start" />
       {paused.current && <RestTotalTimeComp setTotalTime={setTotalTime}  currentTotal={totalTime}/>}
       <TimerButton onPress={handleStop} label = "stop" />
+       
       </View> 
       <TextInput style = {timerStyles.TimeSet}
                  onChangeText={x => setTotalTime(parseInt(x))}
                  editable = {paused.current}
                   />
+     
      
       <Toast/>
     </View>  

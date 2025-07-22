@@ -1,9 +1,6 @@
 
 import { achievementList } from '../../../constants/achievementList.js';
 import { StyleSheet, Dimensions ,View ,Text, TouchableOpacity} from 'react-native';
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import AntDesign from '@expo/vector-icons/AntDesign';
 import { useState } from 'react';
 import { IconList } from '../../../constants/IconList.js';
 

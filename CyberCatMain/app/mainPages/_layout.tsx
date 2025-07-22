@@ -65,6 +65,48 @@ export default function TabLayout() {
           href: null
         }}
       />
+       <Tabs.Screen
+        name="UserCenter/Settings/Friend/Screen"
+        options={{
+          href: null
+        }}
+      />
+      <Tabs.Screen
+        name="UserCenter/Settings/Friend/FriendList"
+        options={{
+          href: null
+        }}
+      />
+      <Tabs.Screen
+        name="UserCenter/Settings/Friend/SearchList"
+        options={{
+          href: null
+        }}
+      />
+       <Tabs.Screen
+        name="UserCenter/Settings/Friend/FriendInbox"
+        options={{
+          href: null
+        }}
+      />
+      <Tabs.Screen
+        name="UserCenter/Settings/Friend/FriendRanking"
+        options={{
+          href: null
+        }}
+      />
+      <Tabs.Screen
+        name="Ranking/screen"
+        options={{
+          href: null
+        }}
+      />
+      <Tabs.Screen
+        name="Ranking/UserRankingCard"
+        options={{
+          href: null
+        }}
+      />
     </Tabs>
   );
 }

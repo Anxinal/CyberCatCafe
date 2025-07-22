@@ -91,12 +91,12 @@ const styles = StyleSheet.create({
     text: {
         color: 'white',
         width: screenWidth,
-        height: 100,
-        fontSize: 20,
+        height: 70,
+        fontSize: 25,
         marginBottom: 20,
         alignContent: 'center',
         fontWeight: 'bold',
-        backgroundColor: 'rgb(179, 179, 16)',
+        backgroundColor: 'rgba(179, 179, 16, 0.8)',
     },
     card: {
         flexDirection: 'row',
@@ -125,9 +125,9 @@ const styles = StyleSheet.create({
     },
     search: {flexDirection:'row', width: '100%', maxWidth: 500, marginHorizontal: 'auto', 
                                 justifyContent:'center',
-                                marginLeft: 20, marginRight: 10, marginBottom: 10
+                                marginLeft: 20, marginRight: 10, marginBottom: 10, height: 40, marginVertical: 10,
         },
-    searchText: {width: 300, height: 40, fontSize: 20}
+    searchText: {width: 300, height: 45, fontSize: 18}
 }
 );
 

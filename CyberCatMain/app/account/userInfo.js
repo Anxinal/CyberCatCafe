@@ -1,17 +1,19 @@
-import { app } from "../../firebaseConfig.js"
-import { getFirestore, doc, getDoc, collection, setDoc, updateDoc } from "firebase/firestore";
+import { initapp, auth } from "../index"
 import {
-  getAuth, onAuthStateChanged,
+  getFirestore, doc, getDoc, collection, setDoc, updateDoc,
+  query, where, limit, getDocs
+} from "firebase/firestore";
+import {
   signInWithEmailAndPassword, signOut,
   createUserWithEmailAndPassword
 } from "firebase/auth";
 import { UserInitInfo } from '../../constants/UserInitialInfo.js'
 import { useRouter } from "expo-router";
 import { displayError, displayNull, displayToast } from '../../components/ToastMessage.js'
-import { initialiseInventory } from '@/data/Inventory.js'
-const db = getFirestore(app);
-const collectionRef = collection(db, "users");
-const auth = getAuth();
+
+const db = getFirestore(initapp);
+export const collectionRef = collection(db, "users");
+
 
 // 0000 is the default user id that stores all default user information in the database
 let currentUser = "0000";
@@ -25,7 +27,7 @@ const navigateToLogin = () => { useRouter().push("/") };
  It returns nothing and since the process is async, another set function is required for a temporary variable in the 
  app page(with useState) so that the page can be re-rendered after the information is retrieved 
 */
-export async function getUserInfo(attribute, setFunction = (targetData) => { }) {
+export async function getUserInfo(attribute, setFunction = () => { }, user = currentUser) {
 
   /* Legacy implementation. Left for reference
   
@@ -45,12 +47,6 @@ export async function getUserInfo(attribute, setFunction = (targetData) => { }) 
       }).catch((error) => {
           console.log("Error getting document:", error);
           return error;
-        });
-  
-      } else {
-        // User is signed out
-        unsubscribe();
-      }
     });
     } else {
       // User is signed out
@@ -73,6 +69,7 @@ export async function getUserInfo(attribute, setFunction = (targetData) => { }) 
 
 }
 
+export const getCurrentUserID = () => currentUser;
 
 
 /* This function takes in the user informations in the log in page and update the 
@@ -86,11 +83,10 @@ export function signInUser(email, password, router) {
     .then((userCredential) => {
       // Signed in 
       displayToast("Login Success");
-      currentUser = userCredential.user.uid;
-    }).then(initialiseInventory)
-    .then(() => { navigateToMain(router) })
-    .catch(console.log);
-  //displayError("Meow? Wrong password?")
+      currentUser = userCredential.user.uid;;
+      navigateToMain(router);
+    }).catch(displayError("Meow? Wrong password?"));
+
 }
 
 /* This function signs out the current user in the device and returns nothing
@@ -138,16 +134,36 @@ export async function updateUserInfo(attribute, value) {
 
 }
 
-export async function mapUserInfo(attribute, mapFunction) {
+export async function mapUserInfo(attribute, mapFunction, user = currentUser) {
 
-  return getDoc(doc(collectionRef, currentUser))
-    .then(
-      (doc) => doc.data()[attribute]).then((original) => {
-        updateDoc(doc(collectionRef, currentUser),
-          {
-            [attribute]: mapFunction(original)
-          })
-          .then(() => "Information Update Successful").catch(err => "Updated Failed because (of)" + err.message);
-      });
+  return getDoc(doc(collectionRef, user))
+    .then((doc) => doc.data()[attribute]).then((original) => {
+      console.log("original:")
+      updateDoc(doc(collectionRef, user),
+        {
+          [attribute]: mapFunction(original)
+        })
+        .then(() => "Information Update Successful").catch(err => "Updated Failed because (of)" + err.message);
+    });
 
+}
+
+const FilterRange = 20; // The range of the search query, can be adjusted
+
+export const getSearchFriendResults = async (search, setSearchResults) => {
+  // This function should implement the logic to search for users by username
+  // and update the searchResults state with the found user IDs.
+
+  const q = query(collectionRef, where("username", ">=", search));
+  const currentFriendList = await getUserInfo("friendList");
+  let results = [];
+  await getDocs(q).then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      if (doc.id === currentUser) return;
+      results.push(doc.id); // Collect user IDs
+      console.log(doc.id, " => ", doc.data().username); //For testing purposes
+    });
+    console.log("Search results: ", results);
+    setSearchResults(results.filter((id) => !currentFriendList.includes(id)).slice(0, FilterRange));
+  })
 }

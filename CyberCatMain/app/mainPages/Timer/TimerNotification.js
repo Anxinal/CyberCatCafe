@@ -6,7 +6,7 @@ export const scheduleTimerNotification = (id, message, timeRemained) => {
     channelId: "timer-channel",
     id,                 
     message,             
-    date: new Date(Date.now() + timeRemained), 
+    date: Date.now(), 
     });
 };
 

@@ -5,81 +5,88 @@ import { StatusBar } from "expo-status-bar";
 
 export const accountStyles = StyleSheet.create({
 
-  logoContainer: {
-    flex: 8,
+  flexOne: {
+    flex: 1,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  scrollContent: {
+    flexGrow: 1,
+    padding: 20,
     justifyContent: 'center',
-    alignItems: 'center'
   },
 
+  logoContainer: {
+    alignItems: 'center',
+    marginVertical: 20,
+    marginHorizontal: 20,
+    paddingTop: 20,
+  },
   logoText: {
     fontSize: textFont.large,
     fontWeight: 'bold',
     color: textColor.normal,
+    marginBottom: 10,
+  },
+  RegisterLogoText: {
+     fontSize: textFont.large - 10,
+    fontWeight: 'bold',
+    color: textColor.normal,
+    marginBottom: 10,
   },
 
   loginInputContainer: {
-    flex: 3,
-    justifyContent: 'center'
+    width: '98%',
+    alignSelf: 'center',
+    marginBottom: 30,
+    marginHorizontal: 10,
   },
-
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 8,
+    marginHorizontal: 10,
+    width: '100%',
+    minWidth: 300,
   },
-
   infoText: {
     flex: 3,
     fontSize: textFont.small,
     color: textColor.normal,
-    marginHorizontal: 'auto',
-
+    marginRight: 10,
   },
-
-  infoTitle: {
-    fontWeight: 'bold',
-    fontSize: textFont.large,
-    color: textColor.normal,
-    marginHorizontal: 'auto',
-  },
-
   inputStyle: {
     flex: 7,
     borderWidth: 1,
     borderColor: componentColor.border,
     borderRadius: 4,
     height: 40,
+    width: 200,
     color: textColor.normal,
-    fontSize: 20,
-    marginBottom: 10,
-  },
-  buttonsContainer: {
-    flex: 2,
-    flexDirection: 'column',
-    justifyContent: 'space-around',
-    marginTop: 50,
-    marginBottom:10,
-    marginHorizontal: 'auto',
+    fontSize: 16,
+    paddingHorizontal: 10,
   },
 
-  loginButtonText: {
-    color: textColor.contrast,
-    fontSize: textFont.small + 3,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 4
+  buttonsContainer: {
+    width: '100%',
+    alignItems: 'center',
   },
   loginButton: {
-    width: 300,
-    height: 40,
-    marginHorizontal: 'auto',
+    width: '80%',
+    height: 44,
     backgroundColor: componentColor.button,
-    marginTop: 10,
-    marginBottom: 10,
-    justifyContent: 'center',
     borderColor: componentColor.shade,
     borderWidth: 1,
     borderRadius: 10,
+    justifyContent: 'center',
+    marginVertical: 8,
+  },
+  loginButtonText: {
+    color: textColor.contrast,
+    fontSize: textFont.small + 2,
+    textAlign: 'center',
   },
   logoImage: { 
     height: 250, 
@@ -87,34 +94,50 @@ export const accountStyles = StyleSheet.create({
     marginTop: 20, 
     marginBottom: 40},
 
-  listSeperator: {
-    marginTop: 10,
-    backgroundColor: 'grey', 
-    height: 1, 
-    width: '70%', 
-    justifyContent: 'center', 
-    marginHorizontal:'auto'},
 
   optionText: {
-    flex: 3,
-    fontSize: textFont.medium,
+    fontSize: textFont.medium - 2,
     color: textColor.normal,
     marginLeft: 30,
   },
-  optionView: {
-    marginTop: 10,
-    marginBottom: 10,
-
+  optionDescription: {
+    fontSize: textFont.extrasmall + 2,
+    color: "#aaa",
+    marginLeft: 30,
   },
+
+  optionView: {
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    padding: 1,
+    marginVertical: 8,
+    marginHorizontal: 12,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+    height: 60,
+    alignContent: "space-around",
+  },
+
   StatusView: {
     borderColor: 'grey',
     borderWidth: 1,
     borderRadius: 10,
     flexDirection: 'row',
     width: 180,
+    marginBottom: 5,
     shadowColor: componentColor.shade,
     shadowOffset: {height: 2, width: 2},
     padding: 4,
+  },
+
+  infoTitle:{
+    fontSize: textFont.large ,
+    fontWeight: 'bold',
+    flex: 1,
   }
 });
+
 
