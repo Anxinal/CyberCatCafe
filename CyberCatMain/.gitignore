@@ -10,6 +10,8 @@ web-build/
 expo-env.d.ts
 
 # Native
+android/
+
 .kotlin/
 *.orig.*
 *.jks
@@ -17,6 +19,11 @@ expo-env.d.ts
 *.p12
 *.key
 *.mobileprovision
+
+# Ignore Android Studio project files
+.idea/
+*.iml
+*.xml
 
 # Metro
 .metro-health-check*

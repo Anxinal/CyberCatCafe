@@ -1,67 +1,73 @@
-
 import { View, Text, StyleSheet, Touchable, TouchableOpacity } from 'react-native'
 import React, { useState, useRef } from 'react'
-import {searchItemCount, deleteInventoryItem} from '@/data/Inventory.js'
+import { searchItemCount, deleteInventoryItem } from '@/data/Inventory.js'
 // These parameters represent the position of the cat food can
 const FOOD_TOP = 420;
 const FOOD_LEFT = 130;
 let isFull = useRef(false);
 
 export const UnfillCan = () => {
-    isFull.current = false;
+  isFull.current = false;
 }
 
-export const CatFoodCan = () =>  {
- 
+export const CatFoodCan = () => {
 
- let [addFoodvisible, setAddFoodVisible] = useState(false);
- 
- const FilledCan = () => (<Text>Filled</Text>);
- const UnfilledCan = () => (<Text>Unfilled</Text>);
 
- const FillCan = () => {
-    isFull.current = true;
-    setAddFoodVisible(false);
-    try{
-      //deleteInventoryItem(0,1);
-    }catch(error){
-      console.log(error.message);
-    } 
- }
+  let [addFoodvisible, setAddFoodVisible] = useState(false);
 
- const AddFoodComp = () => {
+  const FilledCan = () => (<Text>Filled</Text>);
+  const UnfilledCan = () => (<Text>Unfilled</Text>);
+
+  const FillCan = () => {
+    const foodCount = searchItemCount(0);
+    if (foodCount > 0) {
+      setAddFoodVisible(false);
+      try {
+        deleteInventoryItem(0, 1);
+      } catch (error) {
+        console.log(error.message);
+        isFull.current = false;
+      }
+      isFull.current = true;
+    } else {
+      console.log("No cat food left");
+      isFull.current = false;
+    }
+  }
+
+  const AddFoodComp = () => {
     const temp = searchItemCount(0);
     return (
-        <View style = {[styles.emptyOptionBoard, 
-                        styles.VisibleOptionBoard]}>
-            <Text> Add more cat Food?</Text>
-            <Text> Current cat food in possession: {temp}</Text>
-            <View style = {{flexDirection: 'row'}}>
-                  <TouchableOpacity onPress={FillCan}  
-                              style = {styles.buttonStyle}>
-                    <Text>YES</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style = {styles.buttonStyle} 
-                              onPress={() => setAddFoodVisible(!addFoodvisible)}>
-                    <Text>NO</Text>
-                </TouchableOpacity>
-            </View>
-          
-        </View>);
-}
-    return (
-    <View style = {styles.catFoodPanel}>
-      {addFoodvisible ? <AddFoodComp/> : <View style = {styles.emptyOptionBoard}/>}
-      <TouchableOpacity onPress={() =>setAddFoodVisible(true)}> 
-       {isFull.current ? <FilledCan/> : <UnfilledCan/>} 
+      <View style={[styles.emptyOptionBoard,
+      styles.VisibleOptionBoard]}>
+        <Text> Add more cat Food?</Text>
+        <Text> Current cat food in possession: {temp}</Text>
+        <View style={{ flexDirection: 'row' }}>
+          <TouchableOpacity onPress={FillCan}
+            style={styles.buttonStyle}>
+            <Text>YES</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.buttonStyle}
+            onPress={() => setAddFoodVisible(!addFoodvisible)}>
+            <Text>NO</Text>
+          </TouchableOpacity>
+        </View>
+
+      </View>);
+  }
+  return (
+    <View style={styles.catFoodPanel}>
+      {addFoodvisible ? <AddFoodComp /> : <View style={styles.emptyOptionBoard} />}
+      <TouchableOpacity onPress={() => setAddFoodVisible(true)}>
+        {isFull.current ? <FilledCan /> : <UnfilledCan />}
       </TouchableOpacity>
-   
+
     </View>
   )
 }
 
 
-const styles= StyleSheet.create({
+const styles = StyleSheet.create({
   VisibleOptionBoard: {
     backgroundColor: 'white',
     borderColor: 'rgb(108, 62, 6)',
@@ -69,7 +75,7 @@ const styles= StyleSheet.create({
   },
   emptyOptionBoard: {
     height: 100,
-    width:  210,
+    width: 210,
     justifyContent: 'center',
   },
   catFoodPanel: {
@@ -80,11 +86,11 @@ const styles= StyleSheet.create({
   buttonStyle: {
     height: 20,
     width: 45,
-    marginHorizontal:'auto',
+    marginHorizontal: 'auto',
     marginTop: 10,
     marginBottom: 10,
     backgroundColor: 'rgb(228, 156, 3)',
-    
+
   }
-  
+
 });

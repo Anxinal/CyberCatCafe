@@ -45,7 +45,6 @@ export function Cafe() {
       <ImageBackground source={catBackground} contentFit="contain" style={{ width: '100%', height: 600 }}>
         <Cat ref={catRef} x={50} y={400} eatState={eatState} />
         <CatFoodCan ref={canRef} />
-        {/* <Button title="Feed Cat" onPress={feedCat} /> */}
         <TouchableOpacity style={styles.feedCatButton} onPress={feedCat}>
           <Text>Feed Cat!</Text>
         </TouchableOpacity>
