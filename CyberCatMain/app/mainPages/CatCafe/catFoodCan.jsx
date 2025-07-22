@@ -1,10 +1,13 @@
-import { View, Text, StyleSheet, Touchable, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Touchable, TouchableOpacity, ImageBackground } from 'react-native'
 import React, { useState, useRef } from 'react'
 import { searchItemCount, deleteInventoryItem } from '@/data/Inventory.js'
+import { Image } from 'react-native';
+
+const catBowl = require('@/assets/images/catBowl.png');
+
 // These parameters represent the position of the cat food can
 const FOOD_TOP = 420;
 const FOOD_LEFT = 130;
-let isFull = useRef(false);
 
 export const UnfillCan = () => {
   isFull.current = false;
@@ -12,7 +15,7 @@ export const UnfillCan = () => {
 
 export const CatFoodCan = () => {
 
-
+  let isFull = useRef(false);
   let [addFoodvisible, setAddFoodVisible] = useState(false);
 
   const FilledCan = () => (<Text>Filled</Text>);
@@ -59,7 +62,7 @@ export const CatFoodCan = () => {
     <View style={styles.catFoodPanel}>
       {addFoodvisible ? <AddFoodComp /> : <View style={styles.emptyOptionBoard} />}
       <TouchableOpacity onPress={() => setAddFoodVisible(true)}>
-        {isFull.current ? <FilledCan /> : <UnfilledCan />}
+        <Image source={catBowl} style={styles.catBowl}></Image>
       </TouchableOpacity>
 
     </View>
@@ -91,6 +94,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: 'rgb(228, 156, 3)',
 
+  },
+  catBowl: {
+    height: 80,
+    width: 80,
+    position: 'absolute',
+    top: -50,
+    left: 20,
   }
 
 });
