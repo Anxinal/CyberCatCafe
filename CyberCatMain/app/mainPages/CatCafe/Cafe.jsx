@@ -16,15 +16,18 @@ export function Cafe() {
   const [catLevel, setCatLevel] = useState(1);
   const [catEXP, setCatEXP] = useState(0);
 
-  const feedCat = () => {
+  const feedCat = async () => {
     if (CatFoodCan.current?.isFull()) {
       setEatState(true);
-      catRef.current?.walkToCan();
+      const animationDuration = catRef.current.walkToCan();
       canRef.current?.UnfillCan();
 
-      updateLevel(5);
+      await updateLevel(5);
+      const { level, EXP } = await getPetStats();
+      setCatLevel(level);
+      setCatEXP(EXP);
 
-      setTimeout(() => setEatState(false), 1200);
+      setTimeout(() => setEatState(false), animationDuration + 200);
     } else {
       setEatState(false);
       console.log("Can is empty!")

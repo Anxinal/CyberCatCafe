@@ -5,8 +5,8 @@ import { Image } from 'react-native';
 
 const WALL_BOTTOM = 600;
 const WALL_TOP = 320;
-const CAN_X = 130;
-const CAN_Y = 420;
+const CAN_X = 80;
+const CAN_Y = 440;
 
 const catWalking = require('@/assets/images/CatWalking.gif');
 const catGif = require('@/assets/images/CatGif.gif');
@@ -48,7 +48,7 @@ export const Cat = forwardRef<{ walkToCan: () => void }, { x: number; y: number;
       const dx = newX - currentX;
       const dy = newY - currentY;
       const distance = Math.sqrt(dx * dx + dy * dy);
-      const duration = distance * 5;
+      const duration = distance * 20;
 
       Animated.timing(pan, {
         toValue: { x: newX, y: newY },
@@ -58,11 +58,13 @@ export const Cat = forwardRef<{ walkToCan: () => void }, { x: number; y: number;
         currentPos.current = { x: newX, y: newY };
         console.log(`Cat moved to (${newX}, ${newY})`);
       });
+
+      return duration;
     };
 
     const walkToCan = () => {
-      move(CAN_X, CAN_Y);
       console.log("Cat walks to can");
+      return move(CAN_X, CAN_Y);
     };
 
     useImperativeHandle(ref, () => ({ walkToCan }));
