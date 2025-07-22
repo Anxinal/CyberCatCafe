@@ -33,11 +33,10 @@ export function Cafe() {
 
   useEffect(() => {
     async function fetchStats() {
-      const { level, exp } = getPetStats();
+      const { level, EXP } = await getPetStats();
       setCatLevel(level);
-      setCatEXP(exp);
+      setCatEXP(EXP);
     }
-
     fetchStats();
   }, []);
 
@@ -56,7 +55,9 @@ export function Cafe() {
             <Text style={styles.text}>Level {String(catLevel)}</Text>
           </View>
 
-          <Progress.Bar progress={catEXP / levelToExp(catLevel)}
+          <Progress.Bar progress={catEXP / levelToExp(catLevel) || 0}
+            height={30}
+            width={150}
             style={styles.EXPbar}
             animated={true}
             unfilledColor={'rgba(255, 255, 255, 0.5)'}
@@ -112,9 +113,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(228, 156, 3)',
   },
   EXPbar: {
-    height: 30,
-    width: 150,
-    backgrounColor: 'rgb(255, 143, 177)',
     position: 'absolute',
     top: 200,
     left: 250,

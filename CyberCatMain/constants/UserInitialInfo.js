@@ -5,15 +5,13 @@ export const UserInitInfo = (username) => ({
   username: username,
   listOfAchievements: [1],
 
-  pet: [
-    {
-      id: 0,
-      level: 0,
-      EXP: 0,
-      current_skin: "default skin",
-      unlocked_skins: ["default skin"],
-    }
-  ],
+  pet: {
+    id: 0,
+    level: 0,
+    EXP: 0,
+    current_skin: "default skin",
+    unlocked_skins: ["default skin"],
+  },
 
   focusSessionCount: 0,
   coins: 500,

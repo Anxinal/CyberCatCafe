@@ -7,40 +7,61 @@ const collectionRef = collection(db, "users");
 
 let currentUser = "0000";
 
-export function getPetInfo(setFunction) {
+const userUpdated = new Promise((resolve) => {
     onAuthStateChanged(auth, (user) => {
         if (user) {
-            getDoc(doc(collectionRef, user.uid,)).then((doc) => {
-                if (doc.exists()) {
-                    currentUser = user.uid;
-                    setFunction(doc.data().pet);
-                } else {
-                    console.log("User doc not found");
-                }
-            }).catch(console.log);
+            currentUser = user.uid;
+            resolve(user.uid);
         } else {
-            unsubscribe();
+            console.log("No user logged in");
         }
     });
+});
+
+export async function getPetInfo(setFunction) {
+    await userUpdated;
+    if (!currentUser) return;
+
+    const docRef = doc(collectionRef, currentUser);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+        const pet = docSnap.data().pet || {};
+        setFunction(pet);
+    } else {
+        console.log("User doc not found");
+    }
 }
 
-export function updatePetInfo(attribute, value) {
-    return updateDoc(doc(collectionRef, currentUser), {
-        [`pet.${attribute}`]: value
-    }).then(() => console.log("Update attribute success")).catch(console.log);
+export async function updatePetInfo(attribute, value) {
+    await userUpdated;
+    if (!currentUser) return;
+
+    try {
+        await updateDoc(doc(collectionRef, currentUser), {
+            [`pet.${attribute}`]: value
+        });
+    } catch (err) {
+        console.error("Failed to update attribute:", err.message);
+    }
 }
 
-export function mapPetInfo(attribute, mapFunction) {
+export async function mapPetInfo(attribute, mapFunction) {
+    await userUpdated;
+    if (!currentUser) return;
 
-    return getDoc(doc(collectionRef, currentUser))
-        .then(
-            (doc) => doc.data()[`pet.${attribute}`]).then((original) => {
-                updateDoc(doc(collectionRef, currentUser),
-                    {
-                        [`pet.${attribute}`]: mapFunction(original)
-                    })
-                    .then(() => "Information Update Successful").catch(err => "Updated Failed because (of)" + err.message);
-            });
+    const docRef = doc(collectionRef, currentUser);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+        const original = docSnap.data()?.pet?.[attribute];
+        const updated = mapFunction(original);
+
+        await updateDoc(docRef, {
+            [`pet.${attribute}`]: updated
+        });
+        console.log(`pet.${attribute} updated`);
+    }
 }
 
 export function levelToExp(level) {
@@ -48,13 +69,17 @@ export function levelToExp(level) {
 }
 
 export async function updateLevel(exp) {
+    await userUpdated;
+    if (!currentUser) return;
+
     const docRef = doc(collectionRef, currentUser);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
         const cat = docSnap.data().pet;
+        let level = cat.level || 0;
+        let EXP = cat.EXP || 0;
 
-        let { level, EXP } = cat;
         let totalExp = EXP + exp;
 
         while (totalExp >= levelToExp(level)) {
@@ -76,16 +101,19 @@ export async function updateLevel(exp) {
 }
 
 export async function getPetStats() {
+    await userUpdated;
+    if (!currentUser) return { level: 0, EXP: 0 };
+
     const docRef = doc(collectionRef, currentUser);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-        const cat = docSnap.data().pet || {};
+        const cat = docSnap.data()?.pet || {};
         return {
-            level: cat.level ?? 1,
+            level: cat.level ?? 0,
             EXP: cat.EXP ?? 0
         };
     } else {
-        return { level: 1, EXP: 0 };
+        return { level: 0, EXP: 0 };
     }
 }
