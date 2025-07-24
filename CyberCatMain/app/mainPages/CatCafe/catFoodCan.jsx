@@ -6,7 +6,7 @@ import { Image } from 'react-native';
 const catBowl = require('@/assets/images/catBowl.png');
 
 // These parameters represent the position of the cat food can
-const FOOD_TOP = 420;
+const FOOD_TOP = 400;
 const FOOD_LEFT = 130;
 
 export const UnfillCan = () => {
@@ -17,9 +17,6 @@ export const CatFoodCan = () => {
 
   let isFull = useRef(false);
   let [addFoodvisible, setAddFoodVisible] = useState(false);
-
-  const FilledCan = () => (<Text>Filled</Text>);
-  const UnfilledCan = () => (<Text>Unfilled</Text>);
 
   const FillCan = () => {
     const foodCount = searchItemCount(0);
@@ -99,7 +96,7 @@ const styles = StyleSheet.create({
     height: 80,
     width: 80,
     position: 'absolute',
-    top: -50,
+    top: -10,
     left: 20,
   }
 
