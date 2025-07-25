@@ -48,7 +48,7 @@ export const settings = [
           "You can add and interact with new friends here.",
           IconList.Team),
      new SettingOption("Cat Shops",
-          () => { },
+          toPage("CatShop"),
           "You can purchase items for your pet here.",
           IconList.ShoppingCart),
      new SettingOption("About",

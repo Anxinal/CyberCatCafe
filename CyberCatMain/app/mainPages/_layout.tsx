@@ -37,7 +37,7 @@ export default function TabLayout() {
         name="Achievement/screen"
         options={{
           title: 'Achievement',
-          tabBarIcon: ({ color }) => <Ionicons name="trophy" size={28} color= {color} />,
+          tabBarIcon: ({ color }) => <Ionicons name="trophy" size={28} color={color} />,
         }}
       />
       <Tabs.Screen
@@ -46,15 +46,15 @@ export default function TabLayout() {
           title: 'Profile',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
         }}
-      /> 
-       <Tabs.Screen
+      />
+      <Tabs.Screen
         name="Stats/Screen"
         options={{
           title: 'Stats',
           tabBarIcon: ({ color }) => <Ionicons name="stats-chart" size={28} color="black" />,
         }}
-      /> 
-       <Tabs.Screen
+      />
+      <Tabs.Screen
         name="UserCenter/Settings/About"
         options={{
           href: null
@@ -72,7 +72,13 @@ export default function TabLayout() {
           href: null
         }}
       />
-       <Tabs.Screen
+      <Tabs.Screen
+        name="UserCenter/Settings/CatShop"
+        options={{
+          href: null
+        }}
+      />
+      <Tabs.Screen
         name="UserCenter/Settings/Friend/Screen"
         options={{
           href: null
@@ -90,7 +96,7 @@ export default function TabLayout() {
           href: null
         }}
       />
-       <Tabs.Screen
+      <Tabs.Screen
         name="UserCenter/Settings/Friend/FriendInbox"
         options={{
           href: null
