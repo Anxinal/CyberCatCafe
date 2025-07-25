@@ -82,6 +82,7 @@ export class UserStats {
             const lastWeek = this.days.slice(7, 14);
             const avgThis = thisWeek.reduce((sum: number, a) => sum + a.focusTime, 0) / 7;
             const avgLast = lastWeek.reduce((sum: number, a) => sum + a.focusTime, 0) / 7;
+            console.log("averages:", avgThis, avgLast);
 
             const percentageChange = ((avgThis - avgLast) / avgLast) * 100;
             if (percentageChange > 0) {
