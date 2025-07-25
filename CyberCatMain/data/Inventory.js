@@ -11,6 +11,9 @@ export async function initialiseInventory() {
 }
 
 export const searchItemCount = (id) => {
+    if (!userInventory || userInventory.length === 0) {
+        return 0;
+    }
     return userInventory.reduce((acc, cur) => cur.id == id ? acc + cur.count : acc, 0);
 };
 
