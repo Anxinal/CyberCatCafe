@@ -59,6 +59,7 @@ const Screen = () => {
       {userStats !== null &&
         <View>
           {isCalendar ? <CalendarDisplay userStats={userStats} /> : <BarChartDisplay userStats={userStats} />}
+          <SuggestionBoard />
         </View>
       }
     </SafeAreaView>
@@ -89,6 +90,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#fef3c7',
     borderColor: '#facc15',
     borderWidth: 1,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignContent: 'center',
+    padding: 16,
+    marginTop: 16,
+    marginHorizontal: 20,
+    width: '80%',
   },
   title: {
     fontWeight: 'bold',

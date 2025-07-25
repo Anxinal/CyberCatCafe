@@ -73,6 +73,10 @@ export class UserStats {
 
     getSuggestionMessage(): string[] {
         const suggestions: string[] = [];
+        if (!this.days || this.days.length === 0) {
+            suggestions.push("No paw-sitive focus sessions yet! Start one to make your kitty proud");
+        }
+
         if (this.days.length >= 14) {
             const thisWeek = this.days.slice(0, 7);
             const lastWeek = this.days.slice(7, 14);
@@ -89,14 +93,17 @@ export class UserStats {
             }
         }
 
-        const hourMap = Array(24).fill(0);
-        this.focusSessionData.forEach(session => {
-            const hour = new Date(session.date).getHours();
-            hourMap[hour] += session.time;
-        })
-        const peakHour = hourMap.indexOf(Math.max(...hourMap));
-        if (hourMap[peakHour] > 0) {
-            suggestions.push(`Your best hour is around ${peakHour}:00, the purr-fect time to do hard works.`);
+        if (this.focusSessionData && this.focusSessionData.length > 0) {
+            const hourMap = Array(24).fill(0);
+
+            this.focusSessionData.forEach(session => {
+                const hour = new Date(session.date).getHours();
+                hourMap[hour] += session.time;
+            })
+            const peakHour = hourMap.indexOf(Math.max(...hourMap));
+            if (hourMap[peakHour] > 0) {
+                suggestions.push(`Your best hour is around ${peakHour}:00, the purr-fect time to do hard works.`);
+            }
         }
 
         return suggestions;
