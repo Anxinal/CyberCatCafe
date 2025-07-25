@@ -1,30 +1,30 @@
-import {getUserInfo} from '../app/account/userInfo.js'
+import { getUserInfo } from '../app/account/userInfo.js'
 import { InventoryList } from '../constants/InventoryList.js';
 let userInventory = [];
 
-export async function initialiseInventory(){
-    Promise.resolve(getUserInfo('inventoryList').then((info)=> {
+export async function initialiseInventory() {
+    await Promise.resolve(getUserInfo('inventoryList').then((info) => {
         userInventory = info;
     }));
-    
+
 }
 
 export const searchItemCount = (id) => {
-     return userInventory.reduce((acc, cur) => cur.id == id ? acc + cur.count : acc, 0);
+    return userInventory.reduce((acc, cur) => cur.id == id ? acc + cur.count : acc, 0);
 };
 
 export const getUserInventoryList = () => userInventory;
 
 export const addInventoryItem = (id, count) => {
     return userInventory.map((item) => item.id).includes(id)
-         ? userInventory.map((item) => item.id == id ? {id: item.id, count: item.count + count} : item)
-         : userInventory.push({id: id, count: count});
+        ? userInventory.map((item) => item.id == id ? { id: item.id, count: item.count + count } : item)
+        : userInventory.push({ id: id, count: count });
 }
 
 export const deleteInventoryItem = (id, count) => {
     const itemCount = searchItemCount(id) - count;
-   if (itemCount - count > 0) return addInventoryItem(id, -count);
-   if (itemCount - count == 0) return InventoryList.filter((item) => item.id != id);
-   throw new Error("Insufficient item count"); 
+    if (itemCount - count > 0) return addInventoryItem(id, -count);
+    if (itemCount - count == 0) return InventoryList.filter((item) => item.id != id);
+    throw new Error("Insufficient item count");
 }
 
