@@ -4,13 +4,16 @@ import { Calendar } from 'react-native-calendars';
 import { UserStats } from '@/data/FocusStats';
 
 // Initialise the userStats in Screen.jsx
-export function CalendarDisplay({userStats}) {
+export function CalendarDisplay({userStats}: Readonly<{userStats: UserStats}>) {
 
- 
+  const [selectedDate, setSelectedDate] = useState(0);
+  const markedDayObject = userStats.days[selectedDate];
+  const markedDates = userStats.getCalendarHighlightData();
+  console.log(markedDates);
   useEffect(() => {
-    console.log("Do something")
+    
   },[]);
-
+ 
   return (
     <View>
       <Text>Summary </Text>
@@ -21,14 +24,16 @@ export function CalendarDisplay({userStats}) {
           maxDate={userStats.currentDate}
           // Handler which gets executed on day press. Default = undefined
           onDayPress={day => {
-          console.log('selected day', day);
+           setSelectedDate(Math.floor((Date.now() - new Date(day.timestamp).getTime()) / (1000 * 60 * 60 * 24)));
+           
         }}
+          markedDates={markedDates}
           // Handler which gets executed on day long press. Default = undefined
           onDayLongPress={day => {
             console.log('selected day', day);
         }}
           // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
-         monthFormat={'yyyy MM'}
+         monthFormat={'yyyy - MM'}
         // Handler which gets executed when visible month changes in calendar. Default = undefined
         onMonthChange={month => {
             console.log('month changed', month);
@@ -41,15 +46,16 @@ export function CalendarDisplay({userStats}) {
   onPressArrowLeft={subtractMonth => subtractMonth()}
   // Handler which gets executed when press arrow icon right. It receive a callback can go next month
   onPressArrowRight={addMonth => addMonth()}
-  // Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates
+  // Disable all touch events for disabled days. can be override with disableTouchEvent in selectedDates
   disableAllTouchEventsForDisabledDays={true}
-  // Replace default month and year title with custom one. the function receive a date as parameter
-  renderHeader={date => {
-    /*Return JSX*/
-  }}
+
   // Enable the option to swipe between months. Default = false
   enableSwipeMonths={true}
 />
+<View>
+  <Text>Summary of the selected day: {markedDayObject.print()} </Text>
+
+</View>
     </View>
   )
 }

@@ -1,10 +1,11 @@
 
 import { getCurrentUserID, getUserInfo } from "@/app/account/userInfo";
+import { HourToDotColor } from "@/constants/HourToDotColor";
 export class UserStats{
     userId : string;
     focusSessionData: any[] = [];
     startTimestamp: number = 0;
-
+    static readonly MIN_NUMBER_OF_DAYS: number = 7; // Minimum number of days to display in the stats
     // For canlender display purposes
     startDate: string = "";
     currentDate: string = UserStats.formatDate(Date.now());
@@ -43,8 +44,9 @@ export class UserStats{
             // Offset is adjusted in Day.createDayFromDate
 }
     getFocusTimeBarChartData(){
+
         //For a week by default to be rendered in bar chart
-        if (this.days.length < 7) {
+        if (this.days.length < UserStats.MIN_NUMBER_OF_DAYS) {
             for (let i = this.days.length; i < 7; i++) {
                 this.days.push(new Day(Date.now() - i * Day.range, 0, 0));
             }
@@ -53,12 +55,33 @@ export class UserStats{
     }
     getDistractionBarChartData(){
         //For a week by default to be rendered in bar chart
-          if (this.days.length < 7) {
+          if (this.days.length < UserStats.MIN_NUMBER_OF_DAYS) {
             for (let i = this.days.length; i < 7; i++) {
                 this.days.push(new Day(Date.now() - i * Day.range, 0, 0));
             }
         }
         return this.days.slice(0,7).map(day => day.toBarChartDistractionElement());
+    }
+
+    getCalendarHighlightData(){
+        // For a week by default to be rendered in calendar
+        if (this.days.length < UserStats.MIN_NUMBER_OF_DAYS) {
+            for (let i = this.days.length; i < UserStats.MIN_NUMBER_OF_DAYS; i++) {
+                this.days.push(new Day(Date.now() - i * Day.range, 0, 0));
+            }
+        }
+        const FromHourToColor = (time: number): string => {
+            const hour = Math.floor(time / (30 * 60 * 1000));
+            return HourToDotColor[hour * 30 * 60 * 1000] || 'gray'; 
+        };
+        return this.days.reduce((acc: any, day: Day) => {
+            if(day.focusTime > 0) acc[day.toStringWithYear()] = 
+              {
+               marked: true, 
+               dotColor: FromHourToColor(day.focusTime)
+              };
+            return acc;
+        }, {});
     }
 
     static formatDate(time: number): string {
@@ -93,6 +116,12 @@ class Day {
     toString(): string {
         const date = new Date(this.startTimestamp);
         return `${date.getMonth() + 1}-${date.getDate()}`;
+    }
+    toStringWithYear(): string {
+        const date = new Date(this.startTimestamp);
+        const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
+        const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+        return `${date.getFullYear()}-${month}-${day}`;
     }
     print(): string {
         return `Day: ${this.toString()}, Focus Time: ${this.focusTime}, Distractions: ${this.totalDistractionCount}`;
