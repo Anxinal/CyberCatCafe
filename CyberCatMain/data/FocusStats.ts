@@ -24,7 +24,7 @@ export class UserStats {
     async loadFocusSessionData() {
         console.log("Loading focus session data for user:", this.userId);
         this.focusSessionData = await getUserInfo("focusSession", () => { }, this.userId);
-        if (!this.focusSessionData) return;
+        if (!this.focusSessionData || this.focusSessionData.length === 0) return;
         console.log("Focus session data loaded:", this.focusSessionData);
         console.log(this.focusSessionData.map(session => new Date(session.date).getDate()));
 
