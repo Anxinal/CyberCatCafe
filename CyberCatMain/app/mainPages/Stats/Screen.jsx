@@ -1,4 +1,5 @@
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
+
 import React, { useEffect, useState } from 'react'
 import { UserStats } from '../../../data/FocusStats'
 import { CalendarDisplay } from './CalendarDisplay';
@@ -6,20 +7,24 @@ import { BarChartDisplay } from './BarChartDisplay';
 import { useIsFocused } from '@react-navigation/native';
 import { IconButton } from '../../../components/IconButton';
 import { uploadSampleData } from './Testing';
+
 // REFER TO USERSTATS for backend implementation
 
 
 
 const Screen = () => {
+
   const [isCalendar, setIsCalendar] = useState(false);
   const [userStats, setUserStats] = useState(null);
   const isFocused = useIsFocused();
 
   async function initialise() {
+
     const stats = await UserStats.createUserStats();
     console.log("User Stats: ", stats.toString());
     setUserStats(stats);
   }
+
 
   useEffect(() => {
     initialise();
@@ -63,6 +68,7 @@ const Screen = () => {
         </View>
       }
     </SafeAreaView>
+
   )
 }
 
@@ -79,6 +85,7 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   buttonRow: {
+
     flexDirection: "row",
     justifyContent: "flex-end",
     gap: 12,
@@ -107,4 +114,6 @@ const styles = StyleSheet.create({
     color: 'black',
     flexWrap: 'wrap',
   },
+
+
 })
