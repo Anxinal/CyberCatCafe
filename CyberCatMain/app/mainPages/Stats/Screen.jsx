@@ -46,7 +46,7 @@ const Screen = () => {
       <View style={styles.board}>
         <Text style={styles.title}>Tips from cat:</Text>
         {suggestions.map((suggestion, index) => (
-          <Text key={index} style={styles.suggestionText}>·{suggestion}</Text>
+          <Text key={index} style={styles.suggestionText}>🐾{suggestion}</Text>
         ))}
       </View>
     );
@@ -105,5 +105,6 @@ const styles = StyleSheet.create({
   suggestionText: {
     fontSize: 14,
     color: 'black',
+    flexWrap: 'wrap',
   },
 })

@@ -37,11 +37,11 @@ export default function CatShop() {
             {getShoppableCatFood().map(item => (
                 <View key={item.id} style={styles.itemCard}>
                     <View>
-                        <Text styles={styles.text}>{item.name}</Text>
-                        <Text styles={styles.text}>{item.price} coins</Text>
+                        <Text style={styles.text}>{item.name}</Text>
+                        <Text style={styles.text}>{item.price} coins</Text>
                     </View>
                     <TouchableOpacity style={styles.button} onPress={() => purchaseItem(item.id, item.price)}>
-                        <Text styles={styles.text}>Buy</Text>
+                        <Text style={styles.text}>Buy</Text>
                     </TouchableOpacity>
                 </View>
             ))
@@ -78,7 +78,6 @@ const styles = StyleSheet.create({
     },
 
     text: {
-        fontWeight: 'bold',
         fontSize: 14,
     }
 });
