@@ -52,12 +52,32 @@ export function CalendarDisplay({userStats}: Readonly<{userStats: UserStats}>) {
   // Enable the option to swipe between months. Default = false
   enableSwipeMonths={true}
 />
-<View>
-  <Text>Summary of the selected day: {markedDayObject.print()} </Text>
+<View style = {styles.container}>
+  <Text style = {styles.summaryText}>{markedDayObject.print()} </Text>
 
 </View>
     </View>
   )
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'rgba(116, 3, 3, 1)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 20,
+    marginHorizontal: 'auto',
+    elevation: 3,
+    height: 55,
+    borderRadius:5,
+    paddingHorizontal: 5,
+  },
+  calendar: {
+    marginBottom: 10,
+  },
+  summaryText: {
+    fontSize: 14,
+    marginBottom: 10,
+    color: 'white',
+  }
+})

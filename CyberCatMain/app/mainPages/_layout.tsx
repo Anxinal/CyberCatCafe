@@ -120,6 +120,13 @@ export default function TabLayout() {
           href: null
         }}
       />
+      <Tabs.Screen
+        name="CatCafe/screen"
+        options={{
+          title: 'Cat Cafe',
+          tabBarIcon: ({ color }) => <Ionicons name="paw" size={28} color={color} />,
+        }}
+      />
     </Tabs>
   );
 }
