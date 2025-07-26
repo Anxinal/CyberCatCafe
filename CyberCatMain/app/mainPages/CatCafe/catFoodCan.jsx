@@ -1,7 +1,8 @@
 import { View, Text, StyleSheet, Touchable, TouchableOpacity, ImageBackground } from 'react-native'
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, forwardRef, useImperativeHandle, useEffect } from 'react'
 import { searchItemCount, deleteInventoryItem } from '@/data/Inventory.js'
 import { Image } from 'react-native';
+import { initialiseInventory } from '../../../data/Inventory';
 
 const catBowl = require('@/assets/images/catBowl.png');
 
@@ -13,10 +14,23 @@ export const UnfillCan = () => {
   isFull.current = false;
 }
 
-export const CatFoodCan = () => {
+export const CatFoodCan = forwardRef((props, ref) => {
 
-  let isFull = useRef(false);
+  const isFull = useRef(false);
   let [addFoodvisible, setAddFoodVisible] = useState(false);
+
+  useImperativeHandle(ref, () => ({
+    isFull: () => isFull.current,
+    UnfillCan: () => { isFull.current = false },
+  }));
+
+  useEffect(() => {
+    const fetchInventory = async () => {
+      await initialiseInventory();
+      const count = searchItemCount(0);
+    };
+    fetchInventory();
+  }, []);
 
   const FillCan = () => {
     const foodCount = searchItemCount(0);
@@ -64,7 +78,7 @@ export const CatFoodCan = () => {
 
     </View>
   )
-}
+})
 
 
 const styles = StyleSheet.create({

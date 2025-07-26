@@ -2,8 +2,8 @@
 import { getCurrentUserID, getUserInfo } from "@/app/account/userInfo";
 
 import { HourToDotColor } from "@/constants/HourToDotColor";
-export class UserStats{
-    userId : string;
+export class UserStats {
+    userId: string;
     focusSessionData: any[] = [];
     startTimestamp: number = 0;
     static readonly MIN_NUMBER_OF_DAYS: number = 7; // Minimum number of days to display in the stats
@@ -27,15 +27,15 @@ export class UserStats{
 
     async loadFocusSessionData() {
         console.log("Loading focus session data for user:", this.userId);
-
-        this.focusSessionData = await getUserInfo("focusSession", () => {}, this.userId);
+        this.focusSessionData = await getUserInfo("focusSession", () => { }, this.userId);
+        if (!this.focusSessionData || this.focusSessionData.length === 0) return;
         console.log("Focus session data loaded:", this.focusSessionData);
         console.log(this.focusSessionData.map(session => new Date(session.date).getDate()));
         if (!this.focusSessionData) return;
 
         // Filter and sort focus session data to recent 180 days
         this.focusSessionData = this.focusSessionData.slice().sort((a, b) => a.date - b.date)
-                                    .filter(session => session.date >= Date.now() - UserStats.MAX_DAY_RANGE * Day.range);
+            .filter(session => session.date >= Date.now() - UserStats.MAX_DAY_RANGE * Day.range);
 
 
         this.startTimestamp = Day.toStartOfDay(this.focusSessionData[0].date);
@@ -43,13 +43,13 @@ export class UserStats{
         const dayPassed = (Day.toStartOfDay(Date.now()) - this.startTimestamp) / Day.range + 1;
 
 
-       // Create days from the start date to today, each day contains the focus session data for that day
-   
-        this.days = Array.from({ length: dayPassed }, (_, i) => i).map(dayCount => 
+        // Create days from the start date to today, each day contains the focus session data for that day
+
+        this.days = Array.from({ length: dayPassed }, (_, i) => i).map(dayCount =>
             Day.createDayFromDate(Date.now() - dayCount * Day.range, this.focusSessionData));
-            // Offset is adjusted in Day.createDayFromDate
-}
-    getFocusTimeBarChartData(){
+        // Offset is adjusted in Day.createDayFromDate
+    }
+    getFocusTimeBarChartData() {
 
         //For a week by default to be rendered in bar chart
         if (this.days.length < UserStats.MIN_NUMBER_OF_DAYS) {
@@ -57,19 +57,19 @@ export class UserStats{
                 this.days.push(new Day(Date.now() - i * Day.range, 0, 0));
             }
         }
-        return this.days.slice(0,7).map(day => day.toBarChartTimeElement());
+        return this.days.slice(0, 7).map(day => day.toBarChartTimeElement());
     }
-    getDistractionBarChartData(){
+    getDistractionBarChartData() {
         //For a week by default to be rendered in bar chart
-          if (this.days.length < UserStats.MIN_NUMBER_OF_DAYS) {
+        if (this.days.length < UserStats.MIN_NUMBER_OF_DAYS) {
             for (let i = this.days.length; i < 7; i++) {
                 this.days.push(new Day(Date.now() - i * Day.range, 0, 0));
             }
         }
-        return this.days.slice(0,7).map(day => day.toBarChartDistractionElement());
+        return this.days.slice(0, 7).map(day => day.toBarChartDistractionElement());
     }
 
-    getCalendarHighlightData(){
+    getCalendarHighlightData() {
         // For a week by default to be rendered in calendar
         if (this.days.length < UserStats.MIN_NUMBER_OF_DAYS) {
             for (let i = this.days.length; i < UserStats.MIN_NUMBER_OF_DAYS; i++) {
@@ -78,14 +78,14 @@ export class UserStats{
         }
         const FromHourToColor = (time: number): string => {
             const hour = Math.floor(time / (30 * 60 * 1000));
-            return HourToDotColor[hour * 30 * 60 * 1000] || 'gray'; 
+            return HourToDotColor[hour * 30 * 60 * 1000] || 'gray';
         };
         return this.days.reduce((acc: any, day: Day) => {
-            if(day.focusTime > 0) acc[day.toStringWithYear()] = 
-              {
-               marked: true, 
-               dotColor: FromHourToColor(day.focusTime)
-              };
+            if (day.focusTime > 0) acc[day.toStringWithYear()] =
+            {
+                marked: true,
+                dotColor: FromHourToColor(day.focusTime)
+            };
             return acc;
         }, {});
 
@@ -103,30 +103,36 @@ export class UserStats{
 
     getSuggestionMessage(): string[] {
         const suggestions: string[] = [];
+        if (!this.days || this.days.length === 0) {
+            suggestions.push("No paw-sitive focus sessions yet! Start one to make your kitty proud");
+        }
+
         if (this.days.length >= 14) {
             const thisWeek = this.days.slice(0, 7);
             const lastWeek = this.days.slice(7, 14);
             const avgThis = thisWeek.reduce((sum: number, a) => sum + a.focusTime, 0) / 7;
             const avgLast = lastWeek.reduce((sum: number, a) => sum + a.focusTime, 0) / 7;
+            console.log("averages:", avgThis, avgLast);
 
             const percentageChange = ((avgThis - avgLast) / avgLast) * 100;
             if (percentageChange > 0) {
-                suggestions.push(`Me-wow! Your focus time increased by ${percentageChange.toFixed(2)}% compared to last week. 
-                                  Keep it up!`);
+                suggestions.push(`Me-wow! Your focus time increased by ${percentageChange.toFixed(2)}% compared to last 7 days. Keep it up!`);
             } else if (percentageChange < 0) {
-                suggestions.push(`Your focus time dropped by ${Math.abs(percentageChange).toFixed(2)}%. 
-                                  Maybe your cat took too many naps. Let's bounce back tomorrow! `);
+                suggestions.push(`Your focus time dropped by ${Math.abs(percentageChange).toFixed(2)}% compared to last 7 days. Maybe your cat took too many naps. Let's bounce back tomorrow! `);
             }
         }
 
-        const hourMap = Array(24).fill(0);
-        this.focusSessionData.forEach(session => {
-            const hour = new Date(session.date).getHours();
-            hourMap[hour] += session.time;
-        })
-        const peakHour = hourMap.indexOf(Math.max(...hourMap));
-        if (hourMap[peakHour] > 0) {
-            suggestions.push(`Your best hour is around ${peakHour}:00, the purr-fect time to do hard works.`);
+        if (this.focusSessionData && this.focusSessionData.length > 0) {
+            const hourMap = Array(24).fill(0);
+
+            this.focusSessionData.forEach(session => {
+                const hour = new Date(session.date).getHours();
+                hourMap[hour] += session.time;
+            })
+            const peakHour = hourMap.indexOf(Math.max(...hourMap));
+            if (hourMap[peakHour] > 0) {
+                suggestions.push(`Your best hour is around ${peakHour}:00, the purr-fect time to do hard works.`);
+            }
         }
 
         return suggestions;
@@ -147,9 +153,9 @@ class Day {
     static createDayFromDate(date: number, focusSessionData: any[]): Day {
         const start = this.toStartOfDay(date);
         const focusList = focusSessionData.filter(session => session.date >= start && session.date < start + Day.range);
-        const focusTime = focusList.reduce((total, session) => total + session.time, 0);   
+        const focusTime = focusList.reduce((total, session) => total + session.time, 0);
         const totalDistractionCount = focusList.reduce((total, session) => total + session.distraction, 0);
-        return new Day(start, focusTime, totalDistractionCount);                               
+        return new Day(start, focusTime, totalDistractionCount);
     }
 
     toString(): string {
@@ -167,7 +173,7 @@ class Day {
     print(): string {
         return `Day: ${this.toString()}, Focus Time: ${this.focusTime}, Distractions: ${this.totalDistractionCount}`;
     }
-  
+
     toBarChartTimeElement(): { value: number, label: string } {
         // Focus time is recorded in seconds !!!!!!! Remeber to convert it to minutes if needed
         return {

@@ -1,15 +1,15 @@
 import { StyleSheet } from "react-native";
-import { textFont, textColor, componentColor} from "./ReusableStyles.ts"
+import { textFont, textColor, componentColor } from "./ReusableStyles"
 
 export const timerStyles = StyleSheet.create({
 
-   TimeSet: {
+  TimeSet: {
     color: textColor.normal,
     marginTop: 20,
     marginBottom: 20,
     marginRight: 20,
-    marginHorizontal:'auto',
-    width:"100%",
+    marginHorizontal: 'auto',
+    width: "100%",
     height: 40,
     borderColor: textColor.normal,
     borderWidth: 1,
@@ -18,12 +18,12 @@ export const timerStyles = StyleSheet.create({
 
   Buttons: {
     width: 80,
-    height: 55, 
+    height: 40,
     marginHorizontal: 5,
-    backgroundColor: "rgba(255, 126, 6, 0.92)",
+    backgroundColor: '#A47551',
     justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 8,
-    borderColor: componentColor.shade,
     borderWidth: 1,
     padding: 4,
     elevation: 3,
@@ -33,51 +33,54 @@ export const timerStyles = StyleSheet.create({
     width: '100%',
     maxWidth: 500,
     flexDirection: 'row',
-    justifyContent:'space-between',
-    borderColor: componentColor.border,
+    justifyContent: 'center',
     height: 70,
-    borderRadius: 10,
-    borderWidth: 2,
-    marginTop: 20,
-    padding: 5, 
+    borderRadius: 16,
+    paddingTop: 12,
+    backgroundColor: '#F5D7A1',
   },
 
   TimeButtonText: {
-    fontSize: textFont.medium, 
-    fontWeight: 'bold', 
+    fontSize: textFont.medium,
+    fontWeight: 'bold',
     color: textColor.contrast,
   },
 
   TimerTitleText: {
     fontSize: textFont.small,
-    color: textColor.normal,
+    color: '#5A4636',
+    fontWeight: '600',
+    textAlign: 'center',
   },
   TimerTitleView: {
     marginBottom: 20,
-    marginTop: 45,
+    marginTop: 20,
     borderColor: componentColor.border,
     borderWidth: 1,
-    borderRadius: 5,
-    shadowColor: "#aaa",
-    shadowOffset: {height: 3, width: 3},
-    shadowRadius: 4,
+    borderRadius: 12,
+    shadowColor: '#CDB8A1',
+    shadowOffset: { height: 2, width: 2 },
+    shadowRadius: 6,
+    backgroundColor: '#FFF4E1',
   },
   TimerContainer: {
-    flexDirection:'column', 
-    justifyContent: 'space-between',
-    padding: 4,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    padding: 16,
     flex: 1,
+    backgroundColor: '#FFF1C9',
   },
   countdownText: {
     fontSize: textFont.XXL,
     fontWeight: 'bold',
     paddingLeft: '18%',
-    paddingTop: '35%',                         
+    paddingTop: '35%',
   },
   countdownView: {
-    justifyContent: 'space-between', 
-    width: '100%', 
-    marginHorizontal:'auto',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    marginHorizontal: 'auto',
     marginBottom: 20,
   }
 

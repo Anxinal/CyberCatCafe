@@ -17,7 +17,7 @@ export function Cafe() {
   const [catEXP, setCatEXP] = useState(0);
 
   const feedCat = async () => {
-    if (CatFoodCan.current?.isFull()) {
+    if (canRef.current?.isFull()) {
       setEatState(true);
       const animationDuration = catRef.current.walkToCan();
       canRef.current?.UnfillCan();

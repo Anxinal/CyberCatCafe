@@ -1,4 +1,4 @@
-import { getFirestore, doc, getDoc, update, collection } from "firebase/firestore";
+import { getFirestore, doc, getDoc, updateDoc, collection } from "firebase/firestore";
 import { getAuth, onAuthStateChanged, } from "firebase/auth";
 
 const db = getFirestore();
