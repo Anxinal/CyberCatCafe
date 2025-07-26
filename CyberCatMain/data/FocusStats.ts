@@ -1,16 +1,19 @@
 
 import { getCurrentUserID, getUserInfo } from "@/app/account/userInfo";
+
 import { HourToDotColor } from "@/constants/HourToDotColor";
 export class UserStats{
     userId : string;
     focusSessionData: any[] = [];
     startTimestamp: number = 0;
     static readonly MIN_NUMBER_OF_DAYS: number = 7; // Minimum number of days to display in the stats
+
     // For canlender display purposes
     startDate: string = "";
     currentDate: string = UserStats.formatDate(Date.now());
 
-    constructor(userId: string = getCurrentUserID()){
+
+    constructor(userId: string = getCurrentUserID()) {
         this.userId = userId;
     }
 
@@ -24,6 +27,7 @@ export class UserStats{
 
     async loadFocusSessionData() {
         console.log("Loading focus session data for user:", this.userId);
+
         this.focusSessionData = await getUserInfo("focusSession", () => {}, this.userId);
         console.log("Focus session data loaded:", this.focusSessionData);
         console.log(this.focusSessionData.map(session => new Date(session.date).getDate()));
@@ -33,9 +37,11 @@ export class UserStats{
         this.focusSessionData = this.focusSessionData.slice().sort((a, b) => a.date - b.date)
                                     .filter(session => session.date >= Date.now() - UserStats.MAX_DAY_RANGE * Day.range);
 
+
         this.startTimestamp = Day.toStartOfDay(this.focusSessionData[0].date);
         this.startDate = UserStats.formatDate(this.startTimestamp);
         const dayPassed = (Day.toStartOfDay(Date.now()) - this.startTimestamp) / Day.range + 1;
+
 
        // Create days from the start date to today, each day contains the focus session data for that day
    
@@ -82,16 +88,49 @@ export class UserStats{
               };
             return acc;
         }, {});
+
     }
 
     static formatDate(time: number): string {
         const date = new Date(time);
         return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
     }
-     toString(): string {
+
+    toString(): string {
         return `UserStats for ${this.userId}, Start Date: ${this.startDate}, Current Date: ${this.currentDate},
         Days: ${this.days.map(day => day.print()).join('\n')}`;
-}
+    }
+
+    getSuggestionMessage(): string[] {
+        const suggestions: string[] = [];
+        if (this.days.length >= 14) {
+            const thisWeek = this.days.slice(0, 7);
+            const lastWeek = this.days.slice(7, 14);
+            const avgThis = thisWeek.reduce((sum: number, a) => sum + a.focusTime, 0) / 7;
+            const avgLast = lastWeek.reduce((sum: number, a) => sum + a.focusTime, 0) / 7;
+
+            const percentageChange = ((avgThis - avgLast) / avgLast) * 100;
+            if (percentageChange > 0) {
+                suggestions.push(`Me-wow! Your focus time increased by ${percentageChange.toFixed(2)}% compared to last week. 
+                                  Keep it up!`);
+            } else if (percentageChange < 0) {
+                suggestions.push(`Your focus time dropped by ${Math.abs(percentageChange).toFixed(2)}%. 
+                                  Maybe your cat took too many naps. Let's bounce back tomorrow! `);
+            }
+        }
+
+        const hourMap = Array(24).fill(0);
+        this.focusSessionData.forEach(session => {
+            const hour = new Date(session.date).getHours();
+            hourMap[hour] += session.time;
+        })
+        const peakHour = hourMap.indexOf(Math.max(...hourMap));
+        if (hourMap[peakHour] > 0) {
+            suggestions.push(`Your best hour is around ${peakHour}:00, the purr-fect time to do hard works.`);
+        }
+
+        return suggestions;
+    }
 }
 
 class Day {
@@ -117,15 +156,18 @@ class Day {
         const date = new Date(this.startTimestamp);
         return `${date.getMonth() + 1}-${date.getDate()}`;
     }
+
     toStringWithYear(): string {
         const date = new Date(this.startTimestamp);
         const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
         const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
         return `${date.getFullYear()}-${month}-${day}`;
     }
+
     print(): string {
         return `Day: ${this.toString()}, Focus Time: ${this.focusTime}, Distractions: ${this.totalDistractionCount}`;
     }
+  
     toBarChartTimeElement(): { value: number, label: string } {
         // Focus time is recorded in seconds !!!!!!! Remeber to convert it to minutes if needed
         return {
