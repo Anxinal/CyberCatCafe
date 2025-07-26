@@ -1,6 +1,6 @@
 
 import { getCurrentUserID, getUserInfo } from "@/app/account/userInfo";
-
+import { getApproximateView } from "./TimerConvert";
 import { HourToDotColor } from "@/constants/HourToDotColor";
 export class UserStats {
     userId: string;
@@ -171,7 +171,7 @@ class Day {
     }
 
     print(): string {
-        return `Day: ${this.toString()}, Focus Time: ${this.focusTime}, Distractions: ${this.totalDistractionCount}`;
+        return `Day: ${this.toString()}\nFocus Time: ${getApproximateView(this.focusTime)}, Distractions: ${this.totalDistractionCount}`;
     }
 
     toBarChartTimeElement(): { value: number, label: string } {

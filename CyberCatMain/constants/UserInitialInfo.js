@@ -12,7 +12,7 @@ export const UserInitInfo = (username) => ({
     current_skin: "default skin",
     unlocked_skins: ["default skin"],
   },
-
+  inventoryList: [{id: 0 , count: 5}],
   focusSession: [],
   listOfCats: [
     {
