@@ -35,20 +35,50 @@ export default function CatShop() {
             <Text style={styles.title}>Cat Shop</Text>
             <Text>Your Coins: {userCoins}</Text>
             {getShoppableCatFood().map(item => (
-                <View key={item.id} style={styles.item}>
-                    <Text>{item.name} {item.price} coins</Text>
+                <View key={item.id} style={styles.itemCard}>
+                    <View>
+                        <Text styles={styles.text}>{item.name}</Text>
+                        <Text styles={styles.text}>{item.price} coins</Text>
+                    </View>
                     <TouchableOpacity style={styles.button} onPress={() => purchaseItem(item.id, item.price)}>
-                        <Text>Buy</Text>
+                        <Text styles={styles.text}>Buy</Text>
                     </TouchableOpacity>
                 </View>
-            ))}
-        </View>
+            ))
+            }
+        </View >
     );
 }
 
 const styles = StyleSheet.create({
-    container: { padding: 20 },
-    title: { fontSize: 20, fontWeight: 'bold', marginBottom: 10 },
-    itemRow: { flexDirection: 'row', justifyContent: 'space-between', marginVertical: 5 },
-    button: { backgroundColor: 'gold', paddingHorizontal: 10, borderRadius: 5 },
+    container: {
+        padding: 20
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 10
+    },
+    itemCard: {
+        backgroundColor: '#FFF4E1',
+        borderRadius: 16,
+        paddingVertical: 16,
+        paddingHorizontal: 20,
+        marginVertical: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+
+    button: {
+        backgroundColor: '#F2C5E0',
+        paddingHorizontal: 16,
+        paddingVertical: 8,
+        borderRadius: 20,
+    },
+
+    text: {
+        fontWeight: 'bold',
+        fontSize: 14,
+    }
 });
