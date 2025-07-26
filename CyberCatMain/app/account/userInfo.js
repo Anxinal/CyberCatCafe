@@ -54,7 +54,7 @@ export async function getUserInfo(attribute, setFunction = () => { }, user = cur
     }
   });
   */
-  return getDoc(doc(collectionRef, currentUser)).then((doc) => {
+  return getDoc(doc(collectionRef, user)).then((doc) => {
     if (doc.exists()) {
       const targetData = doc.data()[attribute];
       setFunction(targetData);
