@@ -86,11 +86,9 @@ export class UserStats {
 
             const percentageChange = ((avgThis - avgLast) / avgLast) * 100;
             if (percentageChange > 0) {
-                suggestions.push(`Me-wow! Your focus time increased by ${percentageChange.toFixed(2)}% compared to last week. 
-                                  Keep it up!`);
+                suggestions.push(`Me-wow! Your focus time increased by ${percentageChange.toFixed(2)}% compared to last 7 days. Keep it up!`);
             } else if (percentageChange < 0) {
-                suggestions.push(`Your focus time dropped by ${Math.abs(percentageChange).toFixed(2)}%. 
-                                  Maybe your cat took too many naps. Let's bounce back tomorrow! `);
+                suggestions.push(`Your focus time dropped by ${Math.abs(percentageChange).toFixed(2)}% compared to last 7 days. Maybe your cat took too many naps. Let's bounce back tomorrow! `);
             }
         }
 
