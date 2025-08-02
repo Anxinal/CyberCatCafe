@@ -177,7 +177,7 @@ class Day {
     toBarChartTimeElement(): { value: number, label: string } {
         // Focus time is recorded in seconds !!!!!!! Remeber to convert it to minutes if needed
         return {
-            value: this.focusTime,
+            value: Math.round(this.focusTime / 60),
             label: this.toString()
         };
     }

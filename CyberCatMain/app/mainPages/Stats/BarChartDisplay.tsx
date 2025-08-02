@@ -14,6 +14,7 @@ export function BarChartDisplay({userStats}: {readonly userStats: UserStats}) {
   
     return (
     <View>
+      <Text>The Y-axis is in minutes</Text>
       <BarChart data={data}/>
     </View>
   )
