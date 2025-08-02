@@ -83,10 +83,6 @@ const Login = () => {
           <View style={accountStyles.buttonsContainer}>
             <LoginButton action={loginPress} buttonText="Login" />
             <LoginButton action={registerPress} buttonText="Register" />
-            <LoginButton
-              action={() => router.push('/mainPages/Timer/screen')}
-              buttonText="GT Timer"
-            />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
