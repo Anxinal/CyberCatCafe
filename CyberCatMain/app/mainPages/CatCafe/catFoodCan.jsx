@@ -17,11 +17,15 @@ export const UnfillCan = () => {
 export const CatFoodCan = forwardRef((props, ref) => {
 
   const isFull = useRef(false);
+  const [foodInCan, setFoodInCan] = useState(0);
   let [addFoodvisible, setAddFoodVisible] = useState(false);
 
   useImperativeHandle(ref, () => ({
-    isFull: () => isFull.current,
-    UnfillCan: () => { isFull.current = false },
+    getFoodCountInCan: () => foodInCan,
+    isFull: () => foodInCan > 0,
+    UnfillCan: () => {
+      setFoodInCan((prev) => Math.max(prev - 1, 0));
+    },
   }));
 
   useEffect(() => {
@@ -38,14 +42,12 @@ export const CatFoodCan = forwardRef((props, ref) => {
       setAddFoodVisible(false);
       try {
         deleteInventoryItem(0, 1);
+        setFoodInCan((prev) => prev + 1);
       } catch (error) {
         console.log(error.message);
-        isFull.current = false;
       }
-      isFull.current = true;
     } else {
       console.log("No cat food left");
-      isFull.current = false;
     }
   }
 
