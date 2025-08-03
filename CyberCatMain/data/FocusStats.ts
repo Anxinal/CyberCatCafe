@@ -5,11 +5,12 @@ import { HourToDotColor } from "@/constants/HourToDotColor";
 export class UserStats {
     userId: string;
     focusSessionData: any[] = [];
-    startTimestamp: number = 0;
+    startTimestamp: number = Date.now();
+    isEmpty: boolean = true; // Indicates if the user stats are empty
     static readonly MIN_NUMBER_OF_DAYS: number = 7; // Minimum number of days to display in the stats
 
     // For canlender display purposes
-    startDate: string = "";
+    startDate: string = UserStats.formatDate(Date.now());
     currentDate: string = UserStats.formatDate(Date.now());
 
 
@@ -32,7 +33,7 @@ export class UserStats {
         console.log("Focus session data loaded:", this.focusSessionData);
         console.log(this.focusSessionData.map(session => new Date(session.date).getDate()));
         if (!this.focusSessionData) return;
-
+        this.isEmpty = false;
         // Filter and sort focus session data to recent 180 days
         this.focusSessionData = this.focusSessionData.slice().sort((a, b) => a.date - b.date)
             .filter(session => session.date >= Date.now() - UserStats.MAX_DAY_RANGE * Day.range);
@@ -71,6 +72,7 @@ export class UserStats {
 
     getCalendarHighlightData() {
         // For a week by default to be rendered in calendar
+     
         if (this.days.length < UserStats.MIN_NUMBER_OF_DAYS) {
             for (let i = this.days.length; i < UserStats.MIN_NUMBER_OF_DAYS; i++) {
                 this.days.push(new Day(Date.now() - i * Day.range, 0, 0));
@@ -103,7 +105,9 @@ export class UserStats {
 
     getSuggestionMessage(): string[] {
         const suggestions: string[] = [];
-        if (!this.days || this.days.length === 0) {
+        console.log(this.days);
+        if (this.isEmpty) {
+            console.log("No days data available for suggestions");
             suggestions.push("No paw-sitive focus sessions yet! Start one to make your kitty proud");
         }
 

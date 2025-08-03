@@ -10,10 +10,7 @@ export function CalendarDisplay({userStats}: Readonly<{userStats: UserStats}>) {
   const markedDayObject = userStats.days[selectedDate];
   const markedDates = userStats.getCalendarHighlightData();
   console.log(markedDates);
-  useEffect(() => {
-    
-  },[]);
- 
+
   return (
     <View>
       <Text>Summary </Text>
@@ -34,12 +31,8 @@ export function CalendarDisplay({userStats}: Readonly<{userStats: UserStats}>) {
         }}
           // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
          monthFormat={'yyyy - MM'}
-        // Handler which gets executed when visible month changes in calendar. Default = undefined
-        onMonthChange={month => {
-            console.log('month changed', month);
-        }}
   // day from another month that is visible in calendar page. Default = false
-  disableMonthChange={true}
+  disableMonthChange = {true}
   // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday
   firstDay={1}
   // Hide day names. Default = false
@@ -54,7 +47,6 @@ export function CalendarDisplay({userStats}: Readonly<{userStats: UserStats}>) {
 />
 <View style = {styles.container}>
   <Text style = {styles.summaryText}>{markedDayObject.print()} </Text>
-
 </View>
     </View>
   )
